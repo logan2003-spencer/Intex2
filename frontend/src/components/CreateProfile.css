@@ -1,0 +1,83 @@
+.create-profile-page {
+    width: 60%;
+    margin: 2rem auto;
+    max-width: 900px;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: "Roboto", sans-serif;
+  }
+  
+  .create-profile-page h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #333;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+  
+  .form-group input,
+  .form-group select {
+    padding: 1rem;
+    font-size: 1rem;
+    width: calc(50% - 1rem); /* Each input will take up 50% of the width */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #333;
+  }
+  
+  .form-group select {
+    width: calc(33% - 1rem); /* For the select fields (birthday) */
+  }
+  
+  .gender {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .gender label {
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  button {
+    padding: 1rem;
+    font-size: 1.2rem;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 1.5rem;
+  }
+  
+  button:hover {
+    background-color: #f40612;
+  }
+  
+  input:focus,
+  select:focus {
+    outline: none;
+    border-color: #e50914;
+    background-color: #333;
+  }
+  
+  input::placeholder,
+  select::placeholder {
+    color: #888;
+  }
