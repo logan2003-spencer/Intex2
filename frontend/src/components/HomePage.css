@@ -1,0 +1,66 @@
+.home-page {
+  background-color: black;
+  color: white;
+  padding: 20px;
+}
+
+.genre-section {
+  margin-bottom: 40px;
+}
+
+.genre-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px 0 10px 20px;
+}
+
+.carousel-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.movie-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 20px;
+  padding: 20px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.movie-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.movie-poster {
+  height: 250px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.scroll-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 2;
+  transition: background 0.3s;
+}
+
+.scroll-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.scroll-btn.left {
+  position: absolute;
+  left: 0;
+}
+
+.scroll-btn.right {
+  position: absolute;
+  right: 0;
+}
