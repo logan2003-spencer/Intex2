@@ -25,3 +25,7 @@ dist-ssr
 
 node_modules/
 
+# Ignore build artifacts
+**/bin/
+**/obj/
+

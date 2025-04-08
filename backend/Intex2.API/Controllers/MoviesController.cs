@@ -7,11 +7,11 @@ namespace Intex2.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RatingsController : ControllerBase
+    public class MoviesController : ControllerBase
     {
         private readonly MoviesContext _moviesContext;
 
-        public RatingsController(MoviesContext context)
+        public MoviesController(MoviesContext context)
         {
             _moviesContext = context;
         }
@@ -59,12 +59,19 @@ namespace Intex2.API.Controllers
 
             var movies = moviesRaw
                 .Select(m => new
-                {
+                {   
                     m.ShowId,
                     m.Title,
                     Genre = genreName,
-                    PosterUrl = $"/posters/{SanitizeFileName(m.Title)}.jpg"
+                    m.Director,
+                    m.Cast,
+                    m.Country,
+                    m.ReleaseYear,
+                    m.Rating,
+                    m.Duration,
+                    m.Description,
                 })
+
                 .ToList();
 
             if (movies.Any())

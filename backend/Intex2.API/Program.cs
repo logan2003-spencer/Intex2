@@ -82,11 +82,8 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     await SeedRoles(services);
 }
-<<<<<<< HEAD
-=======
 // ✅ Apply the CORS policy
 app.UseCors("AllowFrontend");
->>>>>>> 0efb76d378377a25c01c5a98a83bd19121ec3722
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
