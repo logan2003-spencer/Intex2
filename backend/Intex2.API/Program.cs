@@ -29,16 +29,27 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+builder.Services.Configure<IdentityOptions>(options =>
 {
+    // Password settings
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 12;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireLowercase = true;
-})
-.AddRoles<IdentityRole>() // Enables role-based auth
-.AddEntityFrameworkStores<ApplicationDbContext>();
+
+    // Lockout settings (optional)
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings
+    options.User.RequireUniqueEmail = true;
+});
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders(); // <-- includes support for JWT, 2FA, etc.
 
 async Task SeedRoles(IServiceProvider serviceProvider)
 {
@@ -76,17 +87,12 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-<<<<<<< HEAD
 // Seed roles
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     await SeedRoles(services);
 }
-=======
-// ✅ Apply the CORS policy
-app.UseCors("AllowFrontend");
->>>>>>> 217aae68fdaa7c385ead435301a858c822a2df40
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -98,11 +104,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowFrontend"); 
 
 app.UseHttpsRedirection();
-<<<<<<< HEAD
 
 app.UseAuthentication(); //  MUST come before UseAuthorization
-=======
->>>>>>> 217aae68fdaa7c385ead435301a858c822a2df40
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
