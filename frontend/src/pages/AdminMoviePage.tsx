@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Movie } from "../types/Movie"; 
-import { deleteMovie, fetchMovies } from "../api/MoviesAPI"; 
+import { Movie } from "../types/Movie";
+import { deleteMovie, fetchMovies } from "../api/MovieAPI";
 import Pagination from "../components/pagination";
-import NewMovieForm from "../components/NewMovieForm"; 
-import EditMovieForm from "../components/EditMovieForm"; 
+import NewMovieForm from "../components/NewMovieForm";
+import EditMovieForm from "../components/EditMovieForm";
 
 const AdminMoviesPage = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -54,7 +54,7 @@ const AdminMoviesPage = () => {
   return (
     <div>
       <h1>Admin - Movies</h1>
-      
+
       {/* "Add New Movie" button moved to the top of the page */}
       {!showForm && (
         <button className="btn btn-primary" onClick={() => setShowForm(true)}>
@@ -66,8 +66,8 @@ const AdminMoviesPage = () => {
         <NewMovieForm
           onSuccess={() => {
             setShowForm(false);
-            fetchMovies(pageSize, pageNum, []).then((data) =>
-              setMovies(data.movies)
+            fetchMovies(pageSize, pageNum, []).then(
+              (data: { movies: Movie[] }) => setMovies(data.movies)
             );
           }}
           onCancel={() => setShowForm(false)}
@@ -79,8 +79,8 @@ const AdminMoviesPage = () => {
           movie={editingMovie}
           onSuccess={() => {
             setEditingMovie(null);
-            fetchMovies(pageSize, pageNum, []).then((data) =>
-              setMovies(data.movies)
+            fetchMovies(pageSize, pageNum, []).then(
+              (data: { movies: Movie[] }) => setMovies(data.movies)
             );
           }}
           onCancel={() => setEditingMovie(null)}
@@ -144,9 +144,7 @@ const AdminMoviesPage = () => {
               <td>
                 <button
                   className="btn btn-danger"
-                  onClick={() =>
-                    movie.showId && handleDelete(movie.showId)
-                  }
+                  onClick={() => movie.showId && handleDelete(movie.showId)}
                 >
                   Delete
                 </button>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addMovie } from "../api/MoviesAPI";
+import { addMovie } from "../api/MovieAPI";
 import { Movie } from "../types/Movie";
 
 interface NewMovieFormProps {
@@ -158,7 +158,11 @@ const NewMovieForm = ({ onSuccess, onCancel }: NewMovieFormProps) => {
           <button type="submit" className="btn btn-success">
             Add Movie
           </button>
-          <button type="button" className="btn btn-secondary" onClick={onCancel}>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={onCancel}
+          >
             Cancel
           </button>
         </div>
