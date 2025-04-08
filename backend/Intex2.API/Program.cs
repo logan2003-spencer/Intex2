@@ -23,10 +23,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        policy => policy.WithOrigins("http://localhost:5173") // Allow frontend URL
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+options.AddPolicy("AllowFrontend",
+    policy => policy.WithOrigins("http://localhost:5173") // Allow frontend URL
+        .AllowAnyMethod()
+        .AllowAnyHeader());
 });
 
 builder.Services.Configure<IdentityOptions>(options =>
@@ -93,8 +93,6 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     await SeedRoles(services);
 }
-// ✅ Apply the CORS policy
-app.UseCors("AllowFrontend");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

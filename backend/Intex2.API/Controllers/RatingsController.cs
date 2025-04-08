@@ -1,4 +1,5 @@
 using Intex2.API.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -22,8 +23,9 @@ namespace Intex2.API.Controllers
         {
             return _moviesContext.MoviesRatings;
         }
- 
+
         // Get all MoviesTitles
+        [Authorize]
         [HttpGet("titles")]
         public IEnumerable<MoviesTitle> GetMoviesTitles()
         {
