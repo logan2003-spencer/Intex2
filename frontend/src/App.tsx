@@ -7,6 +7,8 @@ import HomePage from "./pages/HomePage";
 import Header from "./components/Header"; // make sure this path is correct
 import LoginPage from "./pages/LoginPage";
 import MainLayout from "./layouts/MainLayout"; // <- This layout includes Header
+import AddMoviePage from "./pages/AddMoviePage";
+import AdminMoviesPage from "./pages/AdminMoviePage";
 
 const App = () => {
   return (
@@ -18,6 +20,7 @@ const App = () => {
         <Route path="/movies" element={<MovieDisplay />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/adminMovies" element={<AdminMoviesPage/>} />
         {/* Add more routes here as needed */}
 
         {/* 👇 All other routes go through layout with header */}
