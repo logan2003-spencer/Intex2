@@ -7,10 +7,12 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import AddMoviePage from "./pages/AddMoviePage";
 import AdminMoviesPage from "./pages/AdminMoviePage";
+import CookieConsent from "./components/CookieConsent";
 import MainLayout from "./layouts/MainLayout"; // 👈 Layout that includes Header
 
 const App = () => {
   return (
+    <>
     <Router>
       <Routes>
         {/* 👇 LandingPage is the ONLY one without the layout/header */}
@@ -33,10 +35,14 @@ const App = () => {
                 onCancel={() => console.log("Movie addition canceled")}
               />
             }
+            
           />
         </Route>
+        
       </Routes>
-    </Router>
+    </Router> 
+    <CookieConsent />
+    </>
   );
 };
 
