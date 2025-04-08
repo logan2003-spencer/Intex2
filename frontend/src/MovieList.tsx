@@ -7,9 +7,10 @@ function MovieList () {
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const response = await fetch('http://localhost:5147/api/ratings/titles'); 
+      const response = await fetch('https://localhost:5000/api/movie/AllMovies?pageSize=10&pageNum=1');
+
       const data = await response.json();
-      setMovies(data);
+      setMovies(data.movies);
     };
 
     fetchMovies();
