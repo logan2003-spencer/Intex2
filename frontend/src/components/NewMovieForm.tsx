@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addMovie } from "../api/MoviesAPI";
+import { addMovie } from "../api/MovieAPI";
 import { Movie } from "../types/Movie";
 
 interface NewMovieFormProps {
