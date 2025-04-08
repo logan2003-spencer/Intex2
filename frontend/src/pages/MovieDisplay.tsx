@@ -1,6 +1,7 @@
 // MovieDisplay.tsx
 import React from 'react';
-import MovieList from '../MovieList';  // Correct import path to MovieList
+import MovieList from '../MovieList';
+  // Correct import path to MovieList
 
 const MovieDisplay = () => {
   return (
