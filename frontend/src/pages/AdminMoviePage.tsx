@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Movie } from "../types/Movie";
-import { deleteMovie, fetchMovies } from "../api/MovieAPI";
+import { Movie } from "../types/Movie"; 
+import { deleteMovie, fetchMovies } from "../api/MovieAPI"; 
 import Pagination from "../components/pagination";
 import NewMovieForm from "../components/NewMovieForm";
 import EditMovieForm from "../components/EditMovieForm";
