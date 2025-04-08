@@ -29,8 +29,10 @@ const GenreCarousel: React.FC<Props> = ({ genre, movies }) => {
   return (
     <div className="genre-section">
       <h2 className="genre-title">{genre}</h2>
-      <div className="carousel-container">
-        <button className="scroll-btn left" onClick={() => scroll("left")}>‹</button>
+      <div className="carousel-container" >
+        <button className="scroll-btn left" onClick={() => scroll("left")}>
+          ‹
+        </button>
         <div className="movie-carousel" ref={rowRef}>
           {movies.map((movie) => (
             <img
@@ -42,7 +44,9 @@ const GenreCarousel: React.FC<Props> = ({ genre, movies }) => {
             />
           ))}
         </div>
-        <button className="scroll-btn right" onClick={() => scroll("right")}>›</button>
+        <button className="scroll-btn right" onClick={() => scroll("right")}>
+          ›
+        </button>
       </div>
     </div>
   );

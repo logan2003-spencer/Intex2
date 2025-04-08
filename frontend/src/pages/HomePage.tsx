@@ -38,9 +38,11 @@ const HomePage = () => {
 
   return (
     <div className="home-page">
-      {Object.entries(genreData).map(([genre, movies]) => (
-        <GenreCarousel key={genre} genre={genre} movies={movies} />
-      ))}
+      <div className="content-wrapper">
+        {Object.entries(genreData).map(([genre, movies]) => (
+          <GenreCarousel key={genre} genre={genre} movies={movies} />
+        ))}
+      </div>
     </div>
   );
 };
