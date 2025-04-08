@@ -2,15 +2,20 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://localhost:7261/api", // Your backend URL
+  baseURL: "http://localhost:5174/api",
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("authToken");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("authToken");
+    if (token && config.headers) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
-  return config;
-});
+);
 
 export default api;

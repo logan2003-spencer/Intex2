@@ -15,7 +15,7 @@ const LoginForm: React.FC = () => {
 
     if (result.success) {
       setMessage("Login successful!");
-      navigate("/dashboard"); // or wherever you want to go after login
+      navigate("/movies"); // or wherever you want to go after login
     } else {
       setMessage(result.message || "Login failed");
     }

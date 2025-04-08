@@ -26,6 +26,7 @@ const App = () => {
           <Route path="/create-profile" element={<CreateProfile />} />
           <Route path="/movies" element={<MovieDisplay />} />
           <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/recommended" element={<MovieDisplay />} />
         </Route>
       </Routes>
     </Router>
