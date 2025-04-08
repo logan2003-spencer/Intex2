@@ -10,7 +10,7 @@ type GenreMovies = {
 
 const HomePage = () => {
   const [genreData, setGenreData] = useState<GenreMovies>({});
-  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +33,7 @@ const HomePage = () => {
   }, []);
 
   const handlePosterClick = (movie: Movie) => {
-    setSelectedMovie(movie);
+    setSelectedMovieId(Number(movie.showId));
   };
 
   return (
@@ -47,10 +47,10 @@ const HomePage = () => {
             onPosterClick={handlePosterClick}
           />
         ))}
-        {selectedMovie && (
+        {selectedMovieId !== null && (
           <MovieModal
-            movie={selectedMovie}
-            onClose={() => setSelectedMovie(null)}
+            movieId={selectedMovieId}
+            onClose={() => setSelectedMovieId(null)}
           />
         )}
       </div>
