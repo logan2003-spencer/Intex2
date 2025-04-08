@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { Movie } from "./types/Movie";
 import { moviePosters as allPosters } from "../src/data/moviePosters";
+import { parseJwt } from "./utils/jwt";
+
+const token = localStorage.getItem("authToken");
+const user = token ? parseJwt(token) : null;
+const isAdmin = user?.role === "Admin"; // Or whatever your backend encodes
 
 function MovieList() {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -8,8 +13,22 @@ function MovieList() {
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const response = await fetch("http://localhost:5174/api/Movies/titles");
-      const data = await response.json();
+      const token = localStorage.getItem("authToken");
+
+    const response = await fetch('http://localhost:5174/api/ratings/titles', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+});
+
+// Optional: safer error handling
+if (!response.ok) {
+  const errorText = await response.text();
+  throw new Error(`HTTP ${response.status}: ${errorText}`);
+}
+
+const data = await response.json();
       setMovies(data);
     };
 

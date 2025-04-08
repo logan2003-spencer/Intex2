@@ -29,3 +29,11 @@ node_modules/
 **/bin/
 **/obj/
 
+# Ignore Visual Studio folder
+.vs/
+
+# Ignore Vite/React public folder (if not needed in version control)
+frontend/public/
+
+
+

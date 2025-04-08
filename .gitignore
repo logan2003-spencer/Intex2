@@ -1,3 +1,11 @@
 **/obj/
+# .NET build artifacts
+bin/
+obj/
 
 
+# .NET build artifacts
+bin/
+obj/
+
+public/
