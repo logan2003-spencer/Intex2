@@ -56,6 +56,15 @@ function MovieList () {
       return genres;
     };
 
+    // Helper: Format title to match image filename
+  const getPosterUrl = (title: string): string => {
+    const formattedTitle = title
+      .replace(/[^a-zA-Z0-9 ]/g, '')  // Remove special characters
+      .trim()
+      .replace(/\s+/g, '_');         // Replace spaces with underscores
+    return `/posters/${formattedTitle}.jpg`;
+  };
+
   return(
     <>  
       <h1>Movies</h1>
@@ -75,6 +84,16 @@ function MovieList () {
               Genres: {getGenres(m).length > 0 ? getGenres(m).join(', ') : 'No genres listed'}
             </li>
           </ul>
+
+          {/* Poster Image */}
+          <img
+            src={getPosterUrl(m.title ?? 'Unknown')}
+            alt={`${m.title}`}
+            style={{ width: '50px', marginTop: '10px' }}
+            onError={(e) => {
+              e.currentTarget.src = '/posters/default.jpg'; // fallback if image doesn't exist
+            }}
+          />
         </div>
       
       )}

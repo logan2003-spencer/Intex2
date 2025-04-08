@@ -1,0 +1,90 @@
+/* Reset + global styles */
+body {
+    margin: 0;
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+  }
+  
+  .home-page {
+    width: 100vw;
+    box-sizing: border-box;
+    padding: 20px;
+  }
+  
+  /* Genre layout */
+  .genre-section {
+    margin-bottom: 50px;
+  }
+  
+  .genre-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0 10px 40px;
+  }
+  
+  /* Carousel layout */
+  .carousel-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  /* Scrollable row of posters */
+  .movie-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 20px 60px;
+    gap: 20px;
+  
+    /* Hide scrollbars */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .movie-carousel::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Movie images */
+  .movie-poster {
+    height: 250px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .movie-poster:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Navigation buttons */
+  .scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 2;
+    border-radius: 50%;
+    transition: background 0.3s;
+  }
+  
+  .scroll-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+  
+  .scroll-btn.left {
+    left: 10px;
+  }
+  
+  .scroll-btn.right {
+    right: 10px;
+  }
+  
