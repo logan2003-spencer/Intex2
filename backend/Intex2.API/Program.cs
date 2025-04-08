@@ -23,22 +23,33 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        policy => policy.WithOrigins("http://localhost:5173") // Allow frontend URL
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+options.AddPolicy("AllowFrontend",
+    policy => policy.WithOrigins("http://localhost:5173") // Allow frontend URL
+        .AllowAnyMethod()
+        .AllowAnyHeader());
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+builder.Services.Configure<IdentityOptions>(options =>
 {
+    // Password settings
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 12;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireLowercase = true;
-})
-.AddRoles<IdentityRole>() // Enables role-based auth
-.AddEntityFrameworkStores<ApplicationDbContext>();
+
+    // Lockout settings (optional)
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings
+    options.User.RequireUniqueEmail = true;
+});
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders(); // <-- includes support for JWT, 2FA, etc.
 
 async Task SeedRoles(IServiceProvider serviceProvider)
 {
@@ -82,8 +93,6 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     await SeedRoles(services);
 }
-// ✅ Apply the CORS policy
-app.UseCors("AllowFrontend");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
