@@ -1,40 +1,17 @@
 // src/pages/LoginPage.tsx
-import React, { useState } from "react";
+import React from "react"; // Import React
 import "../components/LoginPage.css"; 
-const LoginPage = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Username:", username);
-    console.log("Password:", password);
-    // You can handle authentication here
-  };
+import LoginForm from "../components/LoginForm"; // adjust the path if needed
+
+const LoginPage: React.FC = () => {
   return (
-    <div className="login-page">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Sign In</button>
-      </form>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+      <div className="max-w-md w-full bg-white p-6 rounded-xl shadow-lg">
+        <h1 className="text-2xl font-bold mb-4 text-center">Login</h1>
+        <LoginForm />
+      </div>
     </div>
   );
 };
+
 export default LoginPage;

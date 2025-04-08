@@ -1,20 +1,24 @@
 import React, { useRef } from "react";
+import { Movie } from "../types/Movie";
 import "../components/HomePage.css"; // reuse same styles
-
-type Movie = {
-  showId: string;
-  title: string;
-  genre: string;
-  posterUrl: string;
-};
 
 interface Props {
   genre: string;
   movies: Movie[];
+  onPosterClick?: (movie: Movie) => void;
 }
 
-const GenreCarousel: React.FC<Props> = ({ genre, movies }) => {
+const GenreCarousel: React.FC<Props> = ({ genre, movies, onPosterClick }) => {
   const rowRef = useRef<HTMLDivElement>(null);
+
+  const getPosterUrl = (title: string | undefined): string => {
+    if (!title) return "/posters/default.jpg";
+    const formattedTitle = title
+      .replace(/[^a-zA-Z0-9 ]/g, "")
+      .trim()
+      .replace(/\s+/g, " ");
+    return `/posters/${formattedTitle}.jpg`;
+  };
 
   const scroll = (direction: "left" | "right") => {
     const scrollAmount = 500;
@@ -29,24 +33,23 @@ const GenreCarousel: React.FC<Props> = ({ genre, movies }) => {
   return (
     <div className="genre-section">
       <h2 className="genre-title">{genre}</h2>
-      <div className="carousel-container" >
-        <button className="scroll-btn left" onClick={() => scroll("left")}>
-          ‹
-        </button>
+      <div className="carousel-container">
+        <button className="scroll-btn left" onClick={() => scroll("left")}>‹</button>
         <div className="movie-carousel" ref={rowRef}>
           {movies.map((movie) => (
             <img
               key={movie.showId}
-              src={movie.posterUrl}
-              alt={movie.title}
+              src={getPosterUrl(movie.title ?? "")}
+              alt={movie.title || "Movie poster"}
               className="movie-poster"
-              onError={(e) => e.currentTarget.remove()}
+              onClick={() => onPosterClick?.(movie)}
+              onError={(e) => {
+                e.currentTarget.src = "/posters/default.jpg";
+              }}
             />
           ))}
         </div>
-        <button className="scroll-btn right" onClick={() => scroll("right")}>
-          ›
-        </button>
+        <button className="scroll-btn right" onClick={() => scroll("right")}>›</button>
       </div>
     </div>
   );

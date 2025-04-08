@@ -36,13 +36,7 @@ const PrivacyPage: React.FC = () => {
     <strong>Address:</strong> 123 Stream Lane, Hollywood, CA, 90028
    </p>
    {/* Home Button */}
-   <div className="mt-6">
-    <button
-     onClick={handleHomeClick}
-     className="bg-red-600 text-white py-2 px-6 rounded-full text-xl hover:bg-red-700 transition-all">
-     Home
-    </button>
-   </div>
+   
   </div>
  );
 };

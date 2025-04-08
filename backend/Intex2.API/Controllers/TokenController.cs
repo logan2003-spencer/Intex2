@@ -16,12 +16,16 @@ namespace Intex2.API.Controllers
     [Route("api/[controller]")]
     public class TokenController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public TokenController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public TokenController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -69,33 +73,39 @@ namespace Intex2.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
-            var user = new IdentityUser
+            var user = new ApplicationUser
             {
                 UserName = model.Email,
-                Email = model.Email
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber,
+                FullName = model.FullName,
+                City = model.City,
+                State = model.State,
+                ZipCode = model.ZipCode,
+                Age = model.Age,
+                Gender = model.Gender
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
-                return BadRequest(result.Errors);
-
-            // Determine the role to assign (default to "User")
-            var role = string.IsNullOrEmpty(model.Role) ? "User" : model.Role;
-
-            // Make sure the role exists before assigning
-            if (!await _userManager.IsInRoleAsync(user, role))
             {
-                var roleExists = await _roleManager.RoleExistsAsync(role);
-                if (!roleExists)
+                foreach (var error in result.Errors)
                 {
-                    return BadRequest($"Role '{role}' does not exist.");
+                    Console.WriteLine($"Identity error: {error.Description}");
                 }
+                return BadRequest(result.Errors);
             }
+
+
+            var role = string.IsNullOrEmpty(model.Role) ? "User" : model.Role;
+            if (!await _roleManager.RoleExistsAsync(role))
+                return BadRequest($"Role '{role}' does not exist.");
 
             await _userManager.AddToRoleAsync(user, role);
 
-            return Ok($"User registered successfully as {role}");
+            return Ok("User registered successfully");
         }
+
 
     }
 
@@ -109,7 +119,15 @@ namespace Intex2.API.Controllers
     {
         public string Email { get; set; }
         public string Password { get; set; }
-        public string? Role { get; set; }  // Optional
+        public string? FullName { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? City { get; set; }
+        public string? State { get; set; }
+        public string? ZipCode { get; set; }
+        public int? Age { get; set; }
+        public string? Gender { get; set; }
+        public string? Role { get; set; }
     }
+
 
 }
