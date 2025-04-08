@@ -6,7 +6,6 @@ function RecommendedMovies() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [recommendedMovies, setRecommendedMovies] = useState<Movie[]>([]);
   
-  // Hardcoding user_id for now (replace with real user_id when login is set up)
   const userId = 1;  // Hardcoded user_id for testing
   
   // Fetch movies from the database
@@ -25,22 +24,26 @@ function RecommendedMovies() {
       const fetchRecommendations = async () => {
         const response = await fetch(`http://localhost:5174/api/ratings/home-page-recommendations?user_id=${userId}`);
         const data = await response.json();
+        console.log("Recommendations for user:", data);  // Log the data
         
-        // Filter movies based on the recommendations table
-        const filteredMovies = movies.filter(movie => {
-          return data.some((rec: { genre: string, title: string }) => {
-            // Check if the movie matches the recommendation by genre and title
-            const movieGenres = getGenres(movie);
-            return movieGenres.includes(rec.genre) && movie.title === rec.title;
-          });
-        });
+        if (data.length === 0) {
+          console.log("No recommendations found for userId = 1");
+          setRecommendedMovies([]);  // If no recommendations, show nothing
+          return;
+        }
 
+        // Normalize the title to avoid case sensitivity issues
+        const recommendedMovieTitles = data.map((rec: { title: string }) => rec.title.toLowerCase());
+        console.log("Recommended Titles:", recommendedMovieTitles);  // Log the titles
+
+        // Filter movies based on the recommendation titles
+        const filteredMovies = movies.filter(movie => recommendedMovieTitles.includes(movie.title.toLowerCase()));
         setRecommendedMovies(filteredMovies);
       };
 
       fetchRecommendations();
     }
-  }, [movies, userId]); // This effect runs when the movies state is updated
+  }, [movies, userId]);
   
   const getPosterForMovie = (title: string): string => {
     const match = allPosters.find((path) => {
