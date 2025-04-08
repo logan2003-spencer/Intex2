@@ -2857,19 +2857,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/carsonconnors/.nuget/packages/": {}
+    "/Users/ryanspencer/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/carsonconnors/Desktop/Intex2/backend/Intex2.API/Intex2.API.csproj",
+      "projectUniqueName": "/Users/ryanspencer/Downloads/Intex2/backend/Intex2.API/Intex2.API.csproj",
       "projectName": "Intex2.API",
-      "projectPath": "/Users/carsonconnors/Desktop/Intex2/backend/Intex2.API/Intex2.API.csproj",
-      "packagesPath": "/Users/carsonconnors/.nuget/packages/",
-      "outputPath": "/Users/carsonconnors/Desktop/Intex2/backend/Intex2.API/obj/",
+      "projectPath": "/Users/ryanspencer/Downloads/Intex2/backend/Intex2.API/Intex2.API.csproj",
+      "packagesPath": "/Users/ryanspencer/.nuget/packages/",
+      "outputPath": "/Users/ryanspencer/Downloads/Intex2/backend/Intex2.API/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/carsonconnors/.nuget/NuGet/NuGet.Config"
+        "/Users/ryanspencer/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -2891,9 +2891,9 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "direct"
+        "auditMode": "all"
       },
-      "SdkAnalysisLevel": "9.0.200"
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -2943,7 +2943,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/Users/ryanspencer/.dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
