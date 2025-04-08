@@ -15,7 +15,7 @@ function MovieList() {
     const fetchMovies = async () => {
       const token = localStorage.getItem("authToken");
 
-    const response = await fetch('http://localhost:5174/api/ratings/titles', {
+    const response = await fetch('http://localhost:5174/api/movies/titles', {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json"
