@@ -7,8 +7,16 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var staticFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+Console.WriteLine($"Static file path: {staticFilePath}");
+builder.WebHost.UseWebRoot(staticFilePath);
+
+// Set the absolute path for the web root (important for static files)
+builder.WebHost.UseWebRoot(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"));
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -73,20 +81,17 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
 var app = builder.Build();
 
-<<<<<<< HEAD
 // Seed roles
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     await SeedRoles(services);
 }
-=======
-// ✅ Apply the CORS policy
+
+// Apply the CORS policy
 app.UseCors("AllowFrontend");
->>>>>>> 217aae68fdaa7c385ead435301a858c822a2df40
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -95,14 +100,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowFrontend"); 
-
 app.UseHttpsRedirection();
-<<<<<<< HEAD
 
-app.UseAuthentication(); //  MUST come before UseAuthorization
-=======
->>>>>>> 217aae68fdaa7c385ead435301a858c822a2df40
+app.UseAuthentication(); // MUST come before UseAuthorization
 app.UseAuthorization();
 app.MapControllers();
+app.UseStaticFiles(); // Serve static files
+
 app.Run();

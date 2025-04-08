@@ -7,7 +7,7 @@ function MovieList () {
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const response = await fetch('http://localhost:5174/api/ratings/titles'); 
+      const response = await fetch('http://localhost:5174/api/movies/titles'); 
       const data = await response.json();
       setMovies(data);
     };
