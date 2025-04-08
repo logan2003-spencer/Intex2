@@ -1,6 +1,6 @@
 namespace Intex2.API.Data;
 
-public class MoviesUserRecommendations
+public partial class MoviesUserRecommendations
 {
     public string? ShowId { get; set; }
 
