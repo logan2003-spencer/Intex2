@@ -73,6 +73,47 @@ const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
         }
     };
 
+    // Define an array of genre options.
+    const genreOptions = [
+        { value: "action", label: "Action" },
+        { value: "adventure", label: "Adventure" },
+        { value: "animeSeriesInternationalTvShows", label: "Anime Series / International TV Shows" },
+        { value: "britishTvShowsDocuseriesInternationalTvShows", label: "British TV Shows / Docuseries / International TV Shows" },
+        { value: "children", label: "Children" },
+        { value: "comedies", label: "Comedies" },
+        { value: "comediesDramasInternationalMovies", label: "Comedies / Dramas (International Movies)" },
+        { value: "comediesInternationalMovies", label: "Comedies (International Movies)" },
+        { value: "comediesRomanticMovies", label: "Comedies (Romantic Movies)" },
+        { value: "crimeTvShowsDocuseries", label: "Crime TV Shows / Docuseries" },
+        { value: "documentaries", label: "Documentaries" },
+        { value: "documentariesInternationalMovies", label: "Documentaries (International Movies)" },
+        { value: "docuseries", label: "Docuseries" },
+        { value: "dramas", label: "Dramas" },
+        { value: "dramasInternationalMovies", label: "Dramas (International Movies)" },
+        { value: "dramasRomanticMovies", label: "Dramas (Romantic Movies)" },
+        { value: "familyMovies", label: "Family Movies" },
+        { value: "fantasy", label: "Fantasy" },
+        { value: "horrorMovies", label: "Horror Movies" },
+        { value: "internationalMoviesThrillers", label: "International Movies / Thrillers" },
+        { value: "internationalTvShowsRomanticTvShowsTvDramas", label: "International TV Shows / Romantic TV Shows / TV Dramas" },
+        { value: "kidsTv", label: "Kids TV" },
+        { value: "languageTvShows", label: "Language TV Shows" },
+        { value: "musicals", label: "Musicals" },
+        { value: "natureTv", label: "Nature TV" },
+        { value: "realityTv", label: "Reality TV" },
+        { value: "spirituality", label: "Spirituality" },
+        { value: "tvAction", label: "TV Action" },
+        { value: "tvComedies", label: "TV Comedies" },
+        { value: "tvDramas", label: "TV Dramas" },
+        { value: "talkShowsTvComedies", label: "Talk Shows / TV Comedies" },
+        { value: "thrillers", label: "Thrillers" },
+    ];
+
+    // Compute the currently selected genre (if any).
+    // This finds the first flag that is set to 1.
+    const currentGenre =
+    genreOptions.find((option) => formData[option.value as keyof Movie] === 1)?.value || "";
+
     return (
         <form onSubmit={handleSubmit} className="p-4 bg-gray-100 rounded shadow-md">
             <h2 className="text-xl font-bold mb-4">Edit Movie</h2>
@@ -116,6 +157,7 @@ const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
                     />
                 </label>
 
+
                 <label htmlFor="duration">
                     Duration:
                     <input
@@ -129,18 +171,7 @@ const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
                     />
                 </label>
 
-                <label htmlFor="description" className="md:col-span-2">
-                    Description:
-                    <input
-                        id="description"
-                        type="text"
-                        name="description"
-                        value={formData.description ?? ""}
-                        onChange={handleChange}
-                        required
-                        className="input input-bordered w-full"
-                    />
-                </label>
+
 
                 <label htmlFor="type">
                     Type:
@@ -157,7 +188,73 @@ const EditMovieForm = ({ movie, onSuccess, onCancel }: EditMovieFormProps) => {
                         <option value="TV Show">TV Show</option>
                     </select>
                 </label>
+
+
+                <label htmlFor="description" className="md:col-span-2">
+                    Description:
+                    <input
+                        id="description"
+                        type="text"
+                        name="description"
+                        value={formData.description ?? ""}
+                        onChange={handleChange}
+                        required
+                        className="input input-bordered w-full"
+                    />
+                </label>
+
+                <label htmlFor="cast" className="md:col-span-2">
+                    Cast:
+                    <input
+                        id="cast"
+                        type="text"
+                        name="cast"
+                        value={formData.cast ?? ""}
+                        onChange={handleChange}
+                        required
+                        className="input input-bordered w-full"
+                    />
+                </label>
+
+                <label htmlFor="rating">
+                    Rating:
+                    <select
+                        id="rating"
+                        name="rating"
+                        value={formData.rating ?? ""}
+                        onChange={handleChange}
+                        required
+                        className="select select-bordered w-full"
+                    >
+                        <option value="">Select Rating</option>
+                        <option value="G">G</option>
+                        <option value="PG">PG</option>
+                        <option value="PG-13">PG-13</option>
+                        <option value="R">R</option>
+                        <option value="TV-G">TV-G</option>
+                        <option value="TV-PG">TV-PG</option>
+                        <option value="TV-14">TV-14</option>
+                        <option value="TV-MA">TV-MA</option>
+                    </select>
+                </label>
+                
+                <label htmlFor="genre" className="md:col-span-2">
+                    Genre:
+                    <input
+                        id="genre"
+                        type="text"
+                        name="genre"
+                        value={currentGenre ?? ""}
+                        onChange={handleChange}
+                        required
+                        className="input input-bordered w-full"
+                    />
+                </label>            
+
+
             </div>
+
+
 
             <div className="flex justify-end gap-4 mt-6">
                 <button type="submit" className="btn btn-success">
