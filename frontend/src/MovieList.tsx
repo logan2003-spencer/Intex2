@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Movie } from "./types/Movie";
 import { moviePosters as allPosters } from "../src/data/moviePosters";
-import { parseJwt } from "./utils/jwt";
+// import { parseJwt } from "./utils/jwt";
 
-const token = localStorage.getItem("authToken");
-const user = token ? parseJwt(token) : null;
-const isAdmin = user?.role === "Admin"; // Or whatever your backend encodes
+// const token = localStorage.getItem("authToken");
+// const user = token ? parseJwt(token) : null;
+// const isAdmin = user?.role === "Admin"; // Or whatever your backend encodes
 
 function MovieList() {
   const [movies, setMovies] = useState<Movie[]>([]);
