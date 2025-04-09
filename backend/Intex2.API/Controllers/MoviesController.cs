@@ -103,32 +103,37 @@ namespace Intex2.API.Controllers
         [HttpGet("user-recommendations")]
         public IActionResult GetMoviesUserRecommendations([FromQuery] int user_id, [FromQuery] string show_id)
         {
-            var recommendations = (from r in _moviesContext.MoviesUserRecommendations
-                                   join m in _moviesContext.MoviesTitles
-                                       on r.SourceShowId equals m.ShowId
-                                   where r.UserId == user_id && r.SourceShowId == show_id
-                                   select new
-                                   {
-                                       r.UserId,
-                                       r.SourceShowId,
-                                       m.ShowId,
-                                       m.Title,
-                                       m.Director,
-                                       m.Cast,
-                                       m.Country,
-                                       m.ReleaseYear,
-                                       m.Rating,
-                                       m.Duration,
-                                       m.Description
-                                   }).ToList();
+            // Step 1: Get the list of recommended show IDs
+            var recommendedShowIds = _moviesContext.MoviesUserRecommendations
+                .Where(r => r.UserId == user_id && r.SourceShowId == show_id)
+                .Select(r => r.ShowId)
+                .ToList();
 
-            if (!recommendations.Any())
+            if (!recommendedShowIds.Any())
             {
-                return NotFound($"No recommendations found for user {user_id} with show_id {show_id}.");
+                return NotFound($"No recommendations found for user {user_id} and source show {show_id}.");
             }
 
-            return Ok(recommendations);
+            // Step 2: Join with MoviesTitles to get full data
+            var recommendedMovies = _moviesContext.MoviesTitles
+                .Where(m => recommendedShowIds.Contains(m.ShowId))
+                .Select(m => new
+                {
+                    m.ShowId,
+                    m.Title,
+                    m.Director,
+                    m.Cast,
+                    m.Country,
+                    m.ReleaseYear,
+                    m.Rating,
+                    m.Duration,
+                    m.Description
+                })
+                .ToList();
+
+            return Ok(recommendedMovies);
         }
+
 
 
 
