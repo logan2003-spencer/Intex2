@@ -14,7 +14,7 @@ function RecommendedMovies() {
     const fetchRecommendations = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5174/api/movies/home-page-recommendations?user_id=${userId}`
+          `http://localhost:5176/api/movies/home-page-recommendations?user_id=${userId}`
         );
         const data = await response.json();
         console.log("Fetched data:", data);
