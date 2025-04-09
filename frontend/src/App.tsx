@@ -21,7 +21,7 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/create-profile" element={<CreateProfile />} />
         <Route path="/movies" element={<MovieDisplay />} />
-        <Route path="/home" element={<HomePage />} />
+        {/* <Route path="/home" element={<HomePage />} /> */}
         <Route path="/recommended" element={<RecommendedDisplay />} />
 
         {/* Add more routes here as needed */}
