@@ -1,5 +1,5 @@
 // HomePage.tsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import GenreCarousel from "./GenreCarousel";
 import MovieModal from "../components/MovieModel";
 import { Movie } from "../types/Movie";
