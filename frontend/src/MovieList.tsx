@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Movie } from "./types/Movie";
-import { moviePosters as allPosters } from "../src/data/moviePosters";
+// import { moviePosters as allPosters } from "../src/data/moviePosters";
 // import { parseJwt } from "./utils/jwt";
 
 // const token = localStorage.getItem("authToken");
@@ -35,15 +35,15 @@ const data = await response.json();
     fetchMovies();
   }, []);
 
-  const getPosterForMovie = (title: string): string => {
-    const match = allPosters.find((path) => {
-      const filename = (path.split("/").pop() ?? "")
-        .toLowerCase()
-        .replace(/\.[^/.]+$/, "");
-      return filename === title.toLowerCase();
-    });
-    return match ?? "/posters/fallback.jpg";
-  };
+  // const getPosterForMovie = (title: string): string => {
+  //   const match = allPosters.find((path) => {
+  //     const filename = (path.split("/").pop() ?? "")
+  //       .toLowerCase()
+  //       .replace(/\.[^/.]+$/, "");
+  //     return filename === title.toLowerCase();
+  //   });
+  //   return match ?? "/posters/fallback.jpg";
+  // };
 
   const getGenres = (movie: Movie): string[] => {
     const genres: string[] = [];
