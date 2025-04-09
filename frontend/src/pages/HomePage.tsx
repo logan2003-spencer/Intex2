@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../components/HomePage.css";
 import GenreCarousel from "./GenreCarousel";
-import MovieModel from "../components/MovieModel";
+import MovieModal from "../components/MovieModel";
 import { Movie } from "../types/Movie";
 
 type GenreMovies = {
@@ -10,30 +10,39 @@ type GenreMovies = {
 
 const HomePage = () => {
   const [genreData, setGenreData] = useState<GenreMovies>({});
-  const [selectedMovieId, setSelectedMovieId] = useState<string | null>(null);
+  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
+
+  const userId = 134; // 🔁 Replace with actual logged-in user ID when available
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("http://localhost:5174/api/Movies/by-genre");
-      const data: GenreMovies = await res.json();
+    const fetchRecommendedMovies = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5176/api/movies/home-page-recommendations?user_id=${userId}`
+        );
+        const data: GenreMovies = await response.json();
 
-      console.log("Fetched Genre Data:", data);
+        console.log("Fetched recommended data:", data);
 
-      const filtered = Object.fromEntries(
-        Object.entries(data).map(([genre, movies]) => [
-          genre,
-          movies.filter((movie: Movie) => movie.title),
-        ])
-      );
+        // Optional: filter out empty titles
+        const filtered = Object.fromEntries(
+          Object.entries(data).map(([genre, movies]) => [
+            genre,
+            movies.filter((movie: Movie) => movie.title),
+          ])
+        );
 
-      setGenreData(filtered);
+        setGenreData(filtered);
+      } catch (error) {
+        console.error("Error fetching recommendations:", error);
+      }
     };
 
-    fetchData();
-  }, []);
+    fetchRecommendedMovies();
+  }, [userId]);
 
   const handlePosterClick = (movie: Movie) => {
-    setSelectedMovieId(String(movie.showId));
+    setSelectedMovieId(Number(movie.showId));
   };
 
   return (
@@ -47,11 +56,19 @@ const HomePage = () => {
             onPosterClick={handlePosterClick}
           />
         ))}
+
         {selectedMovieId !== null && (
-          <MovieModel
-            movieId={selectedMovieId}
+          <MovieModal
+            movieId={selectedMovieId?.toString() ?? ""}
+
             onClose={() => setSelectedMovieId(null)}
           />
+        )}
+
+        {Object.keys(genreData).length === 0 && (
+          <p className="text-center text-gray-500 mt-6">
+            No recommendations available for this user.
+          </p>
         )}
       </div>
     </div>
