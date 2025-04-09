@@ -10,23 +10,20 @@ import LoginPage from "./pages/LoginPage";
 import AddMoviePage from "./pages/AddMoviePage";
 import AdminMoviesPage from "./pages/AdminMoviePage";
 import CookieConsent from "./components/CookieConsent";
-import MainLayout from "./layouts/MainLayout"; // 👈 Layout that includes Header
-
+import MainLayout from "./layouts/MainLayout"; // :point_left: Layout that includes Header
 const App = () => {
   return (
     <>
     <Router>
       <Routes>
-        {/* 👇 LandingPage is the ONLY one without the layout/header */}
+        {/* :point_down: LandingPage is the ONLY one without the layout/header */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/create-profile" element={<CreateProfile />} />
         <Route path="/movies" element={<MovieDisplay />} />
         {/* <Route path="/home" element={<HomePage />} /> */}
         <Route path="/recommended" element={<RecommendedDisplay />} />
-
         {/* Add more routes here as needed */}
-
-        {/* 👇 All these pages use MainLayout which includes Header */}
+        {/* :point_down: All these pages use MainLayout which includes Header */}
         <Route element={<MainLayout />}>
           <Route path="/home" element={<HomePage />} />
           <Route path="/create-profile" element={<CreateProfile />} />
@@ -43,15 +40,12 @@ const App = () => {
                 onCancel={() => console.log("Movie addition canceled")}
               />
             }
-            
           />
         </Route>
-        
       </Routes>
-    </Router> 
+    </Router>
     <CookieConsent />
     </>
   );
 };
-
 export default App;
