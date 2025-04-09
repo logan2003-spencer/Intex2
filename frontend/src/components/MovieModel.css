@@ -112,3 +112,21 @@
   font-weight: bold;
   z-index: 10;
 }
+
+.stars {
+  display: center;
+  gap: 0.5rem;
+}
+
+.star {
+  font-size: 2rem;
+  cursor: pointer;
+  color: black; /* Hollow by default */
+  border: 2px solid white;
+  background-color: transparent;
+}
+
+.star.filled {
+  color: white; /* Filled when active */
+  background-color: black;
+}
