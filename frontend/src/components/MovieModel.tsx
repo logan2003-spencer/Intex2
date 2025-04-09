@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./MovieModel.css";
 import { Movie } from "../types/Movie";
+import { moviePosters as allPosters } from "../data/moviePosters";
+
 
 interface MovieModalProps {
   movieId: string;
@@ -76,9 +78,24 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
   // Helper to generate poster URL
   const getPosterUrl = (title: string | undefined): string => {
     if (!title) return "/posters/default.jpg";
-    const formattedTitle = title.replace(/[^a-zA-Z0-9 ]/g, "").trim().replace(/\s+/g, " ");
-    return `/posters/${formattedTitle}.jpg`;
-  };
+
+    const sanitize = (str: string) =>
+      str
+        .normalize("NFD")                     // Split accented chars
+        .replace(/[\u0300-\u036f]/g, "")     // Remove accents
+        .replace(/[^a-zA-Z0-9 ]/g, "")       // Remove punctuation
+        .trim();
+
+    const sanitizedTitle = sanitize(title);
+    const encodedTitle = encodeURIComponent(sanitizedTitle);
+    const expectedPath = `/posters/${encodedTitle}.jpg`;
+
+    const match = allPosters.find((path) => path.toLowerCase() === expectedPath.toLowerCase());
+    const baseUrl = "https://movieblob4logang.blob.core.windows.net/posters";
+
+    return match ? `${baseUrl}${match}` : "/posters/default.jpg";
+};
+
 
   // Carousel scroll logic
   const scroll = (direction: "left" | "right") => {
