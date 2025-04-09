@@ -15,6 +15,7 @@ import MovieModal from "./components/MovieModel";
 import { useState } from "react";
 import { Movie } from "./types/Movie";
 
+
 const App = () => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
