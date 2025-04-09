@@ -32,33 +32,33 @@ const App = () => {
           <Route
             path="*"
             element={
-              <>
-                <Header onMovieSelect={(movie) => setSelectedMovie(movie)} />
+                <>
+                <Header onMovieSelect={(movie: Movie) => setSelectedMovie(movie)} />
                 <Routes>
                   <Route path="/create-profile" element={<CreateProfile />} />
                   <Route path="/movies" element={<MovieDisplay />} />
                   <Route path="/recommended" element={<RecommendedDisplay />} />
 
                   <Route element={<MainLayout />}>
-                    <Route path="/home" element={<HomePage />} />
-                    <Route path="/create-profile" element={<CreateProfile />} />
-                    <Route path="/movies" element={<MovieDisplay />} />
-                    <Route path="/privacy" element={<PrivacyPage />} />
-                    <Route path="/recommended" element={<MovieDisplay />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/adminMovies" element={<AdminMoviesPage />} />
-                    <Route
-                      path="/addMovie"
-                      element={
-                        <AddMoviePage
-                          onSuccess={() => console.log("Movie added successfully")}
-                          onCancel={() => console.log("Movie addition canceled")}
-                        />
-                      }
+                  <Route path="/home" element={<HomePage />} />
+                  <Route path="/create-profile" element={<CreateProfile />} />
+                  <Route path="/movies" element={<MovieDisplay />} />
+                  <Route path="/privacy" element={<PrivacyPage />} />
+                  <Route path="/recommended" element={<MovieDisplay />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/adminMovies" element={<AdminMoviesPage />} />
+                  <Route
+                    path="/addMovie"
+                    element={
+                    <AddMoviePage
+                      onSuccess={() => console.log("Movie added successfully")}
+                      onCancel={() => console.log("Movie addition canceled")}
                     />
+                    }
+                  />
                   </Route>
                 </Routes>
-              </>
+                </>
             }
           />
         </Routes>

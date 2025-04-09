@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Movie } from "./types/Movie";
-import { moviePosters as allPosters } from "../src/data/moviePosters";
-import { parseJwt } from "./utils/jwt";
+// import { moviePosters as allPosters } from "../src/data/moviePosters";
+// import { parseJwt } from "./utils/jwt";
 
-const token = localStorage.getItem("authToken");
-const user = token ? parseJwt(token) : null;
-const isAdmin = user?.role === "Admin"; // Or whatever your backend encodes
+// const token = localStorage.getItem("authToken");
+// const user = token ? parseJwt(token) : null;
+// const isAdmin = user?.role === "Admin"; // Or whatever your backend encodes
 
 function MovieList() {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -15,7 +15,7 @@ function MovieList() {
     const fetchMovies = async () => {
       const token = localStorage.getItem("authToken");
 
-    const response = await fetch('http://localhost:5176/api/movies/titles', {
+    const response = await fetch('https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/titles', {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json"
@@ -35,15 +35,15 @@ const data = await response.json();
     fetchMovies();
   }, []);
 
-  const getPosterForMovie = (title: string): string => {
-    const match = allPosters.find((path) => {
-      const filename = (path.split("/").pop() ?? "")
-        .toLowerCase()
-        .replace(/\.[^/.]+$/, "");
-      return filename === title.toLowerCase();
-    });
-    return match ?? "/posters/fallback.jpg";
-  };
+  // const getPosterForMovie = (title: string): string => {
+  //   const match = allPosters.find((path) => {
+  //     const filename = (path.split("/").pop() ?? "")
+  //       .toLowerCase()
+  //       .replace(/\.[^/.]+$/, "");
+  //     return filename === title.toLowerCase();
+  //   });
+  //   return match ?? "/posters/fallback.jpg";
+  // };
 
   const getGenres = (movie: Movie): string[] => {
     const genres: string[] = [];

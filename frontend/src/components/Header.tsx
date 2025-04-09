@@ -1,85 +1,75 @@
-// src/components/Header.tsx
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../components/Header.css";
+import MovieModal from "./MovieModel";
 import { Movie } from "../types/Movie";
 
-interface HeaderProps {
+type HeaderProps = {
   onMovieSelect: (movie: Movie) => void;
-}
+};
 
 const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
-  const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [allMovies, setAllMovies] = useState<Movie[]>([]);
-  const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]);
+  const [selectedMovieId, setSelectedMovieId] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const res = await fetch("http://localhost:5176/api/movies/titles");
-        const data: Movie[] = await res.json();
-        setAllMovies(data);
-      } catch (err) {
-        console.error("Failed to fetch movies:", err);
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(
+        `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/search?query=${encodeURIComponent(searchQuery)}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch search results");
       }
-    };
 
-    fetchMovies();
-  }, []);
+      const data = await response.json();
+      if (data.length > 0) {
+        setSelectedMovieId(data[0].showId);
+        setShowModal(true);
+        onMovieSelect(data[0]);
+      } else {
+        alert("No movies found with that title.");
+      }
+    } catch (error) {
+      console.error("Search error:", error);
+    }
+  };
 
-  useEffect(() => {
-    const query = searchQuery.toLowerCase();
-    setFilteredMovies(
-      allMovies.filter((movie) =>
-        movie.title?.toLowerCase().includes(query)
-      )
-    );
-  }, [searchQuery, allMovies]);
-
-  const handleResultClick = (movie: Movie) => {
-    onMovieSelect(movie);
-    setSearchOpen(false);
-    setSearchQuery("");
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedMovieId(null);
   };
 
   return (
-    <>
-      <header className="header">
+    <header className="header">
+      <div className="header-container">
         <div className="header-title">CineNiche</div>
+
+        <form className="search-bar" onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Search movies..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button type="submit">Search</button>
+        </form>
+
         <nav className="nav-links">
           <Link to="/home">Home</Link>
           <Link to="/genres">Genres</Link>
           <Link to="/movies">Movie Data</Link>
           <Link to="/privacy">Privacy</Link>
-          <span className="search-icon" onClick={() => setSearchOpen(!searchOpen)}>🔍</span>
         </nav>
-      </header>
+      </div>
 
-      {searchOpen && (
-        <div className="search-overlay" onClick={() => setSearchOpen(false)}>
-          <div className="search-box" onClick={(e) => e.stopPropagation()}>
-            <input
-              type="text"
-              placeholder="Search for a movie..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              autoFocus
-            />
-            <ul>
-              {filteredMovies.slice(0, 8).map((movie) => (
-                <li key={movie.showId} onClick={() => handleResultClick(movie)}>
-                  {movie.title}
-                </li>
-              ))}
-              {searchQuery && filteredMovies.length === 0 && (
-                <li>No results found</li>
-              )}
-            </ul>
-          </div>
-        </div>
+      {showModal && selectedMovieId && (
+        <MovieModal movieId={selectedMovieId} onClose={handleCloseModal} />
       )}
-    </>
+    </header>
   );
 };
 
