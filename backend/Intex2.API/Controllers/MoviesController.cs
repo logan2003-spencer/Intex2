@@ -20,6 +20,22 @@ namespace Intex2.API.Controllers
             _moviesContext = context;
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchMovies([FromQuery] string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return BadRequest("Search query cannot be empty.");
+            }
+
+            // Search for movies with titles containing the query string
+            var results = await _moviesContext.MoviesTitles
+                .Where(m => m.Title.Contains(query))
+                .ToListAsync();
+
+            return Ok(results);
+        }
+
         // Get all MoviesRatings
         [HttpGet("ratings")]
         public IEnumerable<MoviesRating> GetMoviesRatings()
