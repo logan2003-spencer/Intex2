@@ -9,11 +9,15 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IO;
 
-var builder = WebApplication.CreateBuilder(args);
+
 
 var staticFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 Console.WriteLine($"Static file path: {staticFilePath}");
-builder.WebHost.UseWebRoot(staticFilePath);
+
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    WebRootPath = staticFilePath
+});
 
 // Set the absolute path for the web root (important for static files)
 builder.WebHost.UseWebRoot(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"));
@@ -31,11 +35,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-options.AddPolicy("AllowFrontend",
-    policy => policy.WithOrigins("http://localhost:5173") // Allow frontend URL
-        .AllowAnyMethod()
-        .AllowAnyHeader());
+    options.AddPolicy("AllowFrontend",
+        policy => policy.WithOrigins("http://localhost:5173") // Allow frontend URL
+            .AllowAnyOrigin()  // This is the fix for allowing any origin
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
+
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

@@ -10,30 +10,36 @@ type GenreMovies = {
 
 const HomePage = () => {
   const [genreData, setGenreData] = useState<GenreMovies>({});
-  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
+  const [selectedMovieId, setSelectedMovieId] = useState<string | null>(null);
+
+  const userId = 1;
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("http://localhost:5174/api/Movies/by-genre");
-      const data: GenreMovies = await res.json();
+    const fetchRecommendedMovies = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5176/api/movies/home-page-recommendations?user_id=${userId}`
+        );
+        const data: GenreMovies = await response.json();
 
-      console.log("Fetched Genre Data:", data);
+        const filtered = Object.fromEntries(
+          Object.entries(data).map(([genre, movies]) => [
+            genre,
+            movies.filter((movie: Movie) => movie.title),
+          ])
+        );
 
-      const filtered = Object.fromEntries(
-        Object.entries(data).map(([genre, movies]) => [
-          genre,
-          movies.filter((movie: Movie) => movie.title),
-        ])
-      );
-
-      setGenreData(filtered);
+        setGenreData(filtered);
+      } catch (error) {
+        console.error("Error fetching recommendations:", error);
+      }
     };
 
-    fetchData();
-  }, []);
+    fetchRecommendedMovies();
+  }, [userId]);
 
   const handlePosterClick = (movie: Movie) => {
-    setSelectedMovieId(Number(movie.showId));
+    setSelectedMovieId(movie.showId);
   };
 
   return (
@@ -47,11 +53,18 @@ const HomePage = () => {
             onPosterClick={handlePosterClick}
           />
         ))}
+
         {selectedMovieId !== null && (
           <MovieModal
             movieId={selectedMovieId}
             onClose={() => setSelectedMovieId(null)}
           />
+        )}
+
+        {Object.keys(genreData).length === 0 && (
+          <p className="text-center text-gray-500 mt-6">
+            No recommendations available for this user.
+          </p>
         )}
       </div>
     </div>

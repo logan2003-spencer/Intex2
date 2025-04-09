@@ -23,21 +23,55 @@ const CookieConsent: React.FC = () => {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 z-50 text-sm flex flex-col sm:flex-row justify-between items-center">
-      <p className="text-center sm:text-left mb-2 sm:mb-0">
+    <div
+      style={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: "#1a1a1a",
+        color: "white",
+        padding: "1rem",
+        zIndex: 1000,
+        fontSize: "0.875rem",
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        alignItems: "center",
+        justifyContent: "space-between",
+        boxShadow: "0 -2px 10px rgba(0,0,0,0.3)",
+      }}
+    >
+      <p style={{ textAlign: "center", maxWidth: "600px" }}>
         We use cookies to enhance your experience.{" "}
-        <a href="/privacy" className="underline text-blue-300">Learn more</a>
+        <a href="/privacy" style={{ color: "#4dabf7", textDecoration: "underline" }}>
+          Learn more
+        </a>
       </p>
-      <div className="flex gap-2 mt-2 sm:mt-0">
+      <div style={{ display: "flex", gap: "0.75rem" }}>
         <button
           onClick={handleDecline}
-          className="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded text-white"
+          style={{
+            backgroundColor: "#555",
+            color: "white",
+            border: "none",
+            padding: "0.5rem 1rem",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
         >
           Decline
         </button>
         <button
           onClick={handleAccept}
-          className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white"
+          style={{
+            backgroundColor: "#007bff",
+            color: "white",
+            border: "none",
+            padding: "0.5rem 1rem",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
         >
           Accept
         </button>

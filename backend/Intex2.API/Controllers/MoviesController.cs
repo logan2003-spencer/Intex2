@@ -45,47 +45,53 @@ namespace Intex2.API.Controllers
         [HttpGet("home-page-recommendations")]
         public IActionResult GetMoviesHomePageRecommendations([FromQuery] int user_id)
         {
-            string genreName = "Action"; // Change this dynamically if needed
             var result = new Dictionary<string, List<object>>();
 
-            // Pull recommended movie titles for this user from homepage_recommendations table
-            var recommendedTitles = _moviesContext.MoviesHomePageRecommendations
+            // Get all rows from homepage_recommendations for this user
+            var recommendations = _moviesContext.MoviesHomePageRecommendations
                 .Where(r => r.UserId == user_id)
-                .Select(r => r.Title)
-                .ToList();  // Pull the list into memory
+                .ToList();
 
-            if (!recommendedTitles.Any()) 
+            if (!recommendations.Any())
             {
                 return NotFound("No recommendations found for the given user.");
             }
 
-            // Use Join to match recommended titles with movie data
-            var moviesRaw = (from m in _moviesContext.MoviesTitles
-                    join r in recommendedTitles on m.Title equals r
-                    select m)
-                .Take(20) // Limit to prevent overload
+            // Get the set of titles (for joining)
+            var titleSet = recommendations.Select(r => r.Title).ToHashSet();
+
+            // Fetch full movie data
+            var moviesRaw = _moviesContext.MoviesTitles
+                .Where(m => titleSet.Contains(m.Title))
                 .ToList();
 
-            var movies = moviesRaw
-                .Select(m => new
-                {
-                    m.ShowId,
-                    m.Title,
-                    Genre = genreName,
-                    PosterUrl = $"/posters/{SanitizeFileName(m.Title)}.jpg",
-                    m.Director,
-                    m.Cast,
-                    m.Country,
-                    m.ReleaseYear,
-                    m.Rating,
-                    m.Duration,
-                    m.Description,
-                })
-                .ToList();
+            // Join with genre info from the homepage_recommendations table
+            var joined = from r in recommendations
+                         join m in moviesRaw on r.Title equals m.Title
+                         group new
+                         {
+                             m.ShowId,
+                             m.Title,
+                             Genre = r.Genre,
+                             PosterUrl = $"/posters/{SanitizeFileName(m.Title)}.jpg",
+                             m.Director,
+                             m.Cast,
+                             m.Country,
+                             m.ReleaseYear,
+                             m.Rating,
+                             m.Duration,
+                             m.Description
+                         }
+                         by r.Genre into genreGroup
+                         select new
+                         {
+                             Genre = genreGroup.Key,
+                             Movies = genreGroup.Take(15).Cast<object>().ToList()
+                         };
 
-            if (movies.Any())
+            foreach (var group in joined)
             {
-                result[genreName] = movies.Cast<object>().ToList();
+                result[group.Genre] = group.Movies;
             }
 
             return Ok(result);
@@ -93,12 +99,38 @@ namespace Intex2.API.Controllers
 
 
 
-        // Get MoviesUserRecommendations
+
         [HttpGet("user-recommendations")]
-        public IEnumerable<MoviesUserRecommendations> GetMoviesUserRecommendations()
+        public IActionResult GetMoviesUserRecommendations([FromQuery] int user_id, [FromQuery] string show_id)
         {
-            return _moviesContext.MoviesUserRecommendations;
+            var recommendations = (from r in _moviesContext.MoviesUserRecommendations
+                                   join m in _moviesContext.MoviesTitles
+                                       on r.SourceShowId equals m.ShowId
+                                   where r.UserId == user_id && r.SourceShowId == show_id
+                                   select new
+                                   {
+                                       r.UserId,
+                                       r.SourceShowId,
+                                       m.ShowId,
+                                       m.Title,
+                                       m.Director,
+                                       m.Cast,
+                                       m.Country,
+                                       m.ReleaseYear,
+                                       m.Rating,
+                                       m.Duration,
+                                       m.Description
+                                   }).ToList();
+
+            if (!recommendations.Any())
+            {
+                return NotFound($"No recommendations found for user {user_id} with show_id {show_id}.");
+            }
+
+            return Ok(recommendations);
         }
+
+
 
         [HttpGet("by-genre")]
         public IActionResult GetMoviesByGenre()
@@ -144,33 +176,39 @@ namespace Intex2.API.Controllers
         //     if (string.IsNullOrWhiteSpace(title)) return "fallback";
 
             // Remove invalid characters and encode space as %20
-        [HttpGet("details/{id}")]
-        public IActionResult GetMovieDetails(int id)
-        {
-            var movie = _moviesContext.MoviesTitles
-                .Where(m => m.ShowId == id.ToString())
-                .Select(m => new
-                {
-                    m.ShowId,
-                    m.Title,
-                    PosterUrl = $"/posters/{SanitizeFileName(m.Title)}.jpg",
-                    m.Director,
-                    m.Cast,
-                    m.Country,
-                    m.ReleaseYear,
-                    m.Rating,
-                    m.Duration,
-                    m.Description
-                })
-                .FirstOrDefault();
-
-            if (movie == null)
+            [HttpGet("details/{id}")]
+            public IActionResult GetMovieDetails(string id)
             {
-                return NotFound();
-            }
+                // Fetch the movie details first without the SanitizeFileName logic
+                var movie = _moviesContext.MoviesTitles
+                    .Where(m => m.ShowId == id)
+                    .FirstOrDefault(); // Use FirstOrDefault directly here to fetch the first result
 
-            return Ok(movie);
-        }
+                if (movie == null)
+                {
+                    return NotFound();
+                }
+
+                // Now sanitize the file name after fetching the movie data
+                var sanitizedPosterUrl = $"/posters/{SanitizeFileName(movie.Title)}.jpg";
+
+                // Return the movie details along with the sanitized poster URL
+                var movieDetails = new
+                {
+                    movie.ShowId,
+                    movie.Title,
+                    PosterUrl = sanitizedPosterUrl,
+                    movie.Director,
+                    movie.Cast,
+                    movie.Country,
+                    movie.ReleaseYear,
+                    movie.Rating,
+                    movie.Duration,
+                    movie.Description
+                };
+
+                return Ok(movieDetails);
+            }
 
         [HttpGet("AllMovies")]
         public IActionResult GetMovies(int pageSize = 10, int pageNum = 1, [FromQuery] List<string>? Type = null)
