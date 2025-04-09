@@ -1,6 +1,6 @@
 // MovieDisplay.tsx
-import React from 'react';
-import MovieList from '../MovieList';
+// import React from 'react';
+// import MovieList from '../MovieList';
 import RecommendedMovies from '../RecommendedMovies';
   // Correct import path to MovieList
 

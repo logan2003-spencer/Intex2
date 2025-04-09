@@ -1,12 +1,12 @@
 // src/pages/PrivacyPage.tsx
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+// import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 const PrivacyPage: React.FC = () => {
- const navigate = useNavigate(); // Set up the navigate function
+//  const navigate = useNavigate(); // Set up the navigate function
  // Handle the home button click
- const handleHomeClick = () => {
-  navigate("/"); // Navigate to the home page
- };
+//  const handleHomeClick = () => {
+//   navigate("/"); // Navigate to the home page
+//  };
  return (
   <div className="p-6 max-w-4xl mx-auto text-gray-800">
    <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>

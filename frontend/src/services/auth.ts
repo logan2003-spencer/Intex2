@@ -35,7 +35,7 @@ export interface RegisterPayload {
 export const register = async (data: RegisterPayload): Promise<AuthResult> => {
   try {
     const response = await api.post("/token/register", data);
-    return { success: true, message: response.data };
+    return { success: true, message: response.data as string | { code: string; description: string }[] };
   } catch (error: any) {
     if (error.response?.status === 400 && Array.isArray(error.response.data)) {
       return { success: false, message: error.response.data }; // Identity errors
