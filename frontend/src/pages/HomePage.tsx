@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../components/HomePage.css";
 import GenreCarousel from "./GenreCarousel";
-import MovieModal from "../components/MovieModel";
+import MovieModel from "../components/MovieModel";
 import { Movie } from "../types/Movie";
 
 type GenreMovies = {
@@ -10,7 +10,7 @@ type GenreMovies = {
 
 const HomePage = () => {
   const [genreData, setGenreData] = useState<GenreMovies>({});
-  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
+  const [selectedMovieId, setSelectedMovieId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +33,7 @@ const HomePage = () => {
   }, []);
 
   const handlePosterClick = (movie: Movie) => {
-    setSelectedMovieId(Number(movie.showId));
+    setSelectedMovieId(String(movie.showId));
   };
 
   return (
@@ -48,7 +48,7 @@ const HomePage = () => {
           />
         ))}
         {selectedMovieId !== null && (
-          <MovieModal
+          <MovieModel
             movieId={selectedMovieId}
             onClose={() => setSelectedMovieId(null)}
           />

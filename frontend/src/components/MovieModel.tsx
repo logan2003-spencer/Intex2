@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import confetti from "canvas-confetti";
+// import confetti from "canvas-confetti";
 import "./MovieModel.css";
 import { Movie } from "../types/Movie";
 
 interface MovieModalProps {
-  movieId: number;
+  movieId: string;
   onClose: () => void;
 }
 
@@ -13,11 +13,12 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose }) => {
 
   useEffect(() => {
     const fetchMovie = async () => {
+
       try {
         const res = await fetch(`http://localhost:5174/api/Movies/details/${movieId}`);
         const data = await res.json();
         setMovie(data);
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        // confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       } catch (error) {
         console.error("Failed to fetch movie details:", error);
       }

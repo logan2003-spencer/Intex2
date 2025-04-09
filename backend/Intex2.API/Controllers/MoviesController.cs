@@ -151,33 +151,39 @@ namespace Intex2.API.Controllers
         //     if (string.IsNullOrWhiteSpace(title)) return "fallback";
 
             // Remove invalid characters and encode space as %20
-        [HttpGet("details/{id}")]
-        public IActionResult GetMovieDetails(int id)
-        {
-            var movie = _moviesContext.MoviesTitles
-                .Where(m => m.ShowId == id.ToString())
-                .Select(m => new
-                {
-                    m.ShowId,
-                    m.Title,
-                    PosterUrl = $"/posters/{SanitizeFileName(m.Title)}.jpg",
-                    m.Director,
-                    m.Cast,
-                    m.Country,
-                    m.ReleaseYear,
-                    m.Rating,
-                    m.Duration,
-                    m.Description
-                })
-                .FirstOrDefault();
-
-            if (movie == null)
+            [HttpGet("details/{id}")]
+            public IActionResult GetMovieDetails(string id)
             {
-                return NotFound();
-            }
+                // Fetch the movie details first without the SanitizeFileName logic
+                var movie = _moviesContext.MoviesTitles
+                    .Where(m => m.ShowId == id)
+                    .FirstOrDefault(); // Use FirstOrDefault directly here to fetch the first result
 
-            return Ok(movie);
-        }
+                if (movie == null)
+                {
+                    return NotFound();
+                }
+
+                // Now sanitize the file name after fetching the movie data
+                var sanitizedPosterUrl = $"/posters/{SanitizeFileName(movie.Title)}.jpg";
+
+                // Return the movie details along with the sanitized poster URL
+                var movieDetails = new
+                {
+                    movie.ShowId,
+                    movie.Title,
+                    PosterUrl = sanitizedPosterUrl,
+                    movie.Director,
+                    movie.Cast,
+                    movie.Country,
+                    movie.ReleaseYear,
+                    movie.Rating,
+                    movie.Duration,
+                    movie.Description
+                };
+
+                return Ok(movieDetails);
+            }
 
         [HttpGet("AllMovies")]
         public IActionResult GetMovies(int pageSize = 10, int pageNum = 1, [FromQuery] List<string>? Type = null)

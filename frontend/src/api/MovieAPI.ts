@@ -5,7 +5,7 @@ interface FetchMoviesResponse {
     totalNumMovies: number;
 }
 
-const API_URL = 'https://localhost:5000/api/movie'; // ✅ HTTPS with localhost
+const API_URL = 'http://localhost:5176/api/movies'; // ✅ HTTPS with localhost
 
 // Fetch Movies with Pagination and Filter
 export const fetchMovies = async (
@@ -24,6 +24,7 @@ export const fetchMovies = async (
         }
 
         return await response.json();
+        
     } catch (error) {
         console.error("Error fetching movies:", error);
         throw error;
