@@ -100,12 +100,37 @@ namespace Intex2.API.Controllers
 
 
 
-        // Get MoviesUserRecommendations
         [HttpGet("user-recommendations")]
-        public IEnumerable<MoviesUserRecommendations> GetMoviesUserRecommendations()
+        public IActionResult GetMoviesUserRecommendations([FromQuery] int user_id, [FromQuery] string show_id)
         {
-            return _moviesContext.MoviesUserRecommendations;
+            var recommendations = (from r in _moviesContext.MoviesUserRecommendations
+                                   join m in _moviesContext.MoviesTitles
+                                       on r.SourceShowId equals m.ShowId
+                                   where r.UserId == user_id && r.SourceShowId == show_id
+                                   select new
+                                   {
+                                       r.UserId,
+                                       r.SourceShowId,
+                                       m.ShowId,
+                                       m.Title,
+                                       m.Director,
+                                       m.Cast,
+                                       m.Country,
+                                       m.ReleaseYear,
+                                       m.Rating,
+                                       m.Duration,
+                                       m.Description
+                                   }).ToList();
+
+            if (!recommendations.Any())
+            {
+                return NotFound($"No recommendations found for user {user_id} with show_id {show_id}.");
+            }
+
+            return Ok(recommendations);
         }
+
+
 
         [HttpGet("by-genre")]
         public IActionResult GetMoviesByGenre()
