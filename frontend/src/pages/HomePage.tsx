@@ -1,18 +1,15 @@
+// HomePage.tsx
 import React, { useEffect, useState } from "react";
-import "../components/HomePage.css";
 import GenreCarousel from "./GenreCarousel";
 import MovieModal from "../components/MovieModel";
 import { Movie } from "../types/Movie";
 
-type GenreMovies = {
-  [genre: string]: Movie[];
-};
-
 const HomePage = () => {
-  const [genreData, setGenreData] = useState<GenreMovies>({});
-  const [selectedMovieId, setSelectedMovieId] = useState<String | null>(null);
+  const [genreData, setGenreData] = useState<{ [genre: string]: Movie[] }>({});
+  const [selectedMovieId, setSelectedMovieId] = useState<string | null>(null);
+  const [movieHistory, setMovieHistory] = useState<string[]>([]);
 
-  const userId = 1; // 🔁 Replace with actual logged-in user ID when available
+  const userId = 1;
 
   useEffect(() => {
     const fetchRecommendedMovies = async () => {
@@ -20,19 +17,8 @@ const HomePage = () => {
         const response = await fetch(
           `http://localhost:5176/api/movies/home-page-recommendations?user_id=${userId}`
         );
-        const data: GenreMovies = await response.json();
-
-        console.log("Fetched recommended data:", data);
-
-        // Optional: filter out empty titles
-        const filtered = Object.fromEntries(
-          Object.entries(data).map(([genre, movies]) => [
-            genre,
-            movies.filter((movie: Movie) => movie.title),
-          ])
-        );
-
-        setGenreData(filtered);
+        const data = await response.json();
+        setGenreData(data);
       } catch (error) {
         console.error("Error fetching recommendations:", error);
       }
@@ -42,35 +28,41 @@ const HomePage = () => {
   }, [userId]);
 
   const handlePosterClick = (movie: Movie) => {
-    setSelectedMovieId(movie.showId);
+    const newId = String(movie.showId);
+    if (selectedMovieId && selectedMovieId !== newId) {
+      setMovieHistory((prev) => [...prev, selectedMovieId]);
+    }
+    setSelectedMovieId(newId);
+  };
+
+  const handleBack = () => {
+    setMovieHistory((prev) => {
+      const newHistory = [...prev];
+      const previousId = newHistory.pop();
+      setSelectedMovieId(previousId ?? null);
+      return newHistory;
+    });
   };
 
   return (
     <div className="home-page">
-      <div className="content-wrapper">
-        {Object.entries(genreData).map(([genre, movies]) => (
-          <GenreCarousel
-            key={genre}
-            genre={genre}
-            movies={movies}
-            onPosterClick={handlePosterClick}
-          />
-        ))}
+      {Object.entries(genreData).map(([genre, movies]) => (
+        <GenreCarousel
+          key={genre}
+          genre={genre}
+          movies={movies}
+          onPosterClick={handlePosterClick}
+        />
+      ))}
 
-        {selectedMovieId !== null && (
-          <MovieModal
-            movieId={selectedMovieId?.toString() ?? ""}
-
-            onClose={() => setSelectedMovieId(null)}
-          />
-        )}
-
-        {Object.keys(genreData).length === 0 && (
-          <p className="text-center text-gray-500 mt-6">
-            No recommendations available for this user.
-          </p>
-        )}
-      </div>
+      {selectedMovieId && (
+        <MovieModal
+          movieId={selectedMovieId}
+          onClose={() => setSelectedMovieId(null)}
+          onPosterClick={handlePosterClick}
+          onBack={movieHistory.length > 0 ? handleBack : undefined}
+        />
+      )}
     </div>
   );
 };
