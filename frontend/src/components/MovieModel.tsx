@@ -17,7 +17,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
   const modalRef = useRef<HTMLDivElement>(null);
   const [fade, setFade] = useState(false);
 
-  const userId = 43; // Replace with real auth ID if needed
+  const userId = 1; // Replace with real auth ID if needed
 
   useEffect(() => {
     setFade(true);
