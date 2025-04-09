@@ -9,11 +9,15 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IO;
 
-var builder = WebApplication.CreateBuilder(args);
+
 
 var staticFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 Console.WriteLine($"Static file path: {staticFilePath}");
-builder.WebHost.UseWebRoot(staticFilePath);
+
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    WebRootPath = staticFilePath
+});
 
 // Set the absolute path for the web root (important for static files)
 builder.WebHost.UseWebRoot(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"));

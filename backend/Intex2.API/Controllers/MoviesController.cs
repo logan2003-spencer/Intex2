@@ -45,51 +45,58 @@ namespace Intex2.API.Controllers
         [HttpGet("home-page-recommendations")]
         public IActionResult GetMoviesHomePageRecommendations([FromQuery] int user_id)
         {
-            string genreName = "Action"; // Change this dynamically if needed
             var result = new Dictionary<string, List<object>>();
 
-            // Pull recommended movie titles for this user from homepage_recommendations table
-            var recommendedTitles = _moviesContext.MoviesHomePageRecommendations
+            // Get all rows from homepage_recommendations for this user
+            var recommendations = _moviesContext.MoviesHomePageRecommendations
                 .Where(r => r.UserId == user_id)
-                .Select(r => r.Title)
-                .ToList();  // Pull the list into memory
+                .ToList();
 
-            if (!recommendedTitles.Any()) 
+            if (!recommendations.Any())
             {
                 return NotFound("No recommendations found for the given user.");
             }
 
-            // Use Join to match recommended titles with movie data
-            var moviesRaw = (from m in _moviesContext.MoviesTitles
-                    join r in recommendedTitles on m.Title equals r
-                    select m)
-                .Take(20) // Limit to prevent overload
+            // Get the set of titles (for joining)
+            var titleSet = recommendations.Select(r => r.Title).ToHashSet();
+
+            // Fetch full movie data
+            var moviesRaw = _moviesContext.MoviesTitles
+                .Where(m => titleSet.Contains(m.Title))
                 .ToList();
 
-            var movies = moviesRaw
-                .Select(m => new
-                {
-                    m.ShowId,
-                    m.Title,
-                    Genre = genreName,
-                    PosterUrl = $"/posters/{SanitizeFileName(m.Title)}.jpg",
-                    m.Director,
-                    m.Cast,
-                    m.Country,
-                    m.ReleaseYear,
-                    m.Rating,
-                    m.Duration,
-                    m.Description,
-                })
-                .ToList();
+            // Join with genre info from the homepage_recommendations table
+            var joined = from r in recommendations
+                         join m in moviesRaw on r.Title equals m.Title
+                         group new
+                         {
+                             m.ShowId,
+                             m.Title,
+                             Genre = r.Genre,
+                             PosterUrl = $"/posters/{SanitizeFileName(m.Title)}.jpg",
+                             m.Director,
+                             m.Cast,
+                             m.Country,
+                             m.ReleaseYear,
+                             m.Rating,
+                             m.Duration,
+                             m.Description
+                         }
+                         by r.Genre into genreGroup
+                         select new
+                         {
+                             Genre = genreGroup.Key,
+                             Movies = genreGroup.Take(15).Cast<object>().ToList()
+                         };
 
-            if (movies.Any())
+            foreach (var group in joined)
             {
-                result[genreName] = movies.Cast<object>().ToList();
+                result[group.Genre] = group.Movies;
             }
 
             return Ok(result);
         }
+
 
 
 
