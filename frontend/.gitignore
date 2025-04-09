@@ -22,24 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-node_modules/
-
-# Ignore build artifacts
-**/bin/
-**/obj/
-
-# Ignore Visual Studio folder
-.vs/
-
-# Ignore Vite/React public folder (if not needed in version control)
-frontend/public/
-
-# Ignore VS/Build junk
-bin/
-obj/
-.vs/
-*.db-shm
-*.db-wal
-
-
