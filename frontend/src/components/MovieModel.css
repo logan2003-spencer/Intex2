@@ -57,3 +57,58 @@
 .watch-button:hover {
   background-color: #b00610;
 }
+
+.carousel-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.movie-carousel {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  scroll-behavior: smooth;
+}
+
+.movie-poster {
+  height: 180px;
+  width: auto;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.movie-poster:hover {
+  transform: scale(1.05);
+}
+
+.scroll-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0 0.5rem;
+  color: #444;
+}
+
+.modal-content {
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
+}
+
+.modal-content.fade-out {
+  opacity: 0;
+}
+
+.back-button {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: #eee;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  z-index: 10;
+}
