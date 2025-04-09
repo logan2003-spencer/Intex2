@@ -12,6 +12,7 @@ import AdminMoviesPage from "./pages/AdminMoviePage";
 import CookieConsent from "./components/CookieConsent";
 import MainLayout from "./layouts/MainLayout"; // 👈 Layout that includes Header
 
+
 const App = () => {
   return (
     <>

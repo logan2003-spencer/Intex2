@@ -5,7 +5,7 @@ interface FetchMoviesResponse {
     totalNumMovies: number;
 }
 
-const API_URL = 'https://localhost:5000/api/movie'; // ✅ HTTPS with localhost
+const API_URL = 'https://intex-2-backend-ayf5ckfbg4g3dvbw.eastus-01.azurewebsites.net/api/Movies'; // ✅ HTTPS with localhost
 
 // Fetch Movies with Pagination and Filter
 export const fetchMovies = async (
