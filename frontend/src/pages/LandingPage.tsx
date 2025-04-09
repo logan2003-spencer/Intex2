@@ -50,7 +50,9 @@ const LandingPage = () => {
       <header className="header">
         <div className="logo">CineNiche</div>
         <nav>
-          <button className="sign-in-btn">Sign In</button>
+          <button className="sign-in-btn" onClick={() => navigate("/login")}>
+            Sign In
+          </button>
         </nav>
       </header>
 

@@ -28,6 +28,7 @@ const App = () => {
             path="/"
             element={<LandingPage />}
           />
+          <Route path="/login" element={<LoginPage />} />
 
           <Route
             path="*"
@@ -45,7 +46,7 @@ const App = () => {
                   <Route path="/movies" element={<MovieDisplay />} />
                   <Route path="/privacy" element={<PrivacyPage />} />
                   <Route path="/recommended" element={<MovieDisplay />} />
-                  <Route path="/login" element={<LoginPage />} />
+                  
                   <Route path="/adminMovies" element={<AdminMoviesPage />} />
                   <Route
                     path="/addMovie"
