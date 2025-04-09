@@ -14,7 +14,7 @@ function RecommendedMovies() {
     const fetchRecommendations = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5176/api/movies/home-page-recommendations?user_id=${userId}`
+          `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/home-page-recommendations?user_id=${userId}`
         );
         const data = await response.json();
         console.log("Fetched data:", data);
@@ -28,21 +28,25 @@ function RecommendedMovies() {
   }, [userId]);
 
   const getPosterForMovie = (title: string): string => {
-    const sanitize = (str: string) =>
-      str
-        .toLowerCase()
-        .replace(/[^a-z0-9]/gi, "") // remove punctuation
-        .replace(/\s+/g, "");       // remove whitespace
+  if (!title) return "/posters/fallback.jpg";
 
-    const sanitizedTitle = sanitize(title);
+  const encode = (str: string) =>
+    encodeURIComponent(str.trim().toLowerCase());
 
-    const match = allPosters.find((path) => {
-      const filename = (path.split("/").pop() ?? "").replace(/\.[^/.]+$/, "");
-      return sanitize(filename) === sanitizedTitle;
-    });
+  // Try to match using encoded filename logic
+  const match = allPosters.find((filename) => {
+    const nameWithoutExtension = filename.split(".")[0].toLowerCase();
+    const titleEncoded = encode(title).replace(/%20/g, "").replace(/[^a-z0-9]/gi, "");
+    const matchEncoded = nameWithoutExtension.replace(/%20/g, "").replace(/[^a-z0-9]/gi, "");
+    return matchEncoded === titleEncoded;
+  });
 
-    return match ?? "/posters/fallback.jpg";
-  };
+  if (!match) return "/posters/fallback.jpg";
+
+  const baseUrl = "https://movieblob4logang.blob.core.windows.net/posters";
+  return `${baseUrl}/${match}`;
+};
+
 
   return (
     <div className="px-4 pb-10">

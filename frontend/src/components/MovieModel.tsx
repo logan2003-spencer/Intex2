@@ -39,7 +39,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
 
     const fetchMovie = async () => {
       try {
-        const res = await fetch(`http://localhost:5176/api/Movies/details/${movieId}`);
+        const res = await fetch(`https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/Movies/details/${movieId}`);
         if (!res.ok) throw new Error("Failed to load movie");
         const data = await res.json();
         setMovie(data);
@@ -59,7 +59,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
     const fetchRelatedMovies = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5176/api/movies/user-recommendations?user_id=${userId}&show_id=${movie.showId}`
+          `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/user-recommendations?user_id=${userId}&show_id=${movie.showId}`
         );
         if (!res.ok) throw new Error("Failed to load related movies");
         const data = await res.json();
@@ -100,7 +100,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
     }
 
     try {
-      const response = await fetch("http://localhost:5176/api/ratings", {
+      const response = await fetch("https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/ratings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

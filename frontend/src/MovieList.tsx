@@ -15,7 +15,7 @@ function MovieList() {
     const fetchMovies = async () => {
       const token = localStorage.getItem("authToken");
 
-    const response = await fetch('http://localhost:5176/api/movies/titles', {
+    const response = await fetch('https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/titles', {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json"

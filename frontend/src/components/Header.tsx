@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5176/api/movies/search?query=${encodeURIComponent(searchQuery)}`
+        `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/search?query=${encodeURIComponent(searchQuery)}`
       );
 
       if (!response.ok) {

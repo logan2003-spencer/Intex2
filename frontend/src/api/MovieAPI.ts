@@ -6,7 +6,7 @@ interface FetchMoviesResponse {
 }
 
 // const API_URL = 'https://intex-2-backend-ayf5ckfbg4g3dvbw.eastus-01.azurewebsites.net/api/Movies'; // ✅ HTTPS with localhost
-const API_URL = 'http://localhost:5176/api/movies'; // ✅ HTTPS with localhost
+const API_URL = 'https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies'; // ✅ HTTPS with localhost
 
 // Fetch Movies with Pagination and Filter
 export const fetchMovies = async (

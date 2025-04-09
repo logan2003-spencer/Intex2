@@ -1,5 +1,5 @@
 // HomePage.tsx
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import GenreCarousel from "./GenreCarousel";
 import MovieModal from "../components/MovieModel";
 import { Movie } from "../types/Movie";
@@ -15,7 +15,7 @@ const HomePage = () => {
     const fetchRecommendedMovies = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5176/api/movies/home-page-recommendations?user_id=${userId}`
+          `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/home-page-recommendations?user_id=${userId}`
         );
         const data = await response.json();
         setGenreData(data);
