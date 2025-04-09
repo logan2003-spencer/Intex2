@@ -329,6 +329,37 @@ namespace Intex2.API.Controllers
             var cleaned = string.Join("", title.Split(Path.GetInvalidFileNameChars()));
             return cleaned.Trim().Replace(" ", "%20");
         }
+    [HttpGet("search")]
+    public IActionResult SearchMovies([FromQuery] string query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return BadRequest("Search query cannot be empty.");
+        }
+
+        var lowerQuery = query.ToLower();
+
+        var matchedMovies = _moviesContext.MoviesTitles
+            .Where(m => m.Title != null && m.Title.ToLower().Contains(lowerQuery))
+            .Select(m => new
+            {
+                m.ShowId,
+                m.Title,
+                m.Director,
+                m.Cast,
+                m.Country,
+                m.ReleaseYear,
+                m.Rating,
+                m.Duration,
+                m.Description
+            })
+            .ToList();
+
+        return Ok(matchedMovies);
     }
-}
+
+
+
+
+}}
 

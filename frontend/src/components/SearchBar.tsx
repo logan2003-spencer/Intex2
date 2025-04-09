@@ -12,14 +12,23 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectMovie, onClose }) => {
 
   useEffect(() => {
     const fetchResults = async () => {
-      if (query.length < 2) return;
+      if (query.length < 2) {
+        setResults([]); // Clear results when query is short
+        return;
+      }
+
       try {
-        const res = await fetch(`http://localhost:5176/api/Movies/AllMovies?pageSize=1000`);
-        const data = await res.json();
-        const filtered = data.movies.filter((m: Movie) =>
-          m.title && m.title.toLowerCase().includes(query.toLowerCase())
+        const res = await fetch(
+          `http://localhost:5176/api/Movies/search?query=${encodeURIComponent(query)}`
         );
-        setResults(filtered.slice(0, 5));
+
+        if (!res.ok) {
+          console.error("Failed to fetch search results");
+          return;
+        }
+
+        const data: Movie[] = await res.json();
+        setResults(data.slice(0, 5));
       } catch (err) {
         console.error("Search error:", err);
       }
@@ -44,6 +53,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectMovie, onClose }) => {
               {movie.title}
             </li>
           ))}
+          {query.length >= 2 && results.length === 0 && (
+            <li>No matching movies found</li>
+          )}
         </ul>
       </div>
     </div>
