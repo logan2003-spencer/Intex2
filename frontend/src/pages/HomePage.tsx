@@ -10,9 +10,9 @@ type GenreMovies = {
 
 const HomePage = () => {
   const [genreData, setGenreData] = useState<GenreMovies>({});
-  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
+  const [selectedMovieId, setSelectedMovieId] = useState<String | null>(null);
 
-  const userId = 134; // 🔁 Replace with actual logged-in user ID when available
+  const userId = 1; // 🔁 Replace with actual logged-in user ID when available
 
   useEffect(() => {
     const fetchRecommendedMovies = async () => {
@@ -42,7 +42,7 @@ const HomePage = () => {
   }, [userId]);
 
   const handlePosterClick = (movie: Movie) => {
-    setSelectedMovieId(Number(movie.showId));
+    setSelectedMovieId(movie.showId);
   };
 
   return (
