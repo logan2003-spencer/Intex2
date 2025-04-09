@@ -33,3 +33,61 @@
 .nav-links a:hover {
   color: #e50914;
 }
+
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 20px;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+}
+
+.search-box {
+  background: #222;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: none;
+}
+
+.search-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-box li {
+  padding: 8px;
+  background: #333;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-box li:hover {
+  background: #444;
+}
+
+.search-icon {
+  cursor: pointer;
+  font-size: 22px;
+  margin-left: 20px;
+  transition: color 0.2s;
+}
+
+.search-icon:hover {
+  color: #e50914;
+}

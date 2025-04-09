@@ -10,9 +10,9 @@ type GenreMovies = {
 
 const HomePage = () => {
   const [genreData, setGenreData] = useState<GenreMovies>({});
-  const [selectedMovieId, setSelectedMovieId] = useState<String | null>(null);
+  const [selectedMovieId, setSelectedMovieId] = useState<string | null>(null);
 
-  const userId = 1; // 🔁 Replace with actual logged-in user ID when available
+  const userId = 1;
 
   useEffect(() => {
     const fetchRecommendedMovies = async () => {
@@ -22,9 +22,6 @@ const HomePage = () => {
         );
         const data: GenreMovies = await response.json();
 
-        console.log("Fetched recommended data:", data);
-
-        // Optional: filter out empty titles
         const filtered = Object.fromEntries(
           Object.entries(data).map(([genre, movies]) => [
             genre,
@@ -59,8 +56,7 @@ const HomePage = () => {
 
         {selectedMovieId !== null && (
           <MovieModal
-            movieId={selectedMovieId?.toString() ?? ""}
-
+            movieId={selectedMovieId}
             onClose={() => setSelectedMovieId(null)}
           />
         )}
