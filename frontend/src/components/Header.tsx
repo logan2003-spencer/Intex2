@@ -1,21 +1,24 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "../components/Header.css"; // Adjust path if needed
-import MovieModal from "./MovieModel"; // Import the modal component
+import "../components/Header.css";
+import MovieModal from "./MovieModel";
+import { Movie } from "../types/Movie";
 
-const Header = () => {
+type HeaderProps = {
+  onMovieSelect: (movie: Movie) => void;
+};
+
+const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedMovieId, setSelectedMovieId] = useState<string | null>(null); // State for the movie ID to show in modal
-  const [showModal, setShowModal] = useState(false); // State to control modal visibility
+  const [selectedMovieId, setSelectedMovieId] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       const response = await fetch(
-        `http://localhost:5176/api/movies/search?query=${encodeURIComponent(
-          searchQuery
-        )}`
+        `http://localhost:5176/api/movies/search?query=${encodeURIComponent(searchQuery)}`
       );
 
       if (!response.ok) {
@@ -24,46 +27,45 @@ const Header = () => {
 
       const data = await response.json();
       if (data.length > 0) {
-        setSelectedMovieId(data[0].showId); // Assuming the first match is displayed
-        setShowModal(true); // Open the modal
+        setSelectedMovieId(data[0].showId);
+        setShowModal(true);
+        onMovieSelect(data[0]);
       } else {
-        console.log("No movies found.");
         alert("No movies found with that title.");
       }
     } catch (error) {
-      if (error instanceof Error) {
-        console.error("Error searching for movies:", error.message);
-      } else {
-        console.error("An unknown error occurred:", error);
-      }
+      console.error("Search error:", error);
     }
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setSelectedMovieId(null); // Reset modal state
+    setSelectedMovieId(null);
   };
 
   return (
     <header className="header">
-      <div className="header-title">CineNiche</div>
-      <nav className="nav-links">
-        <Link to="/home">Home</Link>
-        <Link to="/genres">Genres</Link>
-        <Link to="/movies">Movie Data</Link>
-        <Link to="/privacy">Privacy</Link>
-      </nav>
-      <form className="search-bar" onSubmit={handleSearch}>
-        <input
-          type="text"
-          placeholder="Search movies..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button type="submit">Search</button>
-      </form>
+      <div className="header-container">
+        <div className="header-title">CineNiche</div>
 
-      {/* Show the MovieModal if a movie is selected */}
+        <form className="search-bar" onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Search movies..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button type="submit">Search</button>
+        </form>
+
+        <nav className="nav-links">
+          <Link to="/home">Home</Link>
+          <Link to="/genres">Genres</Link>
+          <Link to="/movies">Movie Data</Link>
+          <Link to="/privacy">Privacy</Link>
+        </nav>
+      </div>
+
       {showModal && selectedMovieId && (
         <MovieModal movieId={selectedMovieId} onClose={handleCloseModal} />
       )}

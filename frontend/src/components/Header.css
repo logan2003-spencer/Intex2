@@ -1,28 +1,52 @@
 .header {
   display: flex;
-  flex-direction: column; /* Stack elements vertically */
+  justify-content: center;
+  /* Center the inner container */
   align-items: center;
+  padding: 15px 40px;
+  background-color: #111;
+  color: white;
+  border-bottom: 1px solid #333;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-.nav-links {
+.header-container {
   display: flex;
-  gap: 1rem;
-  justify-content: center; /* Center navigation links */
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.header-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #e50914;
+  text-transform: uppercase;
+  flex: 1;
+  text-align: left;
 }
 
 .search-bar {
   display: flex;
   align-items: center;
-  margin-top: 1rem; /* Space below navigation links */
-  justify-content: flex-end; /* Align search bar to the right */
-  width: 100%;
+  justify-content: center;
+  flex: 2;
+  flex-wrap: nowrap;
+  /* Make sure they don’t wrap */
+  gap: 0;
+  /* Remove spacing that pushes the button down */
 }
 
 .search-bar input {
   padding: 0.5rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 4px 0 0 4px;
   font-size: 1rem;
+  width: 300px;
+  min-width: 0;
 }
 
 .search-bar button {
@@ -30,39 +54,22 @@
   background-color: #e50914;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 0 4px 4px 0;
   cursor: pointer;
-  margin-left: 0.5rem;
+  white-space: nowrap;
+  height: 100%;
+  /* ensures it matches input height */
 }
 
 .search-bar button:hover {
   background-color: #99060e;
-  ;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 40px;
-  background-color: #111; /* darker black for contrast */
-  color: white;
-  border-bottom: 1px solid #333; /* subtle separator */
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.header-title {
-  font-size: 28px;
-  font-weight: bold;
-  color: #e50914; /* Netflix red vibes */
-  text-transform: uppercase;
 }
 
 .nav-links {
   display: flex;
   gap: 30px;
+  justify-content: flex-end;
+  flex: 1;
 }
 
 .nav-links a {
