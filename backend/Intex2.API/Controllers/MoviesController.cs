@@ -28,7 +28,7 @@ namespace Intex2.API.Controllers
         }
 
         // Get all MoviesTitles
-        [Authorize]
+        // [Authorize]
         [HttpGet("titles")]
         public IEnumerable<MoviesTitle> GetMoviesTitles()
         {

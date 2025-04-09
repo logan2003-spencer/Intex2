@@ -24,7 +24,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
-<<<<<<< HEAD
   <ItemGroup>
     <None Update="Identity.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -33,8 +32,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-=======
+
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
->>>>>>> 3832aac08a7414400100ceb685706296a67a30ee
 
 </Project>
