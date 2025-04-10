@@ -9,8 +9,8 @@ using System.Collections.Generic;
 
 namespace Intex2.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class MoviesController : ControllerBase
     {
         private readonly MoviesContext _moviesContext;
@@ -38,12 +38,67 @@ namespace Intex2.API.Controllers
         }
 
         // Get all MoviesRatings
-        [Authorize]
+        // [Authorize]
         [HttpGet("ratings")]
         public IEnumerable<MoviesRating> GetMoviesRatings()
         {
             return _moviesContext.MoviesRatings;
         }
+
+        // [Authorize]
+[HttpPut("ratings/{userId}/{showId}")]
+public IActionResult UpdateUserRating(int userId, string showId, [FromBody] MoviesRating updatedRating)
+{
+    if (updatedRating.ShowId != showId)
+    {
+        return BadRequest("ShowId in body does not match ShowId in route.");
+    }
+
+    var existingRating = _moviesContext.MoviesRatings
+        .FirstOrDefault(r => r.UserId == userId && r.ShowId == showId);
+
+    if (existingRating == null)
+    {
+        return NotFound("Rating not found.");
+    }
+
+    existingRating.Rating = updatedRating.Rating;
+    _moviesContext.MoviesRatings.Update(existingRating);
+    _moviesContext.SaveChanges();
+
+    return Ok(existingRating);
+}
+
+
+
+[HttpPost("ratings")]
+public async Task<IActionResult> AddOrUpdateRating([FromBody] MoviesRating rating)
+{
+    // Step 1: Validate the input
+    if (rating.UserId == null || string.IsNullOrEmpty(rating.ShowId) || rating.Rating == null)
+    {
+        return BadRequest("UserId, ShowId, and Rating are required.");
+    }
+    // Step 2: Check if the rating already exists
+    var existingRating = await _moviesContext.MoviesRatings
+        .FirstOrDefaultAsync(r => r.UserId == rating.UserId && r.ShowId == rating.ShowId);
+    if (existingRating != null)
+    {
+        // Step 3: Update the existing rating
+        existingRating.Rating = rating.Rating;
+        _moviesContext.Update(existingRating);
+    }
+    else
+    {
+        // Step 4: Add a new rating
+        await _moviesContext.MoviesRatings.AddAsync(rating);
+    }
+    // Step 5: Save the changes to the database
+    await _moviesContext.SaveChangesAsync();
+    // Step 6: Return a response
+    return Ok("Rating updated successfully.");
+}
+
 
         // Get all MoviesTitles
         [Authorize]
