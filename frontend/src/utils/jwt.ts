@@ -13,3 +13,25 @@ export const parseJwt = (token: string) => {
     return null;
   }
 };
+
+// utils/jwt.ts
+
+export const isAuthenticated = (): boolean => {
+  const token = localStorage.getItem("authToken");
+  if (!token) return false;
+
+  const decoded = parseJwt(token);
+  if (!decoded?.exp) return false;
+
+  const currentTime = Math.floor(Date.now() / 1000);
+  return decoded.exp > currentTime;
+};
+
+export const getUserRole = (): string | null => {
+  const token = localStorage.getItem("authToken");
+  if (!token) return null;
+
+  const decoded = parseJwt(token);
+  return decoded?.role ?? null;
+};
+
