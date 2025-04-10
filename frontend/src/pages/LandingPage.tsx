@@ -20,6 +20,7 @@ const getPosterUrl = (title: string): string => {
   return match ? `${baseUrl}${match}` : "/posters/default.jpg";
 };
 
+
 const LandingPage = () => {
   const [email, setEmail] = useState<string>("");
   const navigate = useNavigate();

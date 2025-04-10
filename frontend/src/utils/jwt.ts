@@ -34,4 +34,3 @@ export const getUserRole = (): string | null => {
   const decoded = parseJwt(token);
   return decoded?.role ?? null;
 };
-

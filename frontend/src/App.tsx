@@ -25,8 +25,6 @@ const App = () => {
   return (
     <>
       <Router>
-        <Header onMovieSelect={(movie: Movie) => setSelectedMovie(movie)} />
-
         <Routes>
           {/* Public routes without layout */}
           <Route path="/" element={<LandingPage />} />
@@ -36,11 +34,13 @@ const App = () => {
 
           {/* Layout wrapper for all standard routes */}
           <Route element={<MainLayout />}>
+            <Route path="/" element={<Header onMovieSelect={(movie: Movie) => setSelectedMovie(movie)} />} />
+
             {/* Public content */}
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/recommended" element={<RecommendedDisplay />} />
 
-            {/* Protected user route */}
+            {/* Protected routes */}
             <Route
               path="/home"
               element={
@@ -50,7 +50,7 @@ const App = () => {
               }
             />
 
-            {/* Admin-only route */}
+            {/* Admin routes */}
             <Route
               path="/adminMovies"
               element={
@@ -59,8 +59,6 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-
-            {/* Admin-only add movie route */}
             <Route
               path="/addMovie"
               element={
