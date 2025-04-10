@@ -1,159 +1,116 @@
-.create-profile-page {
-    width: 60%;
-    margin: 2rem auto;
-    max-width: 900px;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: "Roboto", sans-serif;
-  }
-  
-  .create-profile-page h2 {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    color: #333;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: space-between;
-  }
-  
-  .form-group input,
-  .form-group select {
-    padding: 1rem;
-    font-size: 1rem;
-    width: calc(50% - 1rem); /* Each input will take up 50% of the width */
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background-color: #333;
-  }
-  
-  .form-group select {
-    width: calc(33% - 1rem); /* For the select fields (birthday) */
-  }
-  
-  .gender {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-  
-  .gender label {
-    font-size: 1rem;
-    color: #333;
-  }
-  
-  button {
-    padding: 1rem;
-    font-size: 1.2rem;
-    background-color: #e50914;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    margin-top: 1.5rem;
-  }
-  
-  button:hover {
-    background-color: #f40612;
-  }
-  
-  input:focus,
-  select:focus {
-    outline: none;
-    border-color: #e50914;
-    background-color: #333;
-  }
-  
-  input::placeholder,
-  select::placeholder {
-    color: #888;
-  }
-/* src/components/LoginPage.css */
+/* Reset margin and padding for the body */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: black;
+  color: white;
+  width: 100%; /* Ensure body takes full width */
+  min-height: 100vh; /* Ensure body takes at least full viewport height */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
+}
+
+/* Full screen layout for login page */
 .login-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-image: url('https://assets.nflxext.com/ffe/siteui/login/images/Netflix-Logo.png'); /* You can use your own image URL */
-    background-size: cover;
-    background-position: center;
-    color: white;
-    padding: 0 20px;
-  }
-  
-  .login-page h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-  }
-  
-  .login-page form {
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 40px;
-    width: 100%;
-    max-width: 400px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  }
-  
-  .login-page input {
-    background-color: rgba(0, 0, 0, 0.4);
-    border: none;
-    border-radius: 5px;
-    padding: 15px;
-    width: 100%;
-    margin-bottom: 20px;
-    color: white;
-    font-size: 1.2rem;
-  }
-  
-  .login-page button {
-    background-color: red;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 15px;
-    width: 100%;
-    font-size: 1.2rem;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s;
-  }
-  
-  .login-page button:hover {
-    background-color: #e50914;
-  }
-  
-  .login-page .footer {
-    position: absolute;
-    bottom: 30px;
-    color: white;
-    font-size: 0.9rem;
-  }
-  
-  .login-page .footer a {
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-  }
-  
-  .login-page .footer a:hover {
-    text-decoration: underline;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align items to the top initially */
+  align-items: center;
+  width: 100%; /* Ensure full width */
+  max-width: 1200px; /* Limit the maximum width of the content */
+  padding: 40px 20px; /* Add some padding around the content */
+  background-image: url('https://assets.nflxext.com/ffe/siteui/login/images/Netflix-Logo.png');
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px; /* Increase margin below the header */
+}
+
+.logo {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: red;
+}
+
+.sign-in-btn {
+  padding: 10px 20px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-form-container {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 40px;
+  width: 100%;
+  max-width: 400px; /* Controls the form width */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.login-page input {
+  background-color: rgba(0, 0, 0, 0.4);
+  border: none;
+  border-radius: 5px;
+  padding: 15px;
+  width: 100%;
+  margin-bottom: 20px;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.login-page button {
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 15px;
+  width: 100%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+
+.login-page button:hover {
+  background-color: #e50914;
+}
+
+.footer {
+  /* Removed position: absolute to allow it to be centered with flexbox */
+  bottom: auto; /* Removed fixed bottom position */
+  margin-top: 40px; /* Add some space above the footer */
+  color: white;
+  font-size: 0.9rem;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
