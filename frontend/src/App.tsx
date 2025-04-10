@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+
 import LandingPage from "./pages/LandingPage";
 import CreateProfile from "./pages/CreateProfile";
 import MovieDisplay from "./pages/MovieDisplay";
@@ -12,7 +14,8 @@ import AdminMoviesPage from "./pages/AdminMoviePage";
 import CookieConsent from "./components/CookieConsent";
 import MainLayout from "./layouts/MainLayout";
 import MovieModal from "./components/MovieModel";
-import { useState } from "react";
+import Unauthorized from "./pages/Unauthorized";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { Movie } from "./types/Movie";
 
 const App = () => {
@@ -21,51 +24,68 @@ const App = () => {
   return (
     <>
       <Router>
+        <Header onMovieSelect={(movie: Movie) => setSelectedMovie(movie)} />
+
         <Routes>
-          {/* Landing Page — no header */}
+          {/* Public routes without layout */}
           <Route path="/" element={<LandingPage />} />
-
-          {/* Create Profile — no header */}
           <Route path="/create-profile" element={<CreateProfile />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
 
-          {/* All other routes — with header */}
-          <Route
-            path="*"
-            element={
-              <>
-                <Header
-                  onMovieSelect={(movie: Movie) => setSelectedMovie(movie)}
-                />
-                <Routes>
-                  <Route path="/movies" element={<MovieDisplay />} />
-                  <Route path="/recommended" element={<RecommendedDisplay />} />
-                  <Route element={<MainLayout />}>
-                    <Route path="/home" element={<HomePage />} />
-                    <Route path="/privacy" element={<PrivacyPage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/adminMovies" element={<AdminMoviesPage />} />
-                    <Route
-                      path="/addMovie"
-                      element={
-                        <AddMoviePage
-                          onSuccess={() =>
-                            console.log("Movie added successfully")
-                          }
-                          onCancel={() =>
-                            console.log("Movie addition canceled")
-                          }
-                        />
-                      }
-                    />
-                  </Route>
-                </Routes>
-              </>
-            }
-          />
+          {/* Layout wrapper for all standard routes */}
+          <Route element={<MainLayout />}>
+            {/* Public content */}
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/recommended" element={<RecommendedDisplay />} />
+
+            {/* Protected user route */}
+            <Route
+              path="/home"
+              element={
+                <ProtectedRoute>
+                  <HomePage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Admin-only route */}
+            <Route
+              path="/adminMovies"
+              element={
+                <ProtectedRoute role="Admin">
+                  <AdminMoviesPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Admin-only add movie route */}
+            <Route
+              path="/addMovie"
+              element={
+                <ProtectedRoute role="Admin">
+                  <AddMoviePage
+                    onSuccess={() => console.log("Movie added successfully")}
+                    onCancel={() => console.log("Movie addition canceled")}
+                  />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Authenticated users only */}
+            <Route
+              path="/movies"
+              element={
+                <ProtectedRoute>
+                  <MovieDisplay />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
         </Routes>
       </Router>
 
-      {/* Movie Modal */}
+      {/* Movie modal if selected */}
       {selectedMovie && (
         <MovieModal
           movieId={selectedMovie.showId ?? ""}
