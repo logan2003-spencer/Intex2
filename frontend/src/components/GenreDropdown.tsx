@@ -1,33 +1,58 @@
 // GenreDropdown.tsx
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
+const genreList = [
+  "action",
+  "adventure",
+  "animeSeriesInternationalTvShows",
+  "britishTvShowsDocuseriesInternationalTvShows",
+  "children",
+  "comedies",
+  "comediesDramasInternationalMovies",
+  "comediesInternationalMovies",
+  "comediesRomanticMovies",
+  "crimeTvShowsDocuseries",
+  "documentaries",
+  "documentariesInternationalMovies",
+  "docuseries",
+  "dramas",
+  "dramasInternationalMovies",
+  "dramasRomanticMovies",
+  "familyMovies",
+  "fantasy",
+  "horrorMovies",
+  "internationalMoviesThrillers",
+  "internationalTvShowsRomanticTvShowsTvDramas",
+  "kidsTv",
+  "languageTvShows",
+  "musicals",
+  "natureTv",
+  "realityTv",
+  "spirituality",
+  "tvAction",
+  "tvComedies",
+  "tvDramas",
+  "talkShowsTvComedies",
+  "thrillers"
+];
+
+const formatGenreName = (slug: string) => {
+  return slug
+    .replace(/([a-z])([A-Z])/g, "$1 $2")       // split camelCase
+    .replace(/([a-z])([0-9])/gi, "$1 $2")       // split digits
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/([A-Z]+)/g, match => match[0] + match.slice(1).toLowerCase())
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/([A-Z])/g, " $1")                // split ALL CAPS if any
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/\s+/g, " ")                      // collapse multiple spaces
+    .trim()
+    .replace(/\b\w/g, c => c.toUpperCase());   // capitalize each word
+};
+
 const GenreDropdown: React.FC = () => {
-  const [genres, setGenres] = useState<string[]>([]);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        const token = localStorage.getItem("authToken");
-        const response = await fetch(
-          "https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/GetGenres",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const data = await response.json();
-        setGenres(data);
-      } catch (error) {
-        console.error("Error fetching genres:", error);
-      }
-    };
-
-    fetchGenres();
-  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedGenre = e.target.value;
@@ -41,9 +66,9 @@ const GenreDropdown: React.FC = () => {
       <option value="" disabled>
         Browse by Genre
       </option>
-      {genres.map((genre) => (
+      {genreList.map((genre) => (
         <option key={genre} value={genre}>
-          {genre}
+          {formatGenreName(genre)}
         </option>
       ))}
     </select>
