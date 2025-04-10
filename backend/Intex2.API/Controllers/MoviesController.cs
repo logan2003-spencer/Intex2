@@ -72,9 +72,8 @@ public IActionResult UpdateUserRating(int userId, string showId, [FromBody] Movi
 }
 
 
-
-        [HttpPost("ratings")]
         [AllowAnonymous]
+        [HttpPost("ratings")]
         public async Task<IActionResult> AddOrUpdateRating([FromBody] MoviesRating rating)
 {
     // Step 1: Validate the input
