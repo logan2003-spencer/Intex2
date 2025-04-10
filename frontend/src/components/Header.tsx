@@ -16,16 +16,6 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
-<<<<<<< HEAD
-    try {
-      const response = await fetch(
-        `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/search?query=${encodeURIComponent(
-          searchQuery
-        )}`
-      );
-
-      if (!response.ok) throw new Error("Failed to fetch search results");
-=======
   const token = localStorage.getItem("authToken");
 
   try {
@@ -38,7 +28,6 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
         },
       }
     );
->>>>>>> 424cb9e43b34832028e833d50bca331b3b67f0ef
 
     if (!response.ok) {
       throw new Error("Failed to fetch search results");
