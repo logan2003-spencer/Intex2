@@ -43,6 +43,30 @@
   color: #e50914;
 }
 
+/* Apply the same styles to the Logout button */
+.nav-links button.logout-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: flex;
+  /* Ensure the button behaves like a link in the flex container */
+  flex-direction: column;
+    /* Stack the button content vertically */
+    align-items: flex-start;
+    /* Align the text to the top of the button */
+    padding-top: 4px;
+    /* Remove any padding from the top */
+  /* Vertically align the button */
+}
+
+.nav-links button.logout-btn:hover {
+  color: #e50914;
+}
+
 .header-right {
   display: flex;
   align-items: center;
