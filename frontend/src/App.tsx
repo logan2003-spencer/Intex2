@@ -13,7 +13,7 @@ import AddMoviePage from "./pages/AddMoviePage";
 import AdminMoviesPage from "./pages/AdminMoviePage";
 import CookieConsent from "./components/CookieConsent";
 import MovieModal from "./components/MovieModel";
-import GenrePage from "./pages/GenrePage";
+import GenreDisplay from "./pages/GenreDisplay";
 import Unauthorized from "./pages/Unauthorized";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Movie } from "./types/Movie";
@@ -34,7 +34,12 @@ const App = () => {
 
           {/* Layout wrapper for all standard routes */}
           <Route element={<MainLayout />}>
-            <Route path="/" element={<Header onMovieSelect={(movie: Movie) => setSelectedMovie(movie)} />} />
+            <Route
+              path="/"
+              element={
+                <Header onMovieSelect={(movie: Movie) => setSelectedMovie(movie)} />
+              }
+            />
 
             {/* Public content */}
             <Route path="/privacy" element={<PrivacyPage />} />
@@ -49,8 +54,24 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/genres/:genre"
+              element={
+                <ProtectedRoute>
+                  <GenreDisplay />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/movies"
+              element={
+                <ProtectedRoute>
+                  <MovieDisplay />
+                </ProtectedRoute>
+              }
+            />
 
-            {/* Admin routes */}
+            {/* Admin-only routes */}
             <Route
               path="/adminMovies"
               element={
@@ -67,16 +88,6 @@ const App = () => {
                     onSuccess={() => console.log("Movie added successfully")}
                     onCancel={() => console.log("Movie addition canceled")}
                   />
-                </ProtectedRoute>
-              }
-            />
-
-            {/* Authenticated users only */}
-            <Route
-              path="/movies"
-              element={
-                <ProtectedRoute>
-                  <MovieDisplay />
                 </ProtectedRoute>
               }
             />
