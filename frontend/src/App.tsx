@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import LandingPage from "./pages/LandingPage";
 import CreateProfile from "./pages/CreateProfile";
 import MovieDisplay from "./pages/MovieDisplay";
@@ -10,9 +11,8 @@ import LoginPage from "./pages/LoginPage";
 import AddMoviePage from "./pages/AddMoviePage";
 import AdminMoviesPage from "./pages/AdminMoviePage";
 import CookieConsent from "./components/CookieConsent";
-import MainLayout from "./layouts/MainLayout";
 import MovieModal from "./components/MovieModel";
-import { useState } from "react";
+import GenrePage from "./pages/GenrePage";
 import { Movie } from "./types/Movie";
 
 const App = () => {
@@ -22,42 +22,33 @@ const App = () => {
     <>
       <Router>
         <Routes>
-          {/* Landing Page — no header */}
+          {/* No header pages */}
           <Route path="/" element={<LandingPage />} />
-
-          {/* Create Profile — no header */}
           <Route path="/create-profile" element={<CreateProfile />} />
+          <Route path="/login" element={<LoginPage />} />
 
-          {/* All other routes — with header */}
+          {/* All routes that use Header */}
           <Route
             path="*"
             element={
               <>
-                <Header
-                  onMovieSelect={(movie: Movie) => setSelectedMovie(movie)}
-                />
+                <Header onMovieSelect={(movie: Movie) => setSelectedMovie(movie)} />
                 <Routes>
+                  <Route path="/home" element={<HomePage />} />
                   <Route path="/movies" element={<MovieDisplay />} />
+                  <Route path="/genres" element={<GenrePage />} />
                   <Route path="/recommended" element={<RecommendedDisplay />} />
-                  <Route element={<MainLayout />}>
-                    <Route path="/home" element={<HomePage />} />
-                    <Route path="/privacy" element={<PrivacyPage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/adminMovies" element={<AdminMoviesPage />} />
-                    <Route
-                      path="/addMovie"
-                      element={
-                        <AddMoviePage
-                          onSuccess={() =>
-                            console.log("Movie added successfully")
-                          }
-                          onCancel={() =>
-                            console.log("Movie addition canceled")
-                          }
-                        />
-                      }
-                    />
-                  </Route>
+                  <Route path="/privacy" element={<PrivacyPage />} />
+                  <Route path="/adminMovies" element={<AdminMoviesPage />} />
+                  <Route
+                    path="/addMovie"
+                    element={
+                      <AddMoviePage
+                        onSuccess={() => console.log("Movie added successfully")}
+                        onCancel={() => console.log("Movie addition canceled")}
+                      />
+                    }
+                  />
                 </Routes>
               </>
             }
@@ -65,7 +56,7 @@ const App = () => {
         </Routes>
       </Router>
 
-      {/* Movie Modal */}
+      {/* Movie Modal shown globally if a movie is selected */}
       {selectedMovie && (
         <MovieModal
           movieId={selectedMovie.showId ?? ""}
@@ -73,6 +64,7 @@ const App = () => {
         />
       )}
 
+      {/* Cookie notice shown globally */}
       <CookieConsent />
     </>
   );

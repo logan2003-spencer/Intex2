@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": "src"  // 👈 This enables absolute imports from the /src folder
   },
   "files": [],
   "references": [
