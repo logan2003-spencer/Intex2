@@ -116,3 +116,15 @@ button:hover {
 .error-message li {
   list-style: none;
 }
+
+
+.logo-container {
+  display: flex;
+  justify-content: center; /* center it horizontally */
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.logo {
+  height: 200px; /* or whatever size feels right */
+}
