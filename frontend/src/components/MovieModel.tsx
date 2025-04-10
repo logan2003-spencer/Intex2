@@ -3,7 +3,6 @@ import "./MovieModel.css";
 import { Movie } from "../types/Movie";
 import { moviePosters as allPosters } from "../data/moviePosters";
 
-
 interface MovieModalProps {
   movieId: string;
   onClose: () => void;
@@ -11,7 +10,12 @@ interface MovieModalProps {
   onBack?: () => void;
 }
 
-const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick, onBack }) => {
+const MovieModal: React.FC<MovieModalProps> = ({
+  movieId,
+  onClose,
+  onPosterClick,
+  onBack,
+}) => {
   const [movie, setMovie] = useState<Movie | null>(null);
   const [relatedMovies, setRelatedMovies] = useState<Movie[]>([]);
   const [rating, setRating] = useState<number>(0); // For star rating
@@ -42,12 +46,15 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
 
     const fetchMovie = async () => {
       try {
-        const res = await fetch(`https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/Movies/details/${movieId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const res = await fetch(
+          `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/Movies/details/${movieId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
         if (!res.ok) throw new Error("Failed to load movie");
         const data = await res.json();
         setMovie(data);
@@ -93,21 +100,22 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
 
     const sanitize = (str: string) =>
       str
-        .normalize("NFD")                     // Split accented chars
-        .replace(/[\u0300-\u036f]/g, "")     // Remove accents
-        .replace(/[^a-zA-Z0-9 ]/g, "")       // Remove punctuation
+        .normalize("NFD") // Split accented chars
+        .replace(/[\u0300-\u036f]/g, "") // Remove accents
+        .replace(/[^a-zA-Z0-9 ]/g, "") // Remove punctuation
         .trim();
 
     const sanitizedTitle = sanitize(title);
     const encodedTitle = encodeURIComponent(sanitizedTitle);
     const expectedPath = `/posters/${encodedTitle}.jpg`;
 
-    const match = allPosters.find((path) => path.toLowerCase() === expectedPath.toLowerCase());
+    const match = allPosters.find(
+      (path) => path.toLowerCase() === expectedPath.toLowerCase()
+    );
     const baseUrl = "https://movieblob4logang.blob.core.windows.net/posters";
 
     return match ? `${baseUrl}${match}` : "/posters/default.jpg";
-};
-
+  };
 
   // Carousel scroll logic
   const scroll = (direction: "left" | "right") => {
@@ -129,29 +137,59 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
     }
 
     try {
-      const response = await fetch("https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/ratings", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          UserId: userId,
-          ShowId: movie.showId,
-          Rating: star,
-        }),
-      });
+      // First try to PUT (update the rating)
+      let response = await fetch(
+        `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/Movies/ratings/${userId}/${movie.showId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            UserId: userId,
+            ShowId: movie.showId,
+            Rating: star,
+          }),
+        }
+      );
 
-
+      // If PUT fails (e.g., rating doesn't exist), try to POST (create a new rating)
       if (!response.ok) {
-        const errorMessage = await response.text();
-        console.error("Server response error:", errorMessage);
-        throw new Error("Failed to update rating in the database");
+        console.log("PUT failed, attempting POST...");
+        response = await fetch(
+          "https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/Movies/ratings",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              UserId: userId,
+              ShowId: movie.showId,
+              Rating: star,
+            }),
+          }
+        );
       }
 
-      console.log("Rating updated successfully");
+      // If POST or PUT is successful
+      if (response.ok) {
+        const responseBody = await response.json();
+        console.log("Rating updated or created successfully:", responseBody);
+      } else {
+        const errorMessage = await response.text();
+        console.error(`Error ${response.status}: ${errorMessage}`);
+        throw new Error(
+          `Failed to update or create rating. Status: ${response.status}`
+        );
+      }
     } catch (error) {
-      console.error("Error updating rating:", (error as Error).message);
+      console.error(
+        "Error updating or creating rating:",
+        (error as Error).message
+      );
     }
   };
 
@@ -159,7 +197,11 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className={`modal-content ${fade ? "fade-out" : ""}`} onClick={(e) => e.stopPropagation()} ref={modalRef}>
+      <div
+        className={`modal-content ${fade ? "fade-out" : ""}`}
+        onClick={(e) => e.stopPropagation()}
+        ref={modalRef}
+      >
         {onBack && (
           <button className="back-button" onClick={onBack}>
             ← Back
@@ -177,16 +219,32 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
         />
 
         <h2>{movie.title}</h2>
-        <p><strong>Director:</strong> {movie.director}</p>
-        <p><strong>Cast:</strong> {movie.cast}</p>
-        <p><strong>Country:</strong> {movie.country}</p>
-        <p><strong>Release Year:</strong> {movie.releaseYear}</p>
-        <p><strong>Rating:</strong> {movie.rating}</p>
-        <p><strong>Duration:</strong> {movie.duration}</p>
-        <p><strong>Description:</strong> {movie.description}</p>
+        <p>
+          <strong>Director:</strong> {movie.director}
+        </p>
+        <p>
+          <strong>Cast:</strong> {movie.cast}
+        </p>
+        <p>
+          <strong>Country:</strong> {movie.country}
+        </p>
+        <p>
+          <strong>Release Year:</strong> {movie.releaseYear}
+        </p>
+        <p>
+          <strong>Rating:</strong> {movie.rating}
+        </p>
+        <p>
+          <strong>Duration:</strong> {movie.duration}
+        </p>
+        <p>
+          <strong>Description:</strong> {movie.description}
+        </p>
 
         <div className="rating-section">
-          <p><strong>Your Rating:</strong></p>
+          <p>
+            <strong>Your Rating:</strong>
+          </p>
           <div className="stars">
             {Array.from({ length: 5 }, (_, index) => (
               <span
@@ -211,9 +269,16 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
 
         {relatedMovies.length > 0 && (
           <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-2">Recommended Based on This Movie</h3>
+            <h3 className="text-lg font-semibold mb-2">
+              Recommended Based on This Movie
+            </h3>
             <div className="carousel-container">
-              <button className="scroll-btn left" onClick={() => scroll("left")}>‹</button>
+              <button
+                className="scroll-btn left"
+                onClick={() => scroll("left")}
+              >
+                ‹
+              </button>
               <div className="movie-carousel" ref={rowRef}>
                 {relatedMovies.map((rec) => (
                   <img
@@ -222,11 +287,18 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
                     alt={rec.title}
                     className="movie-poster"
                     onClick={() => onPosterClick?.(rec)}
-                    onError={(e) => (e.currentTarget.src = "/posters/default.jpg")}
+                    onError={(e) =>
+                      (e.currentTarget.src = "/posters/default.jpg")
+                    }
                   />
                 ))}
               </div>
-              <button className="scroll-btn right" onClick={() => scroll("right")}>›</button>
+              <button
+                className="scroll-btn right"
+                onClick={() => scroll("right")}
+              >
+                ›
+              </button>
             </div>
           </div>
         )}
