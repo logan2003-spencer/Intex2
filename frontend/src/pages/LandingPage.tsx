@@ -1,15 +1,30 @@
-// src/pages/LandingPage.tsx
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../components/LandingPage.css";
-import { moviePosters as allPosters } from "../data/moviePosters";
+import { moviePosters as allPosters } from "../data/moviePosters"; // This should now contain movie *titles*
+
+const baseUrl = "https://movieblob4logang.blob.core.windows.net/posters";
+
+const getPosterUrl = (title: string): string => {
+  if (!title) return "/posters/default.jpg";
+
+  const sanitize = (str: string) =>
+    str
+      .replace(/[^a-zA-Z0-9 ]/g, "") // Remove punctuation
+      .trim();
+
+  const sanitizedTitle = sanitize(title);
+  const encodedTitle = encodeURIComponent(sanitizedTitle);
+  const match = allPosters.find((path) => path === `/posters/${encodedTitle}.jpg`);
+
+  return match ? `${baseUrl}${match}` : "/posters/default.jpg";
+};
 
 const LandingPage = () => {
   const [email, setEmail] = useState<string>("");
   const navigate = useNavigate();
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scrolling infinite loop
   useEffect(() => {
     const carousel = carouselRef.current;
     if (!carousel) return;
@@ -34,8 +49,11 @@ const LandingPage = () => {
     requestAnimationFrame(scroll);
   }, []);
 
-  // Randomize and duplicate for loop
-  const moviePosters = allPosters.sort(() => 0.5 - Math.random()).slice(0, 10);
+  // Random 10 movie titles (not paths)
+  const movieTitles = allPosters
+    .map((path) => decodeURIComponent(path.replace("/posters/", "").replace(".jpg", "")))
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 10);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -50,18 +68,20 @@ const LandingPage = () => {
       <header className="header">
         <div className="logo">CineNiche</div>
         <nav>
-          <button className="sign-in-btn">Sign In</button>
+          <button className="sign-in-btn" onClick={() => navigate("/login")}>
+            Sign In
+          </button>
         </nav>
       </header>
 
       <section className="hero-section">
         <div className="carousel-wrapper">
           <div className="carousel" ref={carouselRef}>
-            {[...moviePosters, ...moviePosters].map((src, index) => (
+            {[...movieTitles, ...movieTitles].map((title, index) => (
               <img
                 key={index}
-                src={src}
-                alt={`Movie poster ${index}`}
+                src={getPosterUrl(title)}
+                alt={`Movie poster ${title}`}
                 className="carousel-image"
                 onError={(e) => (e.currentTarget.src = "/posters/fallback.jpg")}
               />
@@ -74,8 +94,7 @@ const LandingPage = () => {
           <h1 className="title">Unlimited movies, TV shows, and more.</h1>
           <h2 className="subtitle">Watch anywhere. Cancel anytime.</h2>
           <p className="cta">
-            Ready to watch? Enter your email to create or restart your
-            membership.
+            Ready to watch? Enter your email to create or restart your membership.
           </p>
           <form className="email-form">
             <input

@@ -9,8 +9,8 @@ using System.Collections.Generic;
 
 namespace Intex2.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class MoviesController : ControllerBase
     {
         private readonly MoviesContext _moviesContext;
@@ -20,6 +20,7 @@ namespace Intex2.API.Controllers
             _moviesContext = context;
         }
 
+        [Authorize]
         [HttpGet("search")]
         public async Task<IActionResult> SearchMovies([FromQuery] string query)
         {
@@ -37,11 +38,67 @@ namespace Intex2.API.Controllers
         }
 
         // Get all MoviesRatings
+        // [Authorize]
         [HttpGet("ratings")]
         public IEnumerable<MoviesRating> GetMoviesRatings()
         {
             return _moviesContext.MoviesRatings;
         }
+
+        // [Authorize]
+[HttpPut("ratings/{userId}/{showId}")]
+public IActionResult UpdateUserRating(int userId, string showId, [FromBody] MoviesRating updatedRating)
+{
+    if (updatedRating.ShowId != showId)
+    {
+        return BadRequest("ShowId in body does not match ShowId in route.");
+    }
+
+    var existingRating = _moviesContext.MoviesRatings
+        .FirstOrDefault(r => r.UserId == userId && r.ShowId == showId);
+
+    if (existingRating == null)
+    {
+        return NotFound("Rating not found.");
+    }
+
+    existingRating.Rating = updatedRating.Rating;
+    _moviesContext.MoviesRatings.Update(existingRating);
+    _moviesContext.SaveChanges();
+
+    return Ok(existingRating);
+}
+
+
+
+[HttpPost("ratings")]
+public async Task<IActionResult> AddOrUpdateRating([FromBody] MoviesRating rating)
+{
+    // Step 1: Validate the input
+    if (rating.UserId == null || string.IsNullOrEmpty(rating.ShowId) || rating.Rating == null)
+    {
+        return BadRequest("UserId, ShowId, and Rating are required.");
+    }
+    // Step 2: Check if the rating already exists
+    var existingRating = await _moviesContext.MoviesRatings
+        .FirstOrDefaultAsync(r => r.UserId == rating.UserId && r.ShowId == rating.ShowId);
+    if (existingRating != null)
+    {
+        // Step 3: Update the existing rating
+        existingRating.Rating = rating.Rating;
+        _moviesContext.Update(existingRating);
+    }
+    else
+    {
+        // Step 4: Add a new rating
+        await _moviesContext.MoviesRatings.AddAsync(rating);
+    }
+    // Step 5: Save the changes to the database
+    await _moviesContext.SaveChangesAsync();
+    // Step 6: Return a response
+    return Ok("Rating updated successfully.");
+}
+
 
         // Get all MoviesTitles
         [Authorize]
@@ -58,6 +115,7 @@ namespace Intex2.API.Controllers
             return _moviesContext.MoviesUsers;
         }
 
+        [Authorize]
         [HttpGet("home-page-recommendations")]
         public IActionResult GetMoviesHomePageRecommendations([FromQuery] int user_id)
         {
@@ -115,7 +173,7 @@ namespace Intex2.API.Controllers
 
 
 
-
+        [Authorize]
         [HttpGet("user-recommendations")]
         public IActionResult GetMoviesUserRecommendations([FromQuery] int user_id, [FromQuery] string show_id)
         {
@@ -152,7 +210,7 @@ namespace Intex2.API.Controllers
 
 
 
-
+        [Authorize]
         [HttpGet("by-genre")]
         public IActionResult GetMoviesByGenre()
         {
@@ -196,8 +254,9 @@ namespace Intex2.API.Controllers
         // {
         //     if (string.IsNullOrWhiteSpace(title)) return "fallback";
 
-            // Remove invalid characters and encode space as %20
-            [HttpGet("details/{id}")]
+        // Remove invalid characters and encode space as %20
+        [Authorize]
+        [HttpGet("details/{id}")]
             public IActionResult GetMovieDetails(string id)
             {
                 // Fetch the movie details first without the SanitizeFileName logic
@@ -231,6 +290,7 @@ namespace Intex2.API.Controllers
                 return Ok(movieDetails);
             }
 
+        [Authorize]
         [HttpGet("AllMovies")]
         public IActionResult GetMovies(int pageSize = 10, int pageNum = 1, [FromQuery] List<string>? Type = null)
         {
@@ -250,6 +310,7 @@ namespace Intex2.API.Controllers
             return Ok(returnObject);
         }
 
+        [Authorize]
         [HttpGet("GetGenres")]
         public IActionResult GetGenres()
         {
@@ -259,7 +320,7 @@ namespace Intex2.API.Controllers
                 .ToList();
             return Ok(genres);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost("AddMovie")]
         public IActionResult AddMovie([FromBody] MoviesTitle newMovie)
         {
@@ -285,6 +346,7 @@ namespace Intex2.API.Controllers
             return CreatedAtAction(nameof(GetMovie), new { showId = newMovie.ShowId }, newMovie);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("Update/{showId}")]
         public IActionResult UpdateMovie(string showId, [FromBody] MoviesTitle updatedMovie)
         {
@@ -315,6 +377,7 @@ namespace Intex2.API.Controllers
             return Ok(existingMovie);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("Delete/{showId}")]
         public IActionResult DeleteMovie(string showId)
         {
@@ -328,6 +391,7 @@ namespace Intex2.API.Controllers
             return Ok("Movie deleted successfully");
         }
 
+        [Authorize]
         [HttpGet("GetMovie/{showId}")]
         public IActionResult GetMovie(string showId)
         {

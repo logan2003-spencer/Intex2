@@ -12,28 +12,35 @@ function MovieList() {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      const token = localStorage.getItem("authToken");
+  const fetchMovies = async () => {
+    const token = localStorage.getItem("authToken");
 
-    const response = await fetch('https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/titles', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
+    try {
+      const response = await fetch(
+        'https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/titles',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
-});
 
-// Optional: safer error handling
-if (!response.ok) {
-  const errorText = await response.text();
-  throw new Error(`HTTP ${response.status}: ${errorText}`);
-}
-
-const data = await response.json();
+      const data = await response.json();
       setMovies(data);
-    };
+    } catch (err) {
+      console.error("Error fetching movies:", err);
+    }
+  };
 
-    fetchMovies();
-  }, []);
+  fetchMovies();
+}, []);
+
 
   // const getPosterForMovie = (title: string): string => {
   //   const match = allPosters.find((path) => {
