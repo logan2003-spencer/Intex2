@@ -16,6 +16,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
   const [relatedMovies, setRelatedMovies] = useState<Movie[]>([]);
   const [rating, setRating] = useState<number>(0); // For star rating
   const [fade, setFade] = useState(false);
+  const token = localStorage.getItem("authToken");
 
   const userId = 1; // Replace with real auth ID if needed
   const rowRef = useRef<HTMLDivElement>(null); // Ref for carousel scrolling
@@ -41,7 +42,12 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
 
     const fetchMovie = async () => {
       try {
-        const res = await fetch(`https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/Movies/details/${movieId}`);
+        const res = await fetch(`https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/Movies/details/${movieId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
         if (!res.ok) throw new Error("Failed to load movie");
         const data = await res.json();
         setMovie(data);
@@ -61,7 +67,13 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
     const fetchRelatedMovies = async () => {
       try {
         const res = await fetch(
-          `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/user-recommendations?user_id=${userId}&show_id=${movie.showId}`
+          `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/user-recommendations?user_id=${userId}&show_id=${movie.showId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
         );
         if (!res.ok) throw new Error("Failed to load related movies");
         const data = await res.json();
@@ -121,6 +133,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           UserId: userId,
@@ -128,6 +141,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movieId, onClose, onPosterClick
           Rating: star,
         }),
       });
+
 
       if (!response.ok) {
         const errorMessage = await response.text();
