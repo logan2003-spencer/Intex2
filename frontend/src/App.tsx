@@ -15,62 +15,64 @@ import MovieModal from "./components/MovieModel";
 import { useState } from "react";
 import { Movie } from "./types/Movie";
 
-
 const App = () => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   return (
     <>
       <Router>
-        {/* Show Header only if not on Landing Page */}
         <Routes>
-          <Route
-            path="/"
-            element={<LandingPage />}
-          />
-          <Route path="/login" element={<LoginPage />} />
+          {/* Landing Page — no header */}
+          <Route path="/" element={<LandingPage />} />
 
+          {/* Create Profile — no header */}
+          <Route path="/create-profile" element={<CreateProfile />} />
+
+          {/* All other routes — with header */}
           <Route
             path="*"
             element={
-                <>
-                <Header onMovieSelect={(movie: Movie) => setSelectedMovie(movie)} />
+              <>
+                <Header
+                  onMovieSelect={(movie: Movie) => setSelectedMovie(movie)}
+                />
                 <Routes>
-                  <Route path="/create-profile" element={<CreateProfile />} />
                   <Route path="/movies" element={<MovieDisplay />} />
                   <Route path="/recommended" element={<RecommendedDisplay />} />
-
                   <Route element={<MainLayout />}>
-                  <Route path="/home" element={<HomePage />} />
-                  <Route path="/create-profile" element={<CreateProfile />} />
-                  <Route path="/movies" element={<MovieDisplay />} />
-                  <Route path="/privacy" element={<PrivacyPage />} />
-                  <Route path="/recommended" element={<MovieDisplay />} />
-                  
-                  <Route path="/adminMovies" element={<AdminMoviesPage />} />
-                  <Route
-                    path="/addMovie"
-                    element={
-                    <AddMoviePage
-                      onSuccess={() => console.log("Movie added successfully")}
-                      onCancel={() => console.log("Movie addition canceled")}
+                    <Route path="/home" element={<HomePage />} />
+                    <Route path="/privacy" element={<PrivacyPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/adminMovies" element={<AdminMoviesPage />} />
+                    <Route
+                      path="/addMovie"
+                      element={
+                        <AddMoviePage
+                          onSuccess={() =>
+                            console.log("Movie added successfully")
+                          }
+                          onCancel={() =>
+                            console.log("Movie addition canceled")
+                          }
+                        />
+                      }
                     />
-                    }
-                  />
                   </Route>
                 </Routes>
-                </>
+              </>
             }
           />
         </Routes>
       </Router>
 
+      {/* Movie Modal */}
       {selectedMovie && (
         <MovieModal
           movieId={selectedMovie.showId ?? ""}
           onClose={() => setSelectedMovie(null)}
         />
       )}
+
       <CookieConsent />
     </>
   );

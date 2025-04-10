@@ -21,6 +21,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectMovie, onClose }) => {
         const token = localStorage.getItem("authToken");
 
         const res = await fetch(
+<<<<<<< HEAD
+          `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/Movies/search?query=${encodeURIComponent(
+            query
+          )}`
+=======
           `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/Movies/search?query=${encodeURIComponent(query)}`,
           {
             headers: {
@@ -28,6 +33,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectMovie, onClose }) => {
               "Content-Type": "application/json"
             }
           }
+>>>>>>> 424cb9e43b34832028e833d50bca331b3b67f0ef
         );
 
 

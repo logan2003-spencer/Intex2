@@ -1,12 +1,16 @@
 // src/pages/CreateProfile.tsx
 import React from "react";
-import RegisterForm from "../components/RegisterForm"; // Adjust path if needed
+import "../components/CreateProfile.css";
+import RegisterForm from "../components/RegisterForm";
 
 const CreateProfile: React.FC = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="max-w-md w-full bg-white p-6 rounded-xl shadow-lg">
-        <h1 className="text-2xl font-bold mb-4 text-center">Create Your Profile</h1>
+    <div className="create-profile-wrapper">
+      <div className="logo-container">
+        <img src="/logo.png" alt="CineNiche Logo" className="logo" />
+      </div>
+      <div className="create-profile-page">
+        <h2>Create Your Profile</h2>
         <RegisterForm />
       </div>
     </div>
