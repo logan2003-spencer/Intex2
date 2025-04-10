@@ -1,8 +1,8 @@
 // MovieDisplay.tsx
 // import React from 'react';
 // import MovieList from '../MovieList';
-import RecommendedMovies from '../RecommendedMovies';
-  // Correct import path to MovieList
+import RecommendedMovies from "../RecommendedMovies";
+// Correct import path to MovieList
 
 const RecommendedDisplay = () => {
   return (

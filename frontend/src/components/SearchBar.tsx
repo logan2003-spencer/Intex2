@@ -19,7 +19,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectMovie, onClose }) => {
 
       try {
         const res = await fetch(
-          `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/Movies/search?query=${encodeURIComponent(query)}`
+          `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/Movies/search?query=${encodeURIComponent(
+            query
+          )}`
         );
 
         if (!res.ok) {
