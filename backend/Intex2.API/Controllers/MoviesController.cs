@@ -38,16 +38,16 @@ namespace Intex2.API.Controllers
         }
 
         // Get all MoviesRatings
-        // [Authorize]
-        [AllowAnonymous]
+        [Authorize]
+        //[AllowAnonymous]
         [HttpGet("ratings")]
         public IEnumerable<MoviesRating> GetMoviesRatings()
         {
             return _moviesContext.MoviesRatings;
         }
 
-        // [Authorize]
-        [AllowAnonymous]
+        [Authorize]
+        //[AllowAnonymous]
         [HttpPut("ratings/{userId}/{showId}")]
 public IActionResult UpdateUserRating(int userId, string showId, [FromBody] MoviesRating updatedRating)
 {
