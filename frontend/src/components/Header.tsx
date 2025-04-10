@@ -16,6 +16,16 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
+<<<<<<< HEAD
+    try {
+      const response = await fetch(
+        `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/search?query=${encodeURIComponent(
+          searchQuery
+        )}`
+      );
+
+      if (!response.ok) throw new Error("Failed to fetch search results");
+=======
   const token = localStorage.getItem("authToken");
 
   try {
@@ -28,6 +38,7 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
         },
       }
     );
+>>>>>>> 424cb9e43b34832028e833d50bca331b3b67f0ef
 
     if (!response.ok) {
       throw new Error("Failed to fetch search results");
@@ -54,9 +65,22 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
 
   return (
     <header className="header">
-      <div className="header-container">
+      <div className="header-left">
         <div className="header-title">CineNiche</div>
+      </div>
 
+      <div>
+        <div className="user-placeholder">Hi, [Username]</div>
+      </div>
+
+      <nav className="nav-links">
+        <Link to="/home">Home</Link>
+        <Link to="/genres">Genres</Link>
+        <Link to="/movies">Movie Data</Link>
+        <Link to="/privacy">Privacy</Link>
+      </nav>
+
+      <div className="header-right">
         <form className="search-bar" onSubmit={handleSearch}>
           <input
             type="text"
@@ -64,15 +88,7 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button type="submit">Search</button>
         </form>
-
-        <nav className="nav-links">
-          <Link to="/home">Home</Link>
-          <Link to="/genres">Genres</Link>
-          <Link to="/movies">Movie Data</Link>
-          <Link to="/privacy">Privacy</Link>
-        </nav>
       </div>
 
       {showModal && selectedMovieId && (

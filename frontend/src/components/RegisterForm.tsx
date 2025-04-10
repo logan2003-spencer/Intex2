@@ -39,75 +39,95 @@ const RegisterForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        placeholder="Password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <input
-        placeholder="Full Name"
-        value={fullName}
-        onChange={(e) => setFullName(e.target.value)}
-      />
-      <input
-        placeholder="Phone Number"
-        value={phoneNumber}
-        onChange={(e) => setPhoneNumber(e.target.value)}
-      />
-      <input
-        placeholder="City"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-      />
-      <input
-        placeholder="State"
-        value={state}
-        onChange={(e) => setState(e.target.value)}
-      />
-      <input
-        placeholder="Zip Code"
-        value={zipCode}
-        onChange={(e) => setZipCode(e.target.value)}
-      />
-      <input
-        placeholder="Age"
-        type="number"
-        value={age || ""}
-        onChange={(e) => setAge(parseInt(e.target.value))}
-      />
-      <select value={gender} onChange={(e) => setGender(e.target.value)}>
-        <option value="">Select Gender</option>
-        <option value="Female">Female</option>
-        <option value="Male">Male</option>
-        <option value="Other">Other</option>
-      </select>
-      <select value={role} onChange={(e) => setRole(e.target.value)}>
-        <option value="User">User</option>
-        <option value="Admin">Admin</option>
-      </select>
-      <button
-        type="submit"
-        className="w-full bg-green-500 text-white py-2 rounded"
-      >
-        Register
-      </button>
+    <form onSubmit={handleSubmit} className="create-profile-form">
+      <div className="form-group">
+        <input
+          name="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <input
+          name="fullName"
+          placeholder="Full Name"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+        />
+        <input
+          name="phoneNumber"
+          placeholder="Phone Number"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
+      </div>
+
+      <div className="form-group">
+        <input
+          name="city"
+          placeholder="City"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+        />
+        <input
+          name="state"
+          placeholder="State"
+          value={state}
+          onChange={(e) => setState(e.target.value)}
+        />
+      </div>
+
+      <div className="form-group">
+        <input
+          name="zipCode"
+          placeholder="Zip Code"
+          value={zipCode}
+          onChange={(e) => setZipCode(e.target.value)}
+        />
+        <input
+          name="age"
+          type="number"
+          placeholder="Age"
+          value={age || ""}
+          onChange={(e) => setAge(parseInt(e.target.value))}
+        />
+      </div>
+
+      <div className="form-group">
+        <select value={gender} onChange={(e) => setGender(e.target.value)}>
+          <option value="">Select Gender</option>
+          <option value="Female">Female</option>
+          <option value="Male">Male</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <select value={role} onChange={(e) => setRole(e.target.value)}>
+          <option value="User">User</option>
+          <option value="Admin">Admin</option>
+        </select>
+      </div>
+
+      <button type="submit">Register</button>
+
       {Array.isArray(message) ? (
-        <ul className="text-sm text-red-600 space-y-1 text-center">
+        <ul className="error-message">
           {message.map((err, idx) => (
             <li key={idx}>{err.description}</li>
           ))}
         </ul>
       ) : (
-        message && <p className="text-sm text-red-600 text-center">{message}</p>
+        message && <p className="error-message">{message}</p>
       )}
     </form>
   );

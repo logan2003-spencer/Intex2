@@ -1,83 +1,118 @@
+/* === Outer wrapper to center everything === */
+.create-profile-wrapper {
+  min-height: 100vh;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* === Logo top-left === */
+.logo-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
+}
+
+.logo {
+  height: 50px;
+  margin-left: 2rem;
+}
+
+/* === Main form container === */
 .create-profile-page {
-    width: 60%;
-    margin: 2rem auto;
-    max-width: 900px;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: "Roboto", sans-serif;
-  }
-  
-  .create-profile-page h2 {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    color: #333;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: space-between;
-  }
-  
-  .form-group input,
-  .form-group select {
-    padding: 1rem;
-    font-size: 1rem;
-    width: calc(50% - 1rem); /* Each input will take up 50% of the width */
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background-color: #333;
-  }
-  
-  .form-group select {
-    width: calc(33% - 1rem); /* For the select fields (birthday) */
-  }
-  
-  .gender {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-  
-  .gender label {
-    font-size: 1rem;
-    color: #333;
-  }
-  
-  button {
-    padding: 1rem;
-    font-size: 1.2rem;
-    background-color: #e50914;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    margin-top: 1.5rem;
-  }
-  
-  button:hover {
-    background-color: #f40612;
-  }
-  
-  input:focus,
-  select:focus {
-    outline: none;
-    border-color: #e50914;
-    background-color: #333;
-  }
-  
-  input::placeholder,
-  select::placeholder {
-    color: #888;
-  }
+  width: 100%;
+  max-width: 900px;
+  background-color: #111;
+  padding: 3rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  font-family: "Roboto", sans-serif;
+}
+
+.create-profile-page h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #fff;
+}
+
+/* === Form layout === */
+.create-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* === Two-column input groups === */
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.form-group input,
+.form-group select {
+  padding: 1rem;
+  font-size: 1rem;
+  flex: 1 1 48%;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background-color: #222;
+  color: white;
+}
+
+/* === Full width inputs/selects if needed === */
+.create-profile-form input,
+.create-profile-form select {
+  width: 100%;
+}
+
+.form-group select {
+  appearance: none;
+}
+
+/* === Placeholder and focus styling === */
+input::placeholder,
+select {
+  color: #aaa;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #e50914;
+  background-color: #222;
+}
+
+/* === Button === */
+button {
+  padding: 1rem;
+  font-size: 1.2rem;
+  background-color: #e50914;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #f40612;
+}
+
+/* === Error message === */
+.error-message {
+  color: #ff4d4d;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-top: -0.5rem;
+}
+
+.error-message li {
+  list-style: none;
+}
