@@ -17,16 +17,18 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const response = await fetch(
-        `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/search?query=${encodeURIComponent(
-          searchQuery
-        )}`
-      );
+  const token = localStorage.getItem("authToken");
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch search results");
+  try {
+    const response = await fetch(
+      `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/search?query=${encodeURIComponent(searchQuery)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       }
+    );
 
       const data = await response.json();
       if (data.length > 0) {
@@ -58,9 +60,14 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
 
       <nav className="nav-links">
         <Link to="/home">Home</Link>
-        <Link to="/genres">Genres</Link>
-        <Link to="/movies">Movie Data</Link>
+        {/* <Link to="/genres">Genres</Link> */}
+        {/* <Link to="/movies">Movie Data</Link> */}
         <Link to="/privacy">Privacy</Link>
+        <Link to="/login">Logout</Link>
+        <Link to="/privacy">Admin</Link>
+
+
+
       </nav>
 
       <div className="header-right">
