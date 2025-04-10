@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import LandingPage from "./pages/LandingPage";
 import CreateProfile from "./pages/CreateProfile";
 import MovieDisplay from "./pages/MovieDisplay";
 import PrivacyPage from "./pages/PrivacyPage";
 import HomePage from "./pages/HomePage";
-import Header from "./components/Header";
 import RecommendedDisplay from "./pages/RecommendedDisplay";
 import LoginPage from "./pages/LoginPage";
 import AddMoviePage from "./pages/AddMoviePage";
@@ -12,8 +12,9 @@ import AdminMoviesPage from "./pages/AdminMoviePage";
 import CookieConsent from "./components/CookieConsent";
 import MainLayout from "./layouts/MainLayout";
 import MovieModal from "./components/MovieModel";
-import { useState } from "react";
 import { Movie } from "./types/Movie";
+import Unauthorized from "./pages/Unauthorized";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
@@ -22,46 +23,56 @@ const App = () => {
     <>
       <Router>
         <Routes>
-          {/* Landing Page — no header */}
+          {/* Public Routes without layout */}
           <Route path="/" element={<LandingPage />} />
-
-          {/* Create Profile — no header */}
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/create-profile" element={<CreateProfile />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
 
-          {/* All other routes — with header */}
-          <Route
-            path="*"
-            element={
-              <>
-                <Header
-                  onMovieSelect={(movie: Movie) => setSelectedMovie(movie)}
-                />
-                <Routes>
-                  <Route path="/movies" element={<MovieDisplay />} />
-                  <Route path="/recommended" element={<RecommendedDisplay />} />
-                  <Route element={<MainLayout />}>
-                    <Route path="/home" element={<HomePage />} />
-                    <Route path="/privacy" element={<PrivacyPage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/adminMovies" element={<AdminMoviesPage />} />
-                    <Route
-                      path="/addMovie"
-                      element={
-                        <AddMoviePage
-                          onSuccess={() =>
-                            console.log("Movie added successfully")
-                          }
-                          onCancel={() =>
-                            console.log("Movie addition canceled")
-                          }
-                        />
-                      }
-                    />
-                  </Route>
-                </Routes>
-              </>
-            }
-          />
+          {/* Routes with MainLayout */}
+          <Route element={<MainLayout />}>
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/recommended" element={<RecommendedDisplay />} />
+
+            {/* Protected Routes */}
+            <Route
+              path="/home"
+              element={
+                <ProtectedRoute>
+                  <HomePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/movies"
+              element={
+                <ProtectedRoute>
+                  <MovieDisplay />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Admin-only Routes */}
+            <Route
+              path="/adminMovies"
+              element={
+                <ProtectedRoute role="Admin">
+                  <AdminMoviesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/addMovie"
+              element={
+                <ProtectedRoute role="Admin">
+                  <AddMoviePage
+                    onSuccess={() => console.log("Movie added successfully")}
+                    onCancel={() => console.log("Movie addition canceled")}
+                  />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
         </Routes>
       </Router>
 
