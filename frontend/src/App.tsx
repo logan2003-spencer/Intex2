@@ -53,7 +53,7 @@ const App = () => {
             <Route
               path="/adminMovies"
               element={
-                <ProtectedRoute role="Admin">
+                <ProtectedRoute role="admin">
                   <AdminMoviesPage />
                 </ProtectedRoute>
               }
@@ -61,7 +61,7 @@ const App = () => {
             <Route
               path="/addMovie"
               element={
-                <ProtectedRoute role="Admin">
+                <ProtectedRoute role="admin">
                   <AddMoviePage
                     onSuccess={() => console.log("Movie added successfully")}
                     onCancel={() => console.log("Movie addition canceled")}
