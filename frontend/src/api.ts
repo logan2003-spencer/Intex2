@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5174/api",
+  baseURL: "https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api",
 });
 
 api.interceptors.request.use(
