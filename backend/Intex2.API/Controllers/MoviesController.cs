@@ -20,6 +20,7 @@ namespace Intex2.API.Controllers
             _moviesContext = context;
         }
 
+        [Authorize]
         [HttpGet("search")]
         public async Task<IActionResult> SearchMovies([FromQuery] string query)
         {
@@ -37,6 +38,7 @@ namespace Intex2.API.Controllers
         }
 
         // Get all MoviesRatings
+        [Authorize]
         [HttpGet("ratings")]
         public IEnumerable<MoviesRating> GetMoviesRatings()
         {
@@ -58,6 +60,7 @@ namespace Intex2.API.Controllers
             return _moviesContext.MoviesUsers;
         }
 
+        [Authorize]
         [HttpGet("home-page-recommendations")]
         public IActionResult GetMoviesHomePageRecommendations([FromQuery] int user_id)
         {
@@ -115,7 +118,7 @@ namespace Intex2.API.Controllers
 
 
 
-
+        [Authorize]
         [HttpGet("user-recommendations")]
         public IActionResult GetMoviesUserRecommendations([FromQuery] int user_id, [FromQuery] string show_id)
         {
@@ -152,7 +155,7 @@ namespace Intex2.API.Controllers
 
 
 
-
+        [Authorize]
         [HttpGet("by-genre")]
         public IActionResult GetMoviesByGenre()
         {
@@ -196,8 +199,9 @@ namespace Intex2.API.Controllers
         // {
         //     if (string.IsNullOrWhiteSpace(title)) return "fallback";
 
-            // Remove invalid characters and encode space as %20
-            [HttpGet("details/{id}")]
+        // Remove invalid characters and encode space as %20
+        [Authorize]
+        [HttpGet("details/{id}")]
             public IActionResult GetMovieDetails(string id)
             {
                 // Fetch the movie details first without the SanitizeFileName logic
@@ -231,6 +235,7 @@ namespace Intex2.API.Controllers
                 return Ok(movieDetails);
             }
 
+        [Authorize]
         [HttpGet("AllMovies")]
         public IActionResult GetMovies(int pageSize = 10, int pageNum = 1, [FromQuery] List<string>? Type = null)
         {
@@ -250,6 +255,7 @@ namespace Intex2.API.Controllers
             return Ok(returnObject);
         }
 
+        [Authorize]
         [HttpGet("GetGenres")]
         public IActionResult GetGenres()
         {
@@ -259,7 +265,7 @@ namespace Intex2.API.Controllers
                 .ToList();
             return Ok(genres);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost("AddMovie")]
         public IActionResult AddMovie([FromBody] MoviesTitle newMovie)
         {
@@ -285,6 +291,7 @@ namespace Intex2.API.Controllers
             return CreatedAtAction(nameof(GetMovie), new { showId = newMovie.ShowId }, newMovie);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("Update/{showId}")]
         public IActionResult UpdateMovie(string showId, [FromBody] MoviesTitle updatedMovie)
         {
@@ -315,6 +322,7 @@ namespace Intex2.API.Controllers
             return Ok(existingMovie);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("Delete/{showId}")]
         public IActionResult DeleteMovie(string showId)
         {
@@ -328,6 +336,7 @@ namespace Intex2.API.Controllers
             return Ok("Movie deleted successfully");
         }
 
+        [Authorize]
         [HttpGet("GetMovie/{showId}")]
         public IActionResult GetMovie(string showId)
         {

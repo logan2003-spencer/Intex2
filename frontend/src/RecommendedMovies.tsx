@@ -13,9 +13,18 @@ function RecommendedMovies() {
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const response = await fetch(
-          `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/home-page-recommendations?user_id=${userId}`
-        );
+        const token = localStorage.getItem("authToken");
+
+const response = await fetch(
+  `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/home-page-recommendations?user_id=${userId}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  }
+);
+
         const data = await response.json();
         console.log("Fetched data:", data);
         setGroupedMovies(data); // e.g., { "Action": [...], "Comedy": [...] }

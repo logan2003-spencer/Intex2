@@ -14,8 +14,9 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  e.preventDefault();
 
+<<<<<<< HEAD
     try {
       const response = await fetch(
         `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/search?query=${encodeURIComponent(
@@ -24,19 +25,38 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
       );
 
       if (!response.ok) throw new Error("Failed to fetch search results");
+=======
+  const token = localStorage.getItem("authToken");
 
-      const data = await response.json();
-      if (data.length > 0) {
-        setSelectedMovieId(data[0].showId);
-        setShowModal(true);
-        onMovieSelect(data[0]);
-      } else {
-        alert("No movies found with that title.");
+  try {
+    const response = await fetch(
+      `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/search?query=${encodeURIComponent(searchQuery)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       }
-    } catch (error) {
-      console.error("Search error:", error);
+    );
+>>>>>>> 424cb9e43b34832028e833d50bca331b3b67f0ef
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch search results");
     }
-  };
+
+    const data = await response.json();
+    if (data.length > 0) {
+      setSelectedMovieId(data[0].showId);
+      setShowModal(true);
+      onMovieSelect(data[0]);
+    } else {
+      alert("No movies found with that title.");
+    }
+  } catch (error) {
+    console.error("Search error:", error);
+  }
+};
+
 
   const handleCloseModal = () => {
     setShowModal(false);
