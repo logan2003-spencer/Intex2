@@ -38,15 +38,17 @@ namespace Intex2.API.Controllers
         }
 
         // Get all MoviesRatings
-        // [Authorize]
+        [Authorize]
+        //[AllowAnonymous]
         [HttpGet("ratings")]
         public IEnumerable<MoviesRating> GetMoviesRatings()
         {
             return _moviesContext.MoviesRatings;
         }
 
-        // [Authorize]
-[HttpPut("ratings/{userId}/{showId}")]
+        [Authorize]
+        //[AllowAnonymous]
+        [HttpPut("ratings/{userId}/{showId}")]
 public IActionResult UpdateUserRating(int userId, string showId, [FromBody] MoviesRating updatedRating)
 {
     if (updatedRating.ShowId != showId)
@@ -70,9 +72,9 @@ public IActionResult UpdateUserRating(int userId, string showId, [FromBody] Movi
 }
 
 
-
-[HttpPost("ratings")]
-public async Task<IActionResult> AddOrUpdateRating([FromBody] MoviesRating rating)
+        [AllowAnonymous]
+        [HttpPost("ratings")]
+        public async Task<IActionResult> AddOrUpdateRating([FromBody] MoviesRating rating)
 {
     // Step 1: Validate the input
     if (rating.UserId == null || string.IsNullOrEmpty(rating.ShowId) || rating.Rating == null)
