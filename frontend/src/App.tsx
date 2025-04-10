@@ -22,6 +22,8 @@ const App = () => {
   return (
     <>
       <Router>
+        <Header onMovieSelect={(movie: Movie) => setSelectedMovie(movie)} />
+
         <Routes>
           {/* Public Routes without layout */}
           <Route path="/" element={<LandingPage />} />
@@ -76,7 +78,7 @@ const App = () => {
         </Routes>
       </Router>
 
-      {/* Movie Modal */}
+      {/* Movie modal if selected */}
       {selectedMovie && (
         <MovieModal
           movieId={selectedMovie.showId ?? ""}

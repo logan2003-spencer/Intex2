@@ -64,9 +64,14 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
 
       <nav className="nav-links">
         <Link to="/home">Home</Link>
-        <Link to="/genres">Genres</Link>
-        <Link to="/movies">Movie Data</Link>
+        {/* <Link to="/genres">Genres</Link> */}
+        {/* <Link to="/movies">Movie Data</Link> */}
         <Link to="/privacy">Privacy</Link>
+        <Link to="/login">Logout</Link>
+        <Link to="/privacy">Admin</Link>
+
+
+
       </nav>
 
       <div className="header-right">

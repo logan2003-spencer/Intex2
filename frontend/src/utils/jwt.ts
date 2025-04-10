@@ -16,6 +16,10 @@ export const parseJwt = (token: string) => {
   }
 };
 
+<<<<<<< HEAD
+=======
+// utils/jwt.ts
+>>>>>>> 30db00247032a0c483a8a3ca566a8305963b9b27
 
 export const isAuthenticated = (): boolean => {
   const token = localStorage.getItem("authToken");
@@ -35,3 +39,7 @@ export const getUserRole = (): string | null => {
   const decoded = parseJwt(token);
   return decoded?.role ?? null;
 };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 30db00247032a0c483a8a3ca566a8305963b9b27
