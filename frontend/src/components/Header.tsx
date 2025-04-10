@@ -68,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
         {/* <Link to="/movies">Movie Data</Link> */}
         <Link to="/privacy">Privacy</Link>
         <Link to="/login">Logout</Link>
-        <Link to="/privacy">Admin</Link>
+        <Link to="/adminMovies">Admin</Link>
 
 
 

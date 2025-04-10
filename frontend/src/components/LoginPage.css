@@ -16,8 +16,8 @@ body {
 .login-page {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Align items to the top initially */
-  align-items: center;
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
   width: 100%; /* Ensure full width */
   max-width: 1200px; /* Limit the maximum width of the content */
   padding: 40px 20px; /* Add some padding around the content */
@@ -27,18 +27,22 @@ body {
   text-align: center;
 }
 
+/* Adjust the header to use flex properly */
 .header {
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px; /* Increase margin below the header */
+  justify-content: center; /* Center the header content horizontally */
+  align-items: center; /* Vertically align logo and sign-in button */
+  margin-bottom: 40px; /* Increased margin below the header */
+  padding: 0 20px; /* Add padding to prevent content from touching the edges */
 }
 
 .logo {
   font-size: 2.5rem;
   font-weight: 700;
   color: red;
+  margin: 0; /* Ensure no extra margin */
+  text-align: center; /* Center the title text */
 }
 
 .sign-in-btn {
@@ -48,6 +52,7 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 20px; /* Add space above the button */
 }
 
 .login-form-container {
@@ -98,7 +103,6 @@ body {
 }
 
 .footer {
-  /* Removed position: absolute to allow it to be centered with flexbox */
   bottom: auto; /* Removed fixed bottom position */
   margin-top: 40px; /* Add some space above the footer */
   color: white;

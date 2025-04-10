@@ -31,9 +31,9 @@ export const isAuthenticated = (): boolean => {
 };
 
 
-interface DecodedToken {
-  sub: string,
-  name: string,
-  admin: boolean,
-  iat: number
-}
+// interface DecodedToken {
+//   sub: string,
+//   name: string,
+//   admin: boolean,
+//   iat: number
+// }
