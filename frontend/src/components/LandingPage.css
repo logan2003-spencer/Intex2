@@ -24,6 +24,8 @@ body {
   position: sticky;
   top: 0;
   z-index: 10;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .logo {
@@ -39,20 +41,22 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .hero-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - 80px);
+  justify-content: flex-start;
+  min-height: 100vh;
   padding: 60px 20px;
   background-image: url("https://source.unsplash.com/random/1920x1080?movie");
   background-size: cover;
   background-position: center;
   color: white;
   text-align: center;
+  overflow-y: auto;
 }
 
 .hero-content {
@@ -61,6 +65,7 @@ body {
   border-radius: 20px;
   max-width: 700px;
   margin-bottom: 40px;
+  width: 100%;
 }
 
 .hero-logo {
@@ -85,21 +90,28 @@ body {
   margin-bottom: 20px;
 }
 
-.email-form input {
-  padding: 10px;
-  font-size: 1rem;
-  margin-right: 10px;
-  border-radius: 5px;
-  border: none;
+.email-form {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.email-form input {
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  width: 100%;
+  max-width: 400px;
 }
 
 .start-btn {
   background: red;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 30px;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
@@ -117,9 +129,9 @@ body {
   display: flex;
   gap: 20px;
   overflow-x: auto;
-  padding: 20px 0; /* changed from 20px to 20px 0 to remove horizontal padding */
-  width: 100vw; /* full viewport width */
-  margin-left: calc(-50vw + 50%); /* centers the full-width carousel */
+  padding: 20px 0;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
   scrollbar-width: none;
 }
 
