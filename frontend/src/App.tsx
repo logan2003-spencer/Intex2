@@ -22,16 +22,8 @@ const App = () => {
     <>
       <Router>
         <Routes>
-<<<<<<< HEAD
           {/* Landing Page — no header */}
           <Route path="/" element={<LandingPage />} />
-=======
-          <Route
-            path="/"
-            element={<LandingPage />}
-          />
-          <Route path="/login" element={<LoginPage />} />
->>>>>>> 424cb9e43b34832028e833d50bca331b3b67f0ef
 
           {/* Create Profile — no header */}
           <Route path="/create-profile" element={<CreateProfile />} />
@@ -48,7 +40,6 @@ const App = () => {
                   <Route path="/movies" element={<MovieDisplay />} />
                   <Route path="/recommended" element={<RecommendedDisplay />} />
                   <Route element={<MainLayout />}>
-<<<<<<< HEAD
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/privacy" element={<PrivacyPage />} />
                     <Route path="/login" element={<LoginPage />} />
@@ -65,21 +56,6 @@ const App = () => {
                           }
                         />
                       }
-=======
-                  <Route path="/home" element={<HomePage />} />
-                  <Route path="/create-profile" element={<CreateProfile />} />
-                  <Route path="/movies" element={<MovieDisplay />} />
-                  <Route path="/privacy" element={<PrivacyPage />} />
-                  <Route path="/recommended" element={<MovieDisplay />} />
-                  
-                  <Route path="/adminMovies" element={<AdminMoviesPage />} />
-                  <Route
-                    path="/addMovie"
-                    element={
-                    <AddMoviePage
-                      onSuccess={() => console.log("Movie added successfully")}
-                      onCancel={() => console.log("Movie addition canceled")}
->>>>>>> 424cb9e43b34832028e833d50bca331b3b67f0ef
                     />
                   </Route>
                 </Routes>
