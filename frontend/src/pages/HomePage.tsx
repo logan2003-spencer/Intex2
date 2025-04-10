@@ -4,6 +4,10 @@ import GenreCarousel from "./GenreCarousel";
 import MovieModal from "../components/MovieModel";
 import { Movie } from "../types/Movie";
 
+type GenreMovies = {
+  [genre: string]: Movie[];
+};
+
 const HomePage = () => {
   const [genreData, setGenreData] = useState<{ [genre: string]: Movie[] }>({});
   const [selectedMovieId, setSelectedMovieId] = useState<string | null>(null);
