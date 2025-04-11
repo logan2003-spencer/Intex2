@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IO;
+<<<<<<< HEAD
+using Microsoft.AspNetCore.Builder;
+=======
+>>>>>>> ccfd069ddd533c57dadc2d9694e01390a5daac4c
 using Microsoft.AspNetCore.Mvc;  // For UnauthorizedObjectResult
 using Microsoft.AspNetCore.Http;
 
@@ -18,6 +22,12 @@ using Microsoft.AspNetCore.Http;
 }
 
 
+<<<<<<< HEAD
+
+
+
+=======
+>>>>>>> ccfd069ddd533c57dadc2d9694e01390a5daac4c
 
 var staticFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 Console.WriteLine($"Static file path: {staticFilePath}");
@@ -149,6 +159,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+<<<<<<< HEAD
+// Ensure that HTTP requests are redirected to HTTPS
+=======
+>>>>>>> ccfd069ddd533c57dadc2d9694e01390a5daac4c
 
 app.UseHttpsRedirection();
 
