@@ -34,7 +34,7 @@ namespace Intex2.API.Data
                 entity.HasKey(e => new { e.UserId, e.ShowId }); // Composite primary key
 
                 entity.ToTable("movies_ratings");
-                entity.Property(e => e.Rating).HasColumnName("rating");
+                entity.Property(e => e.starRating).HasColumnName("rating");
                 entity.Property(e => e.ShowId).HasColumnName("show_id");
                 entity.Property(e => e.UserId).HasColumnName("user_id");
                 

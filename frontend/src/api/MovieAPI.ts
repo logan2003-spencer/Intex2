@@ -19,11 +19,20 @@ const getAuthHeaders = () => {
 export const fetchMovies = async (
   pageSize: number,
   pageNum: number,
-  selectedGenres: string[]
+  selectedGenres: string[],
+  searchTerm?: string  // Add searchTerm as an optional parameter
 ): Promise<FetchMoviesResponse> => {
   try {
+    // Build the genre query string
     const genreParams = selectedGenres.map((genre) => `Type=${encodeURIComponent(genre)}`).join("&");
-    const url = `${API_URL}/AllMovies?pageSize=${pageSize}&pageNum=${pageNum}${selectedGenres.length ? `&${genreParams}` : ""}`;
+
+    // Build the base URL
+    let url = `${API_URL}/AllMovies?pageSize=${pageSize}&pageNum=${pageNum}${selectedGenres.length ? `&${genreParams}` : ""}`;
+
+    // If searchTerm is provided, add it to the query string
+    if (searchTerm) {
+      url += `&searchTerm=${encodeURIComponent(searchTerm)}`;
+    }
 
     const response = await fetch(url, {
       headers: getAuthHeaders(),
@@ -39,6 +48,7 @@ export const fetchMovies = async (
     throw error;
   }
 };
+
 
 // Add a New Movie
 export const addMovie = async (newMovie: Movie): Promise<Movie> => {

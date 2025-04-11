@@ -4,10 +4,11 @@ import { deleteMovie, fetchMovies } from "../api/MovieAPI";
 import Pagination from "../components/pagination";
 import NewMovieForm from "../components/NewMovieForm";
 import EditMovieForm from "../components/EditMovieForm";
-import "../components/AdminMoviePage.css"; // Import the styles
+import "../components/AdminMoviePage.css";
 
 const AdminMoviesPage = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]); // New state for filtered movies
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [pageSize, setPageSize] = useState<number>(10);
@@ -15,13 +16,16 @@ const AdminMoviesPage = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [showForm, setShowForm] = useState<boolean>(false);
   const [editingMovie, setEditingMovie] = useState<Movie | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     const loadMovies = async () => {
       try {
-        const data = await fetchMovies(pageSize, pageNum, []);
+        setLoading(true);
+        const data = await fetchMovies(pageSize, pageNum, [], searchTerm);
         setTotalPages(Math.ceil(data.totalNumMovies / pageSize));
         setMovies(data.movies);
+        setFilteredMovies(data.movies); // Initially, all movies are shown
       } catch (error) {
         setError((error as Error).message);
       } finally {
@@ -31,6 +35,7 @@ const AdminMoviesPage = () => {
     loadMovies();
   }, [pageSize, pageNum]);
 
+  // Handle delete movie
   const handleDelete = async (showId: string) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this movie?");
     if (!confirmDelete) return;
@@ -43,24 +48,52 @@ const AdminMoviesPage = () => {
     }
   };
 
-  if (loading) return <div className="admin-page">Loading movies...</div>;
-  if (error) return <div className="admin-page text-red-500">Error: {error}</div>;
+  // Handle live search by title
+  const handleSearch = (query: string) => {
+    setSearchTerm(query);
+    if (query) {
+      const filtered = movies.filter((movie) =>
+        (movie.title?.toLowerCase() ?? "").includes(query.toLowerCase()) // Filtering by title
+      );
+      setFilteredMovies(filtered); // Set filtered list based on search
+    } else {
+      setFilteredMovies(movies); // Reset to all movies if search term is cleared
+    }
+  };
 
   return (
     <div className="admin-page">
       <h1>Admin Dashboard – Movies</h1>
 
+      {/* Live Search Input */}
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search by title..."
+          value={searchTerm}
+          onChange={(e) => handleSearch(e.target.value)} // Trigger search as user types
+          style={{
+            marginBottom: "16px",
+            padding: "8px",
+            width: "300px",
+            fontSize: "16px",
+          }}
+        />
+      </div>
+
+      {/* Button to toggle New Movie Form */}
       {!showForm && (
         <button className="btn btn-primary" onClick={() => setShowForm(true)}>
           + Add New Movie
         </button>
       )}
 
+      {/* New Movie Form */}
       {showForm && (
         <NewMovieForm
           onSuccess={() => {
             setShowForm(false);
-            fetchMovies(pageSize, pageNum, []).then((data) =>
+            fetchMovies(pageSize, pageNum, [], searchTerm).then((data) =>
               setMovies(data.movies)
             );
           }}
@@ -68,12 +101,13 @@ const AdminMoviesPage = () => {
         />
       )}
 
+      {/* Edit Movie Form */}
       {editingMovie && (
         <EditMovieForm
           movie={editingMovie}
           onSuccess={() => {
             setEditingMovie(null);
-            fetchMovies(pageSize, pageNum, []).then((data) =>
+            fetchMovies(pageSize, pageNum, [], searchTerm).then((data) =>
               setMovies(data.movies)
             );
           }}
@@ -81,6 +115,7 @@ const AdminMoviesPage = () => {
         />
       )}
 
+      {/* Movie Table */}
       <table>
         <thead>
           <tr>
@@ -97,7 +132,7 @@ const AdminMoviesPage = () => {
           </tr>
         </thead>
         <tbody>
-          {movies.map((movie) => (
+          {filteredMovies.map((movie) => (
             <tr key={movie.showId}>
               <td>{movie.title}</td>
               <td>{movie.director}</td>
@@ -118,7 +153,7 @@ const AdminMoviesPage = () => {
                         "description",
                         "cast",
                         "country",
-                        "rating"
+                        "rating",
                       ].includes(key)
                   )
                   .map((key) =>
@@ -150,6 +185,7 @@ const AdminMoviesPage = () => {
         </tbody>
       </table>
 
+      {/* Pagination */}
       <Pagination
         currPage={pageNum}
         totalPages={totalPages}

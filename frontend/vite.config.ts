@@ -10,7 +10,7 @@ export default defineConfig({
   "default-src 'self'; " +
   "script-src 'self' 'unsafe-inline'; " +  // Allow scripts from the same origin and inline scripts
   "style-src 'self' 'unsafe-inline'; " +  // Allow styles from the same origin and inline styles
-  "img-src 'self' data: https://movieblob4logang.blob.core.windows.net/posters/ https://movieblob4logang.blob.core.windows.net/posters/posters/; " +  // Allow images from both the container and the subfolder
+  "img-src 'self' data: https://movieblob4logang.blob.core.windows.net/posters/ https://movieblob4logang.blob.core.windows.net/posters/posters/ https://source.unsplash.com;" +  // Allow images from both the container and the subfolder
   "font-src 'self'; " +
   "connect-src 'self' https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net; " +
   "frame-src https://www.youtube.com; " +

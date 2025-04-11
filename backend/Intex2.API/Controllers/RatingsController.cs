@@ -15,32 +15,30 @@ namespace Intex2.API.Controllers
             _context = context;
         }
 
+        // POST or PUT to add or update rating
         [HttpPost]
         public async Task<IActionResult> AddOrUpdateRating([FromBody] MoviesRating rating)
         {
-            if (rating.UserId == null || string.IsNullOrEmpty(rating.ShowId) || rating.Rating == null)
+            if (rating.UserId == null || string.IsNullOrEmpty(rating.ShowId) || rating.starRating == null)
             {
-                return BadRequest("UserId, ShowId, and Rating are required.");
+                return BadRequest(new { message = "UserId, ShowId, and Rating are required." });
             }
-
             // Find the existing rating for the user and movie
             var existingRating = await _context.MoviesRatings
                 .FirstOrDefaultAsync(r => r.UserId == rating.UserId && r.ShowId == rating.ShowId);
-
             if (existingRating != null)
             {
-                // Update the rating
-                existingRating.Rating = rating.Rating;
+                // Update the user rating (stars)
+                existingRating.starRating = rating.starRating;
                 _context.Update(existingRating);
             }
             else
             {
-                // Add a new rating if none exists
+                // Add a new user rating (stars) if none exists
                 await _context.MoviesRatings.AddAsync(rating);
             }
-
             await _context.SaveChangesAsync();
-            return Ok("Rating updated successfully.");
+            return Ok(new { message = "Rating updated successfully", rating = existingRating ?? rating });
         }
         
         

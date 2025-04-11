@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // added useNavigate
+import { useParams, useNavigate } from "react-router-dom";
 import { Movie } from "../types/Movie";
 import "../components/GenrePage.css";
 import { moviePosters as allPosters } from "../data/moviePosters";
@@ -17,14 +17,13 @@ const getPosterUrl = (title: string | undefined): string => {
   );
 
   const baseUrl = "https://movieblob4logang.blob.core.windows.net/posters";
-
   return match ? `${baseUrl}${match}` : "/posters/default.jpg";
 };
 
 const GenrePage = () => {
   const { genre } = useParams<{ genre: string }>();
   const [movies, setMovies] = useState<Movie[]>([]);
-  const navigate = useNavigate(); // 👈 get navigation hook
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGenreMovies = async () => {
@@ -41,7 +40,10 @@ const GenrePage = () => {
         );
 
         const data = await response.json();
-        const selected = data[genre ?? ""] || [];
+
+        const decodedGenre = genre ? decodeURIComponent(genre) : "";
+        const selected = data[decodedGenre] || [];
+
         setMovies(selected);
       } catch (error) {
         console.error("Error fetching genre movies:", error);
@@ -51,12 +53,14 @@ const GenrePage = () => {
     fetchGenreMovies();
   }, [genre]);
 
+  const decodedGenre = genre ? decodeURIComponent(genre) : "";
+
   return (
     <div className="genre-page">
       <button className="back-btn" onClick={() => navigate("/home")}>
         ← Back to Home
       </button>
-      <h1 className="genre-heading">{genre} Movies</h1>
+      <h1 className="genre-heading">{decodedGenre}</h1>
       <div className="genre-movie-grid">
         {movies.map((movie) => (
           <div key={movie.showId} className="movie-card">

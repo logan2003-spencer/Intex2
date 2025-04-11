@@ -1,4 +1,3 @@
-// GenreDropdown.tsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -40,9 +39,12 @@ const GenreDropdown: React.FC = () => {
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedGenre = e.target.value;
-    if (selectedGenre) {
-      navigate(`/genres/${encodeURIComponent(selectedGenre)}`);
+    const genre = e.target.value;
+    if (genre) {
+      // Ensure spaces are replaced with %20 manually for the genre
+      const encodedGenre = genre.replace(/\s+/g, "%20");
+      console.log("Navigating to:", encodedGenre); // Debugging line to check if encoding works
+      navigate(`/genres/${encodedGenre}`);
     }
   };
 
@@ -56,8 +58,8 @@ const GenreDropdown: React.FC = () => {
           {genre}
         </option>
       ))}
-    </select>
-  );
-};
-
-export default GenreDropdown;
+      </select>
+    );
+  };
+  
+  export default GenreDropdown;

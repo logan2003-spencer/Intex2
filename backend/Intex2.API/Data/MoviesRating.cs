@@ -9,7 +9,7 @@ public partial class MoviesRating
 
     public string? ShowId { get; set; }
 
-    public int? Rating { get; set; }
+    public int? starRating { get; set; }
     
     public string? Comment { get; set; } // <-- Add this line
 

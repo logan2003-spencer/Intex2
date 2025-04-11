@@ -40,7 +40,7 @@ namespace Intex2.API.Controllers
             return Ok(results);
         }
 
-        // Get all MoviesRatings
+       // Get all MoviesRatings
         [Authorize]
         //[AllowAnonymous]
         [HttpGet("ratings")]
@@ -48,61 +48,49 @@ namespace Intex2.API.Controllers
         {
             return _moviesContext.MoviesRatings;
         }
-
         [Authorize]
         //[AllowAnonymous]
         [HttpPut("ratings/{userId}/{showId}")]
-public IActionResult UpdateUserRating(int userId, string showId, [FromBody] MoviesRating updatedRating)
-{
-    if (updatedRating.ShowId != showId)
-    {
-        return BadRequest("ShowId in body does not match ShowId in route.");
-    }
-
-    var existingRating = _moviesContext.MoviesRatings
-        .FirstOrDefault(r => r.UserId == userId && r.ShowId == showId);
-
-    if (existingRating == null)
-    {
-        return NotFound("Rating not found.");
-    }
-
-    existingRating.Rating = updatedRating.Rating;
-    _moviesContext.MoviesRatings.Update(existingRating);
-    _moviesContext.SaveChanges();
-
-    return Ok(existingRating);
-}
-
-
+        public IActionResult UpdateUserRating(int userId, string showId, [FromBody] MoviesRating updatedRating)
+        {
+            if (updatedRating.ShowId != showId)
+            {
+                return BadRequest("ShowId in body does not match ShowId in route.");
+            }
+            var existingRating = _moviesContext.MoviesRatings
+                .FirstOrDefault(r => r.UserId == userId && r.ShowId == showId);
+            if (existingRating == null)
+            {
+                return NotFound("Rating not found.");
+            }
+            existingRating.starRating = updatedRating.starRating;
+            _moviesContext.MoviesRatings.Update(existingRating);
+            _moviesContext.SaveChanges();
+            return Ok(existingRating);
+        }
         [AllowAnonymous]
         [HttpPost("ratings")]
         public async Task<IActionResult> AddOrUpdateRating([FromBody] MoviesRating rating)
-{
-    // Step 1: Validate the input
-    if (rating.UserId == null || string.IsNullOrEmpty(rating.ShowId) || rating.Rating == null)
-    {
-        return BadRequest("UserId, ShowId, and Rating are required.");
-    }
-    // Step 2: Check if the rating already exists
-    var existingRating = await _moviesContext.MoviesRatings
-        .FirstOrDefaultAsync(r => r.UserId == rating.UserId && r.ShowId == rating.ShowId);
-    if (existingRating != null)
-    {
-        // Step 3: Update the existing rating
-        existingRating.Rating = rating.Rating;
-        _moviesContext.Update(existingRating);
-    }
-    else
-    {
-        // Step 4: Add a new rating
-        await _moviesContext.MoviesRatings.AddAsync(rating);
-    }
-    // Step 5: Save the changes to the database
-    await _moviesContext.SaveChangesAsync();
-    // Step 6: Return a response
-    return Ok("Rating updated successfully.");
-}
+        {
+            if (rating.UserId == null || string.IsNullOrEmpty(rating.ShowId) || rating.starRating == null)
+            {
+                return BadRequest("UserId, ShowId, and Rating are required.");
+            }
+            var existingRating = await _moviesContext.MoviesRatings
+                .FirstOrDefaultAsync(r => r.UserId == rating.UserId && r.ShowId == rating.ShowId);
+            if (existingRating != null)
+            {
+                existingRating.starRating = rating.starRating;
+                _moviesContext.Update(existingRating);
+            }
+            else
+            {
+                await _moviesContext.MoviesRatings.AddAsync(rating);
+            }
+            await _moviesContext.SaveChangesAsync();
+            // Return the updated or newly added rating object
+            return Ok(existingRating ?? rating);  // Returns the rating object that was added or updated
+        }
 
 
         // Get all MoviesTitles
@@ -214,7 +202,6 @@ public IActionResult UpdateUserRating(int userId, string showId, [FromBody] Movi
         }
 
 
-
         [Authorize]
         [HttpGet("by-genre")]
         public IActionResult GetMoviesByGenre()
@@ -230,7 +217,10 @@ public IActionResult UpdateUserRating(int userId, string showId, [FromBody] Movi
             {
                 string genreName = genreProp.Name;
 
-                // ✅ Pull movies into memory BEFORE projecting
+                // Normalize the genre key (lowercase and replace spaces with %20)
+                string normalizedGenreName = genreName.ToLower().Replace(" ", "%20");
+
+                // Pull movies into memory BEFORE projecting
                 var moviesRaw = _moviesContext.MoviesTitles
                     .Where(m => EF.Property<int?>(m, genreName) == 1)
                     .Take(20) // Limit to avoid pulling thousands of records
@@ -248,12 +238,15 @@ public IActionResult UpdateUserRating(int userId, string showId, [FromBody] Movi
 
                 if (movies.Any())
                 {
-                    result[genreName] = movies.Cast<object>().ToList();
+                    result[normalizedGenreName] = movies.Cast<object>().ToList();  // Use normalized genre name as key
                 }
             }
 
             return Ok(result);
         }
+
+
+
 
         // private string SanitizeFileName(string? title)
         // {
