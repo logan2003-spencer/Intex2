@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../components/Header.css";
 import MovieModal from "./MovieModel";
 import { Movie } from "../types/Movie";
+import GenreDropdown from "../components/GenreDropdown";
 
 type HeaderProps = {
   onMovieSelect: (movie: Movie) => void;
@@ -103,14 +104,17 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
       </nav>
 
       <div className="header-right">
-        <form className="search-bar" onSubmit={handleSearch}>
-          <input
-            type="text"
-            placeholder="Search movies..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </form>
+        <div className="search-genre-group">
+          <form className="search-bar" onSubmit={handleSearch}>
+            <input
+              type="text"
+              placeholder="Search movies..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </form>
+          <GenreDropdown />
+        </div>
       </div>
 
       {showModal && selectedMovieId && (
