@@ -13,38 +13,31 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedMovieId, setSelectedMovieId] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [username, setUsername] = useState<string | null>(null); // State to store the username
+  const [username, setUsername] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const navigate = useNavigate(); // Use navigate for programmatic navigation
-
-  // Function to decode the JWT and get the 'sub' (email or user ID)
   const decodeJWT = (token: string) => {
-    const base64Url = token.split('.')[1]; // Get the payload part of the token
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); // Decode Base64 URL encoding
-    const jsonPayload = atob(base64); // Decode the base64 string into a JSON string
-    return JSON.parse(jsonPayload); // Parse JSON to get the claims
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = atob(base64);
+    return JSON.parse(jsonPayload);
   };
 
-  // Extract the username (email or user ID) from the JWT token when the component mounts
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
       try {
-        const decoded = decodeJWT(token); // Decode the token
-        console.log("Decoded Token:", decoded); // Log the decoded token to inspect it
-        setUsername(decoded.sub || "Guest"); // Set username from 'sub' (email/user ID) or fallback to "Guest"
+        const decoded = decodeJWT(token);
+        setUsername(decoded.sub || "Guest");
       } catch (error) {
         console.error("Error decoding token:", error);
       }
     }
-  }, []); // Empty array means this will run once when the component mounts
+  }, []);
 
-  // Search handling
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const token = localStorage.getItem("authToken");
-
     try {
       const response = await fetch(
         `https://intex-backend-4logan-g8agdge9hsc2aqep.westus-01.azurewebsites.net/api/movies/search?query=${encodeURIComponent(searchQuery)}`,
@@ -55,11 +48,7 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
           },
         }
       );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch search results");
-      }
-
+      if (!response.ok) throw new Error("Failed to fetch search results");
       const data = await response.json();
       if (data.length > 0) {
         setSelectedMovieId(data[0].showId);
@@ -78,41 +67,35 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
     setSelectedMovieId(null);
   };
 
-  // Logout function
   const handleLogout = () => {
-    localStorage.removeItem("authToken"); // Remove the token from localStorage
-    navigate("/login"); // Redirect to the login page
+    localStorage.removeItem("authToken");
+    navigate("/login");
   };
 
   return (
     <header className="header">
-      <div className="header-left">
-        <div className="header-title">CineNiche</div>
-      </div>
+      <div className="header-title">CineNiche</div>
 
-      <div>
-        <div className="user-placeholder">
-          Hi, {username || "Guest"} {/* Display the username or fallback to "Guest" */}
-        </div>
-      </div>
+      <div className="user-placeholder">Hi, {username || "Guest"}</div>
 
       <nav className="nav-links">
         <Link to="/home">Home</Link>
         <Link to="/privacy">Privacy</Link>
-        <button onClick={handleLogout} className="logout-btn">Logout</button> {/* Logout button */}
-        <Link to="/privacy">Admin</Link>
+        <Link to="/adminMovies">Admin</Link>
+        <Link to="/login" onClick={handleLogout}>Logout</Link>
       </nav>
 
-      <div className="header-right">
-        <div className="search-genre-group">
-          <form className="search-bar" onSubmit={handleSearch}>
-            <input
-              type="text"
-              placeholder="Search movies..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </form>
+      <div className="search-genre-container">
+        <form className="search-bar" onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Search movies..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+        </form>
+        <div className="genre-dropdown-wrapper">
           <GenreDropdown />
         </div>
       </div>

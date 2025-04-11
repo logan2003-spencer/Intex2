@@ -1,106 +1,105 @@
-body {
-  margin: 0;
-  background-color: black;
-  font-family: Arial, sans-serif;
-  color: white;
-}
-
-/* Center entire login view */
+/* Outer page container */
 .login-wrapper {
-  min-height: 100vh;
+  background-color: #000;
+  height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center content vertically */
-  align-items: center; /* Center content horizontally */
-  width: 100%; /* Ensure full width */
-  max-width: 1200px; /* Limit the maximum width of the content */
-  padding: 40px 20px; /* Add some padding around the content */
-  background-image: url('https://assets.nflxext.com/ffe/siteui/login/images/Netflix-Logo.png');
-  background-size: cover;
-  background-position: center;
-  text-align: center;
 }
 
-/* Adjust the header to use flex properly */
-.header {
-  width: 100%;
-  max-width: 1200px;
-  padding: 0 20px;
+/* Top header bar */
+.login-topbar {
   display: flex;
-  justify-content: center; /* Center the header content horizontally */
-  align-items: center; /* Vertically align logo and sign-in button */
-  margin-bottom: 40px; /* Increased margin below the header */
-  padding: 0 20px; /* Add padding to prevent content from touching the edges */
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #111;
+  border-bottom: 1px solid #333;
 }
 
 .login-logo {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: red;
-  margin: 0; /* Ensure no extra margin */
-  text-align: center; /* Center the title text */
+  color: #e50914;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .create-profile-btn {
   background-color: #e50914;
   color: white;
+  padding: 10px 18px;
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: bold;
+  border-radius: 5px;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 20px; /* Add space above the button */
+  transition: background-color 0.2s ease;
 }
 
 .create-profile-btn:hover {
   background-color: #b00610;
 }
 
-/* Form box */
+/* Form container */
 .login-form-container {
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 40px;
-  border-radius: 12px;
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-  animation: fadeInUp 0.5s ease;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.login-title {
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-
-/* Form input fields */
-.login-form input {
-  width: 100%;
-  padding: 14px;
-  margin-bottom: 20px;
+/* Card box */
+.login-card {
   background-color: #111;
-  color: white;
-  border: 1px solid #444;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-/* Login button */
-.login-form button {
+  padding: 3rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   width: 100%;
-  background-color: #e50914;
+  max-width: 400px;
+  color: white;
 }
 
-.footer {
-  bottom: auto; /* Removed fixed bottom position */
-  margin-top: 40px; /* Add some space above the footer */
-  color: white;
-  padding: 14px;
-  border: none;
-  border-radius: 6px;
-  font-size: 1.1rem;
+/* Title */
+.login-title {
+  text-align: center;
+  color: #e50914;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
   font-weight: bold;
+}
+
+/* LoginForm styles (inherited or scoped) */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.login-form input {
+  padding: 0.9rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background-color: #222;
+  color: white;
+  transition: border-color 0.3s ease;
+}
+
+.login-form input::placeholder {
+  color: #aaa;
+}
+
+.login-form input:focus {
+  border-color: #e50914;
+  outline: none;
+}
+
+.login-form button {
+  background-color: #e50914;
+  padding: 0.9rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -109,21 +108,9 @@ body {
   background-color: #b00610;
 }
 
-/* Error messages */
 .error-message {
-  color: #ff4c4c;
+  color: #ff4d4d;
   font-size: 0.95rem;
-  margin-top: 10px;
-}
-
-/* Optional animation */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  text-align: center;
+  margin-top: -0.5rem;
 }

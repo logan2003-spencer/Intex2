@@ -8,7 +8,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="login-wrapper">
-      <div className="login-header">
+      <div className="login-topbar">
         <div className="login-logo">CineNiche</div>
         <button
           className="create-profile-btn"
@@ -19,8 +19,9 @@ const LoginPage: React.FC = () => {
       </div>
 
       <div className="login-form-container">
-        <h1 className="login-title">Login</h1>
-        <LoginForm />
+        <div className="login-card">
+          <LoginForm />
+        </div>
       </div>
     </div>
   );
