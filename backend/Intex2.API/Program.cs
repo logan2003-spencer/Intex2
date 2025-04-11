@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IO;
-<<<<<<< HEAD
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;  // For UnauthorizedObjectResult
 using Microsoft.AspNetCore.Http;
 
@@ -19,9 +19,9 @@ using Microsoft.AspNetCore.Http;
 }
 
 
-=======
-using Microsoft.AspNetCore.Builder;
->>>>>>> 3df96650eec88f75d2c857c41e144f4f017f9f01
+
+
+
 
 var staticFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 Console.WriteLine($"Static file path: {staticFilePath}");
@@ -147,11 +147,8 @@ app.UseCors("AllowFrontend");
 
 app.UseHsts(); // Use HSTS for security in production
 
-<<<<<<< HEAD
-
-=======
 // Ensure that HTTP requests are redirected to HTTPS
->>>>>>> 3df96650eec88f75d2c857c41e144f4f017f9f01
+
 app.UseHttpsRedirection();
 
 app.MapControllers();
