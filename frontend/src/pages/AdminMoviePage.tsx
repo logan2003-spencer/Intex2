@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Movie } from "../types/Movie"; 
-import { deleteMovie, fetchMovies } from "../api/MovieAPI"; 
+import { Movie } from "../types/Movie";
+import { deleteMovie, fetchMovies } from "../api/MovieAPI";
 import Pagination from "../components/pagination";
 import NewMovieForm from "../components/NewMovieForm";
 import EditMovieForm from "../components/EditMovieForm";
+import "../components/AdminMoviePage.css"; // Import the styles
 
 const AdminMoviesPage = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -31,9 +32,7 @@ const AdminMoviesPage = () => {
   }, [pageSize, pageNum]);
 
   const handleDelete = async (showId: string) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this movie?"
-    );
+    const confirmDelete = window.confirm("Are you sure you want to delete this movie?");
     if (!confirmDelete) return;
 
     try {
@@ -44,21 +43,16 @@ const AdminMoviesPage = () => {
     }
   };
 
-  if (loading) {
-    return <div>Loading movies...</div>;
-  }
-  if (error) {
-    return <div className="text-red-500">Error: {error}</div>;
-  }
+  if (loading) return <div className="admin-page">Loading movies...</div>;
+  if (error) return <div className="admin-page text-red-500">Error: {error}</div>;
 
   return (
-    <div>
-      <h1>Admin - Movies</h1>
+    <div className="admin-page">
+      <h1>Admin Dashboard – Movies</h1>
 
-      {/* "Add New Movie" button moved to the top of the page */}
       {!showForm && (
         <button className="btn btn-primary" onClick={() => setShowForm(true)}>
-          Add New Movie
+          + Add New Movie
         </button>
       )}
 
@@ -66,8 +60,8 @@ const AdminMoviesPage = () => {
         <NewMovieForm
           onSuccess={() => {
             setShowForm(false);
-            fetchMovies(pageSize, pageNum, []).then(
-              (data: { movies: Movie[] }) => setMovies(data.movies)
+            fetchMovies(pageSize, pageNum, []).then((data) =>
+              setMovies(data.movies)
             );
           }}
           onCancel={() => setShowForm(false)}
@@ -79,8 +73,8 @@ const AdminMoviesPage = () => {
           movie={editingMovie}
           onSuccess={() => {
             setEditingMovie(null);
-            fetchMovies(pageSize, pageNum, []).then(
-              (data: { movies: Movie[] }) => setMovies(data.movies)
+            fetchMovies(pageSize, pageNum, []).then((data) =>
+              setMovies(data.movies)
             );
           }}
           onCancel={() => setEditingMovie(null)}
@@ -92,15 +86,14 @@ const AdminMoviesPage = () => {
           <tr>
             <th>Title</th>
             <th>Director</th>
-            <th>Release Year</th>
+            <th>Year</th>
             <th>Duration</th>
             <th>Type</th>
-            <th>Description</th>
+            <th>Genres</th>
             <th>Cast</th>
             <th>Country</th>
             <th>Rating</th>
-            {/* Add additional columns for the new fields */}
-            <th>Genres</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -111,21 +104,22 @@ const AdminMoviesPage = () => {
               <td>{movie.releaseYear}</td>
               <td>{movie.duration}</td>
               <td>{movie.type}</td>
-              <td>{movie.description}</td>
-              <td>{movie.cast}</td>
-              <td>{movie.country}</td>
-              <td>{movie.rating}</td>
-              {/* Render genres (customize as needed) */}
               <td>
                 {Object.keys(movie)
                   .filter(
                     (key) =>
-                      key !== "showId" &&
-                      key !== "title" &&
-                      key !== "director" &&
-                      key !== "releaseYear" &&
-                      key !== "duration" &&
-                      key !== "description"
+                      ![
+                        "showId",
+                        "title",
+                        "director",
+                        "releaseYear",
+                        "duration",
+                        "type",
+                        "description",
+                        "cast",
+                        "country",
+                        "rating"
+                      ].includes(key)
                   )
                   .map((key) =>
                     movie[key as keyof Movie] === 1 ? (
@@ -133,6 +127,9 @@ const AdminMoviesPage = () => {
                     ) : null
                   )}
               </td>
+              <td>{movie.cast}</td>
+              <td>{movie.country}</td>
+              <td>{movie.rating}</td>
               <td>
                 <button
                   className="btn btn-primary"
@@ -140,11 +137,10 @@ const AdminMoviesPage = () => {
                 >
                   Edit
                 </button>
-              </td>
-              <td>
                 <button
                   className="btn btn-danger"
                   onClick={() => movie.showId && handleDelete(movie.showId)}
+                  style={{ marginLeft: "8px" }}
                 >
                   Delete
                 </button>
