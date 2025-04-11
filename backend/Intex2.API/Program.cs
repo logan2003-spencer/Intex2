@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IO;
-<<<<<<< HEAD
 using Microsoft.AspNetCore.Mvc;  // For UnauthorizedObjectResult
 using Microsoft.AspNetCore.Http;
 
@@ -19,9 +18,6 @@ using Microsoft.AspNetCore.Http;
 }
 
 
-=======
-using Microsoft.AspNetCore.Builder;
->>>>>>> 3df96650eec88f75d2c857c41e144f4f017f9f01
 
 var staticFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 Console.WriteLine($"Static file path: {staticFilePath}");
@@ -53,6 +49,7 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
+
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -146,15 +143,18 @@ using (var scope = app.Services.CreateScope())
 // Apply the CORS policy
 app.UseCors("AllowFrontend");
 
-app.UseHsts(); // Use HSTS for security in production
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-<<<<<<< HEAD
 
-=======
-// Ensure that HTTP requests are redirected to HTTPS
->>>>>>> 3df96650eec88f75d2c857c41e144f4f017f9f01
 app.UseHttpsRedirection();
 
+//app.UseAuthentication(); // MUST come before UseAuthorization
+//app.UseAuthorization();
 app.MapControllers();
 app.UseStaticFiles(); // Serve static files
 

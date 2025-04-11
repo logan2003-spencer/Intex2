@@ -2,6 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../components/LoginPage.css";
 import LoginForm from "../components/LoginForm";
+import { Link } from 'react-router-dom';
+
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -9,7 +11,9 @@ const LoginPage: React.FC = () => {
   return (
     <div className="login-wrapper">
       <div className="login-topbar">
-        <div className="login-logo">CineNiche</div>
+        <Link to="/" className="login-logo">
+        CineNiche
+      </Link>
         <button
           className="create-profile-btn"
           onClick={() => navigate("/create-profile")}

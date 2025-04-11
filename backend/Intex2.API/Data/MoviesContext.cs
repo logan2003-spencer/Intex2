@@ -12,7 +12,7 @@ namespace Intex2.API.Data
             : base(options)
         {
         }
-
+        
         public virtual DbSet<MoviesRating> MoviesRatings { get; set; }
         public virtual DbSet<MoviesTitle> MoviesTitles { get; set; }
         public virtual DbSet<MoviesUser> MoviesUsers { get; set; }
@@ -37,6 +37,7 @@ namespace Intex2.API.Data
                 entity.Property(e => e.Rating).HasColumnName("rating");
                 entity.Property(e => e.ShowId).HasColumnName("show_id");
                 entity.Property(e => e.UserId).HasColumnName("user_id");
+                
             });
 
             modelBuilder.Entity<MoviesTitle>(entity =>
