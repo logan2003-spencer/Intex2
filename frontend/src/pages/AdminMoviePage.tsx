@@ -9,8 +9,8 @@ import "../components/AdminMoviePage.css";
 const AdminMoviesPage = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]); // New state for filtered movies
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [, setError] = useState<string | null>(null);
+  const [, setLoading] = useState<boolean>(true);
   const [pageSize, setPageSize] = useState<number>(10);
   const [pageNum, setPageNum] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
