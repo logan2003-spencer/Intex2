@@ -22,9 +22,11 @@ const HomePage = () => {
             },
           }
         );
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
+
         const data = await response.json();
         setGenreData(data);
       } catch (error) {

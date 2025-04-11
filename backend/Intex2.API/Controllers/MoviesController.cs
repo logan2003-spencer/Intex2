@@ -103,7 +103,7 @@ public IActionResult UpdateUserRating(int userId, string showId, [FromBody] Movi
 
 
         // Get all MoviesTitles
-        [Authorize]
+        // [Authorize]
         [HttpGet("titles")]
         public IEnumerable<MoviesTitle> GetMoviesTitles()
         {

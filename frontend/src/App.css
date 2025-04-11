@@ -1,14 +1,10 @@
 /* App.css */
 #root {
-  min-height: 100vh;
-  background-color: black;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 0;
-  margin: 0;
-  text-align: left; /* optional: allows you to control alignment within components */
 }
+
 
 .logo {
   height: 50px;
