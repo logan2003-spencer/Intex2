@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IO;
-
-
+using Microsoft.AspNetCore.Builder;
 
 var staticFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 Console.WriteLine($"Static file path: {staticFilePath}");
@@ -41,7 +40,6 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
-
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -110,17 +108,11 @@ using (var scope = app.Services.CreateScope())
 // Apply the CORS policy
 app.UseCors("AllowFrontend");
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseHsts(); // Use HSTS for security in production
 
+// Ensure that HTTP requests are redirected to HTTPS
 app.UseHttpsRedirection();
 
-//app.UseAuthentication(); // MUST come before UseAuthorization
-//app.UseAuthorization();
 app.MapControllers();
 app.UseStaticFiles(); // Serve static files
 
