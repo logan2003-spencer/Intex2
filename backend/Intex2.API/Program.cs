@@ -108,18 +108,7 @@ using (var scope = app.Services.CreateScope())
 // Apply the CORS policy
 app.UseCors("AllowFrontend");
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-// Enable HSTS and HTTPS Redirection
-if (!app.Environment.IsDevelopment())
-{
-    app.UseHsts();  // Use default HSTS settings
-}
+app.UseHsts(); // Use HSTS for security in production
 
 // Ensure that HTTP requests are redirected to HTTPS
 app.UseHttpsRedirection();
