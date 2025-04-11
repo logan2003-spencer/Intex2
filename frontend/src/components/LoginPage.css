@@ -1,19 +1,13 @@
-/* Reset margin and padding for the body */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
   background-color: black;
+  font-family: Arial, sans-serif;
   color: white;
-  width: 100%; /* Ensure body takes full width */
-  min-height: 100vh; /* Ensure body takes at least full viewport height */
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center items horizontally */
-  justify-content: center; /* Center items vertically */
 }
 
-/* Full screen layout for login page */
-.login-page {
+/* Center entire login view */
+.login-wrapper {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center; /* Center content vertically */
@@ -30,6 +24,8 @@ body {
 /* Adjust the header to use flex properly */
 .header {
   width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
   display: flex;
   justify-content: center; /* Center the header content horizontally */
   align-items: center; /* Vertically align logo and sign-in button */
@@ -37,7 +33,7 @@ body {
   padding: 0 20px; /* Add padding to prevent content from touching the edges */
 }
 
-.logo {
+.login-logo {
   font-size: 2.5rem;
   font-weight: 700;
   color: red;
@@ -45,60 +41,54 @@ body {
   text-align: center; /* Center the title text */
 }
 
-.sign-in-btn {
-  padding: 10px 20px;
-  background-color: red;
+.create-profile-btn {
+  background-color: #e50914;
   color: white;
   border: none;
-  border-radius: 5px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
   margin-top: 20px; /* Add space above the button */
 }
 
+.create-profile-btn:hover {
+  background-color: #b00610;
+}
+
+/* Form box */
 .login-form-container {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(255, 255, 255, 0.05);
   padding: 40px;
+  border-radius: 12px;
+  max-width: 400px;
   width: 100%;
-  max-width: 400px; /* Controls the form width */
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  animation: fadeInUp 0.5s ease;
 }
 
 .login-title {
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 2rem;
   margin-bottom: 20px;
-  text-align: center;
 }
 
-.login-page input {
-  background-color: rgba(0, 0, 0, 0.4);
-  border: none;
-  border-radius: 5px;
-  padding: 15px;
+/* Form input fields */
+.login-form input {
   width: 100%;
+  padding: 14px;
   margin-bottom: 20px;
+  background-color: #111;
   color: white;
-  font-size: 1.2rem;
+  border: 1px solid #444;
+  border-radius: 6px;
+  font-size: 1rem;
 }
 
-.login-page button {
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 15px;
+/* Login button */
+.login-form button {
   width: 100%;
-  font-size: 1.2rem;
-  cursor: pointer;
-  margin-top: 20px;
-  transition: background-color 0.3s;
-}
-
-.login-page button:hover {
   background-color: #e50914;
 }
 
@@ -106,15 +96,34 @@ body {
   bottom: auto; /* Removed fixed bottom position */
   margin-top: 40px; /* Add some space above the footer */
   color: white;
-  font-size: 0.9rem;
+  padding: 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.footer a {
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
+.login-form button:hover {
+  background-color: #b00610;
 }
 
-.footer a:hover {
-  text-decoration: underline;
+/* Error messages */
+.error-message {
+  color: #ff4c4c;
+  font-size: 0.95rem;
+  margin-top: 10px;
+}
+
+/* Optional animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

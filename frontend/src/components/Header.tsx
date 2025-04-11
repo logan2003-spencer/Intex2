@@ -99,7 +99,7 @@ const Header: React.FC<HeaderProps> = ({ onMovieSelect }) => {
         <Link to="/home">Home</Link>
         <Link to="/privacy">Privacy</Link>
         <button onClick={handleLogout} className="logout-btn">Logout</button> {/* Logout button */}
-        <Link to="/privacy">Admin</Link>
+        <Link to="/adminMovies">Admin</Link>
       </nav>
 
       <div className="header-right">

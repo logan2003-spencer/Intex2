@@ -8,6 +8,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IO;
+using Microsoft.AspNetCore.Mvc;  // For UnauthorizedObjectResult
+using Microsoft.AspNetCore.Http;
+
+
+{
+    var apiKey = Environment.GetEnvironmentVariable("API_KEY");
+    // Use the apiKey in some configuration or service setup
+}
 
 
 
@@ -51,6 +59,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireLowercase = true;
+    
+    
 
     // Lockout settings (optional)
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
@@ -80,25 +90,48 @@ async Task SeedRoles(IServiceProvider serviceProvider)
 }
 
 builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-    };
-});
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
+
+
+
+
 
 var app = builder.Build();
+
+
+
+
+// Secrets enrinrment ting
+// Test endpoint to check environment variable
+app.MapGet("/test-api-key", (HttpContext context) =>
+{
+    // Access the environment variable
+    var apiKey = Environment.GetEnvironmentVariable("API_KEY");
+
+    // Return it in the response to confirm if it was loaded correctly
+    return Results.Ok(new { apiKey });
+});
+
+
+
+
+
 
 // Seed roles
 using (var scope = app.Services.CreateScope())
@@ -117,6 +150,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
 
 //app.UseAuthentication(); // MUST come before UseAuthorization
@@ -125,3 +159,12 @@ app.MapControllers();
 app.UseStaticFiles(); // Serve static files
 
 app.Run();
+
+public class ApiService
+{
+    public void MakeApiRequest()
+    {
+        var apiKey = Environment.GetEnvironmentVariable("API_KEY");
+        // Use the API key for API calls or authentication
+    }
+}

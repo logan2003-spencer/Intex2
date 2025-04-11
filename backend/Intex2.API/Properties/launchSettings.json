@@ -8,7 +8,8 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5176",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "API_KEY": "wCkh3oX9boBo6p4ZtMa0eqdATnsmxn93ju4MJYM9X40=" 
       }
     },
     "https": {
@@ -18,7 +19,8 @@
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7261;http://localhost:5176",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "API_KEY": "wCkh3oX9boBo6p4ZtMa0eqdATnsmxn93ju4MJYM9X40="  
       }
     },
     "default": {
@@ -27,21 +29,9 @@
       "launchBrowser": false,
       "applicationUrl": "http://localhost:4000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "$schema": "https://json.schemastore.org/launchsettings.json",
-      "profiles": {
-        "default": {
-          "commandName": "Project",
-          "dotnetRunMessages": true,
-          "launchBrowser": false,
-          "applicationUrl": "https://localhost:5000;http://localhost:4000",
-          "environmentVariables": {
-            "ASPNETCORE_ENVIRONMENT": "Development"
-          }
-        }
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "API_KEY": "wCkh3oX9boBo6p4ZtMa0eqdATnsmxn93ju4MJYM9X40="  
       }
     }
-    }
   }
-
+}
