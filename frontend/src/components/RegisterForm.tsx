@@ -13,7 +13,7 @@ const RegisterForm: React.FC = () => {
   const [age, setAge] = useState<number>();
   const [gender, setGender] = useState("");
   const [error, setError] = useState("");
-  const [role, setRole] = useState("User");
+  const [role] = useState("User");
   const [message, setMessage] = useState<
     string | { code: string; description: string }[] | null
   >(null);
