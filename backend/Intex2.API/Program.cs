@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IO;
-
-
+using Microsoft.AspNetCore.Builder;
 
 var staticFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 Console.WriteLine($"Static file path: {staticFilePath}");
@@ -41,7 +40,6 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
-
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -117,10 +115,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Enable HSTS and HTTPS Redirection
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHsts();  // Use default HSTS settings
+}
+
+// Ensure that HTTP requests are redirected to HTTPS
 app.UseHttpsRedirection();
 
-//app.UseAuthentication(); // MUST come before UseAuthorization
-//app.UseAuthorization();
 app.MapControllers();
 app.UseStaticFiles(); // Serve static files
 
