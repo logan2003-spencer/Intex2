@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import "./MovieModel.css";
 import { Movie } from "../types/Movie";
 import { moviePosters as allPosters } from "../data/moviePosters";
+import CommentBox from "./CommentBox";
+
+
 
 interface MovieModalProps {
   movieId: string;
@@ -21,6 +24,8 @@ const MovieModal: React.FC<MovieModalProps> = ({
   const [rating, setRating] = useState<number>(0); // For star rating
   const [fade, setFade] = useState(false);
   const token = localStorage.getItem("authToken");
+
+  
 
   const userId = 1; // Replace with real auth ID if needed
   const rowRef = useRef<HTMLDivElement>(null); // Ref for carousel scrolling
@@ -258,6 +263,11 @@ const MovieModal: React.FC<MovieModalProps> = ({
           </div>
         </div>
 
+
+        {movie?.showId && <CommentBox userId={userId} showId={movie.showId} />}
+
+
+
         <a
           href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           target="_blank"
@@ -306,5 +316,7 @@ const MovieModal: React.FC<MovieModalProps> = ({
     </div>
   );
 };
+
+
 
 export default MovieModal;

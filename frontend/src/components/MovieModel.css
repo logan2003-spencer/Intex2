@@ -130,3 +130,22 @@
   color: white; /* Filled when active */
   background-color: black;
 }
+
+
+.comment-input {
+  margin-top: 10px;
+}
+
+.comment-input input {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  color: white; /* Make the text white */
+  background-color: #333; /* Dark background to match the modal */
+}
+
+.modal-content {
+  color: white;
+}

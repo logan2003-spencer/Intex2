@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { login } from "../services/auth";
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
+
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");

@@ -42,5 +42,21 @@ namespace Intex2.API.Controllers
             await _context.SaveChangesAsync();
             return Ok("Rating updated successfully.");
         }
+        
+        
+        [HttpPut("comment")]
+        public async Task<IActionResult> AddComment([FromBody] MoviesRating updatedRating)
+        {
+            var rating = await _context.MoviesRatings
+                .FirstOrDefaultAsync(r => r.UserId == updatedRating.UserId && r.ShowId == updatedRating.ShowId);
+
+            if (rating == null)
+                return NotFound();
+
+            rating.Comment = updatedRating.Comment;
+            await _context.SaveChangesAsync();
+
+            return Ok(rating);
+        }
     }
 }
