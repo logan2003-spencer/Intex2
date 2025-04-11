@@ -325,6 +325,7 @@ public IActionResult UpdateUserRating(int userId, string showId, [FromBody] Movi
                 .ToList();
             return Ok(genres);
         }
+
         [Authorize(Roles = "Admin")]
         [HttpPost("AddMovie")]
         public IActionResult AddMovie([FromBody] MoviesTitle newMovie)

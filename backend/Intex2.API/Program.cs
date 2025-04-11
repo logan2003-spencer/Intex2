@@ -48,10 +48,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
-        policy => policy.WithOrigins("http://localhost:5173, https://nice-coast-08fe8e21e.6.azurestaticapps.net/") // Allow frontend URL
-            .AllowAnyOrigin()  // This is the fix for allowing any origin
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+        policy => policy.WithOrigins("http://localhost:5173", "https://nice-coast-08fe8e21e.6.azurestaticapps.net") // Allow multiple frontends
+            .AllowAnyMethod()   // Allow any HTTP methods
+            .AllowAnyHeader()); // Allow any headers
 });
 
 builder.Services.Configure<IdentityOptions>(options =>
