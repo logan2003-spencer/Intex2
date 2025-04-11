@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+using Ganss.Xss;
 
 namespace Intex2.API.Controllers
 {
@@ -14,10 +15,12 @@ namespace Intex2.API.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly MoviesContext _moviesContext;
+        private readonly HtmlSanitizer _sanitizer;  // Declare an instance of HtmlSanitizer
 
         public MoviesController(MoviesContext context)
         {
             _moviesContext = context;
+            _sanitizer = new HtmlSanitizer();  // Initialize the sanitizer
         }
 
         [Authorize]
@@ -330,6 +333,12 @@ public IActionResult UpdateUserRating(int userId, string showId, [FromBody] Movi
             {
                 return BadRequest("Invalid movie data.");
             }
+
+            // Sanitize the movie title and description to prevent XSS attacks
+            newMovie.Title = _sanitizer.Sanitize(newMovie.Title);
+            newMovie.Description = _sanitizer.Sanitize(newMovie.Description);
+
+            // Sanitize the movie title and description (if necessary) before saving
             var lastShowId = _moviesContext.MoviesTitles.OrderByDescending(m => m.ShowId).FirstOrDefault()?.ShowId;
             string newShowId;
             if (lastShowId != null)
@@ -342,6 +351,7 @@ public IActionResult UpdateUserRating(int userId, string showId, [FromBody] Movi
             {
                 newShowId = "s1";
             }
+
             newMovie.ShowId = newShowId;
             _moviesContext.MoviesTitles.Add(newMovie);
             _moviesContext.SaveChanges();
@@ -357,6 +367,10 @@ public IActionResult UpdateUserRating(int userId, string showId, [FromBody] Movi
             {
                 return NotFound("Movie not found");
             }
+
+            // Sanitize the title and description before updating
+            updatedMovie.Title = _sanitizer.Sanitize(updatedMovie.Title);
+            updatedMovie.Description = _sanitizer.Sanitize(updatedMovie.Description);
 
             existingMovie.Title = updatedMovie.Title ?? existingMovie.Title;
             existingMovie.Director = updatedMovie.Director ?? existingMovie.Director;
